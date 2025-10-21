@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MapPin, Phone } from 'lucide-react';
 
@@ -30,12 +31,12 @@ export default function CTASection() {
                         <p className="text-lg text-gustito-dark/80 mb-8 max-w-md">
                             Encuentra tu Gustito más cercano y disfruta de nuestros sabores únicos
                         </p>
-                        <a
-                            href="#ubicaciones"
-                            className="px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                        <Link
+                            href="/sucursales"
+                            className="px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl inline-block"
                         >
                             Ver Ubicaciones
-                        </a>
+                        </Link>
                     </motion.div>
 
                     {/* Right Side - Orange Background with Text */}
