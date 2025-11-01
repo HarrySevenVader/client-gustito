@@ -1,0 +1,20 @@
+.float {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ajustes por tamaño para que no crezcan la altura del layout */
+.float-s1 { right: 12px; top: 60px; opacity: 0.12; }
+.float-s2 { right: 28px; top: 160px; opacity: 0.10; }
+.float-s3 { right: 42px; top: 260px; opacity: 0.08; }
+.float-s4 { right: 56px; top: 360px; opacity: 0.07; }
+
+/* Asegurar que los SVGs internos no añadan espacio en línea */
+.float svg { display: block; }
+
+/* Si por alguna razón su altura supera viewport, la limitamos y ocultamos overflow interno */
+.float svg { max-height: 420px; height: auto; }
+
+/* Opcional: si el layout usa decoraciones en los bordes que salen fuera del viewport, las recortamos visualmente */
+section[style] { overflow: hidden; }
