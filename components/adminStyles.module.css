@@ -12,6 +12,8 @@
   display: flex;
   min-height: 100vh;
   background: linear-gradient(180deg, rgba(12,60,30,0.05) 0%, rgba(10,70,30,0.03) 100%);
+  /* leave space for the fixed sidebar */
+  padding-left: 260px;
 }
 
 .sidebar {
@@ -23,6 +25,12 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  position: fixed; /* keep sidebar static on the left */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 40;
+  overflow: auto; /* allow scrolling inside sidebar if content exceeds viewport */
 }
 
 .brand {
@@ -146,5 +154,6 @@
 
 @media (max-width: 900px) {
   .sidebar { display:none }
+  .layout { padding-left: 0 }
   .searchInput { width: 160px }
 }

@@ -61,7 +61,6 @@ export default function AdminTopbar({ title = 'Panel' }: { title?: string }) {
           <div style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>{user ? 'Administrador' : 'Invitado'}</div>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <button onClick={handleSignOut} className={styles.actionBtn} style={{ padding: '8px 10px', borderRadius: 999 }}>Salir</button>
           <div className={styles.avatar}>{displayName?.charAt?.(0) ?? 'A'}</div>
         </div>
       </div>
