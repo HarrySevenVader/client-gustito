@@ -90,53 +90,55 @@ export default function Products() {
                 </motion.div>
 
                 {/* Products Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {products.map((product, index) => (
-                        <motion.div
-                            key={product.id}
-                            className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ y: -8 }}
-                        >
-                            {/* Product Image */}
-                            <div className="relative h-56 overflow-hidden">
-                                <div
-                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                                    style={{ backgroundImage: `url('${product.image}')` }}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                <div className="absolute top-4 left-4">
-                                    <span className="px-3 py-1 bg-gustito-green text-white text-sm font-semibold rounded-full">
-                                        {product.category}
-                                    </span>
+                <div className="flex justify-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl">
+                        {products.map((product, index) => (
+                            <motion.div
+                                key={product.id}
+                                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                whileHover={{ y: -8 }}
+                            >
+                                {/* Product Image */}
+                                <div className="relative h-56 overflow-hidden">
+                                    <div
+                                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                        style={{ backgroundImage: `url('${product.image}')` }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    <div className="absolute top-4 left-4">
+                                        <span className="px-3 py-1 bg-gustito-green text-white text-sm font-semibold rounded-full">
+                                            {product.category}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* Product Info */}
-                            <div className="p-6">
-                                <h3
-                                    className="text-2xl font-bold text-gustito-dark mb-2 group-hover:text-gustito-orange transition-colors duration-300"
-                                    style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
-                                >
-                                    {product.name}
-                                </h3>
-                                <p className="text-gustito-dark/70 mb-4 line-clamp-2">
-                                    {product.description}
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-3xl font-bold text-gustito-orange">
-                                        {product.price}
-                                    </span>
-                                    <button className="px-4 py-2 bg-gustito-green text-white font-semibold rounded-xl hover:bg-[#6FC01D] transition-colors duration-300">
-                                        Agregar
-                                    </button>
+                                {/* Product Info */}
+                                <div className="p-6">
+                                    <h3
+                                        className="text-2xl font-bold text-gustito-dark mb-2 group-hover:text-gustito-orange transition-colors duration-300"
+                                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                                    >
+                                        {product.name}
+                                    </h3>
+                                    <p className="text-gustito-dark/70 mb-4 line-clamp-2">
+                                        {product.description}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-3xl font-bold text-gustito-orange">
+                                            {product.price}
+                                        </span>
+                                        <button className="px-4 py-2 bg-gustito-green text-white font-semibold rounded-xl hover:bg-[#6FC01D] transition-colors duration-300">
+                                            Agregar
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* View Full Menu Button */}

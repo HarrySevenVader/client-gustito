@@ -34,10 +34,10 @@ export default function Navbar({ dark = false }: NavbarProps) {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${dark
-                    ? 'bg-gustito-dark shadow-lg'
-                    : isScrolled
-                        ? 'bg-white shadow-lg'
-                        : 'bg-transparent'
+                ? 'bg-gustito-dark shadow-lg'
+                : isScrolled
+                    ? 'bg-white shadow-lg'
+                    : 'bg-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,10 +46,10 @@ export default function Navbar({ dark = false }: NavbarProps) {
                     <Link href="/" className="flex items-center">
                         <motion.h1
                             className={`text-3xl font-bold transition-colors duration-300 ${dark
+                                ? 'text-gustito-orange'
+                                : isScrolled
                                     ? 'text-gustito-orange'
-                                    : isScrolled
-                                        ? 'text-gustito-orange'
-                                        : 'text-white'
+                                    : 'text-white'
                                 }`}
                             style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                             initial={{ opacity: 0, x: -20 }}
@@ -66,10 +66,10 @@ export default function Navbar({ dark = false }: NavbarProps) {
                             <Link key={link.name} href={link.href}>
                                 <motion.span
                                     className={`text-lg font-medium transition-colors duration-300 hover:text-gustito-orange px-2 cursor-pointer ${dark
-                                            ? 'text-white'
-                                            : isScrolled
-                                                ? 'text-gustito-dark'
-                                                : 'text-white'
+                                        ? 'text-white'
+                                        : isScrolled
+                                            ? 'text-gustito-dark'
+                                            : 'text-white'
                                         }`}
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -84,10 +84,10 @@ export default function Navbar({ dark = false }: NavbarProps) {
                     {/* Mobile Menu Button */}
                     <button
                         className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${dark
-                                ? 'text-white hover:bg-white/10'
-                                : isScrolled
-                                    ? 'text-gustito-dark hover:bg-gray-100'
-                                    : 'text-white hover:bg-white/10'
+                            ? 'text-white hover:bg-white/10'
+                            : isScrolled
+                                ? 'text-gustito-dark hover:bg-gray-100'
+                                : 'text-white hover:bg-white/10'
                             }`}
                         onClick={() => setIsOpen(!isOpen)}
                         aria-label="Toggle menu"
