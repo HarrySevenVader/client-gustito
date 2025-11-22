@@ -48,19 +48,15 @@ export default function MenuGrid({ comidas, isLoading = false }: MenuGridProps) 
 
     return (
         <div className="mb-8">
-            {/* Results count */}
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
+                className="results-count"
             >
-                <p className="text-gray-600">
-                    Mostrando <span className="font-bold text-gustito-orange">{comidas.length}</span>{' '}
-                    {comidas.length === 1 ? 'producto' : 'productos'}
+                <p>
+                    Mostrando <span>{comidas.length}</span> {comidas.length === 1 ? 'producto' : 'productos'}
                 </p>
             </motion.div>
-
-            {/* Grid */}
             <AnimatePresence mode="wait">
                 <motion.div
                     key={comidas.map(c => c.id).join('-')}
@@ -68,7 +64,7 @@ export default function MenuGrid({ comidas, isLoading = false }: MenuGridProps) 
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                    className="menu-grid"
                 >
                     {comidas.map((comida, index) => (
                         <MenuCard key={comida.id} comida={comida} index={index} />

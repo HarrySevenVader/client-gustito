@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
 import { MenuFilters as MenuFiltersType, ComidaConPrecio } from '@/types/menu';
@@ -64,18 +65,13 @@ export default function MenuPage() {
     }, [filters]);
 
     return (
-        <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <main className="menu-page">
             <Navbar dark />
-
-            {/* Spacer for fixed navbar */}
-            <div className="h-24"></div>
-
-            {/* Hero Section */}
-            <section className="pt-16 pb-12 px-4">
-                <div className="max-w-7xl mx-auto text-center">
+            <div className="menu-container pt-24">
+                <section className="menu-hero">
                     <motion.h1
-                        className="text-5xl md:text-6xl font-bold text-gustito-dark mb-6"
-                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                        className="text-5xl md:text-6xl"
+                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif", color: 'var(--gustito-dark)' }}
                         initial={{ opacity: 0, y: -30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -83,38 +79,30 @@ export default function MenuPage() {
                         Nuestro Menú
                     </motion.h1>
                     <motion.p
-                        className="text-xl text-gray-600 max-w-2xl mx-auto"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         Descubre nuestros deliciosos completos, ensaladas y bebidas
                     </motion.p>
-                </div>
-            </section>
-
-            {/* Menu Content */}
-            <section className="pb-20 px-4">
-                <div className="w-full mx-auto">
+                </section>
+                <section className="menu-section">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.4 }}
+                        className="space-y-8"
                     >
-                        {/* Filters */}
                         <MenuFilters
                             filters={filters}
                             onFiltersChange={setFilters}
                             categorias={categorias}
                             sucursales={sucursales}
                         />
-
-                        {/* Menu Grid */}
                         <MenuGrid comidas={filteredComidas} />
                     </motion.div>
-                </div>
-            </section>
-
+                </section>
+            </div>
             <Footer />
         </main>
     );
