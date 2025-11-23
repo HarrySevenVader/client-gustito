@@ -66,6 +66,6 @@ export default function ContactoPage() {
             <Footer />
         </main>
     );
-}
+} //xd
 
 
