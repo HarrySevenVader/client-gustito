@@ -1,17 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
-import { MenuFilters as MenuFiltersType, ComidaConPrecio } from '@/types/menu';
+import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida } from '@/types/menu';
 import {
     categorias,
     sucursales,
-    comidas,
     getPrecioFinal,
     isDisponible,
     getObservacion,
@@ -23,6 +22,41 @@ export default function MenuPage() {
         sucursal_id: null,
         search: '',
     });
+    const [comidas, setComidas] = useState<Comida[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Cargar comidas desde la API
+    useEffect(() => {
+        const fetchComidas = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('/api/comidas');
+                const data = await response.json();
+
+                if (data.ok && data.data) {
+                    // Transformar datos del backend al formato esperado
+                    const comidasAPI: Comida[] = data.data.map((comida: any) => ({
+                        id: comida.id_comida,
+                        nombre: comida.nombre_comida,
+                        descripcion: comida.descripcion,
+                        categoria_id: comida.categoria_id,
+                        imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
+                        precio: comida.precio,
+                        activo: comida.activo,
+                    }));
+                    setComidas(comidasAPI);
+                } else {
+                    console.error('Error al cargar comidas:', data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error al cargar comidas:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchComidas();
+    }, []);
 
     // Filter and process comidas based on current filters
     const filteredComidas = useMemo(() => {
@@ -62,7 +96,7 @@ export default function MenuPage() {
         });
 
         return comidasConPrecio;
-    }, [filters]);
+    }, [comidas, filters]);
 
     return (
         <main className="menu-page">
@@ -99,7 +133,15 @@ export default function MenuPage() {
                             categorias={categorias}
                             sucursales={sucursales}
                         />
-                        <MenuGrid comidas={filteredComidas} />
+                        {loading ? (
+                            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                                <p style={{ fontSize: '1.1rem', color: 'var(--gustito-dark)' }}>
+                                    Cargando menú...
+                                </p>
+                            </div>
+                        ) : (
+                            <MenuGrid comidas={filteredComidas} />
+                        )}
                     </motion.div>
                 </section>
             </div>

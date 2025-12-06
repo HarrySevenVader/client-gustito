@@ -21,90 +21,46 @@ export default function LoginForm() {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    // Validación básica de email
+
     const email = username.trim()
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    
     if (!emailRegex.test(email)) {
-      // Si no es un email, en modo rápido (dev) permitimos usernames simples, pero para Supabase requerimos email
-      if (supabase) {
-        setError('Introduce un correo válido')
-        setLoading(false)
-        return
-      }
-    }
-
-    // Si SUPABASE está configurado, usar el flujo recomendado
-    if (supabase) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-        console.log('supabase signIn result:', { data, error })
-
-        if (error) {
-          setError(error.message || 'Error en autenticación')
-          setLoading(false)
-          return
-        }
-
-        const token = (data as any)?.session?.access_token
-        if (!token) {
-          setError('No se obtuvo token de Supabase')
-          setLoading(false)
-          return
-        }
-
-        // Guardar token (temporal) y llamar endpoint protegido
-        try {
-          localStorage.setItem('supabase_token', token)
-          const res = await fetch(`${API.replace(/\/$/, '')}/protected`, {
-            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          })
-
-          if (!res.ok) {
-            const body = await res.json().catch(() => ({}))
-            setError(body?.message || `Error ${res.status} al llamar endpoint protegido`)
-            setLoading(false)
-            return
-          }
-
-          // Éxito: redirigir al dashboard del admin usando router (client-side navigation)
-            router.push('/admin/dashboard')
-          return
-        } catch (err: any) {
-          setError(err?.message || 'Error al llamar el endpoint protegido')
-          setLoading(false)
-          return
-        }
-      } catch (err: any) {
-        setError(err?.message || 'Error en autenticación con Supabase')
-        setLoading(false)
-        return
-      }
-    }
-
-    // Flujo rápido (dev) - llamar a POST /auth/login en backend
-    try {
-      const res = await fetch(`${API.replace(/\/$/, '')}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-
-      const body = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        setError(body?.error || body?.message || `Error ${res.status}`)
-        setLoading(false)
-        return
-      }
-
-  // Guardar user demo en localStorage (temporal)
-  localStorage.setItem('user', JSON.stringify(body.user || body))
-  // Redirigir al dashboard del admin después del login usando client navigation
-  router.push('/admin/dashboard')
-      return
-    } catch (err: any) {
-      setError(err?.message || 'Error de red en login rápido')
+      setError('Introduce un correo válido')
       setLoading(false)
       return
+    }
+
+    if (!supabase) {
+      setError('Supabase no está configurado')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password 
+      })
+
+      if (error) {
+        setError(error.message || 'Error en autenticación')
+        setLoading(false)
+        return
+      }
+
+      if (!data.session) {
+        setError('No se pudo iniciar sesión')
+        setLoading(false)
+        return
+      }
+
+      // Guardar sesión y redirigir
+      localStorage.setItem('supabase_session', JSON.stringify(data.session))
+      router.push('/admin/dashboard')
+    } catch (err: any) {
+      setError(err?.message || 'Error inesperado')
+      setLoading(false)
     }
   }
 
