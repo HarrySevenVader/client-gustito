@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.pexels.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pixabay.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.bing.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**.etsystatic.com',
       },
       {

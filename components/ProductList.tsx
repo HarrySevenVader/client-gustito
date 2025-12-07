@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import styles from './adminStyles.module.css'
-import { confirm, toastSuccess } from './swalHelper'
+import { confirm, toastSuccess, toastError } from './swalHelper'
 
 type Product = {
   id: number | string
@@ -12,17 +12,32 @@ type Product = {
   image?: string
 }
 
-export default function ProductList({ rows }: { rows: Product[] }) {
+interface ProductListProps {
+  rows: Product[]
+  onEdit?: (product: Product) => void
+  onDelete?: (id: number | string) => void
+}
+
+export default function ProductList({ rows, onEdit, onDelete }: ProductListProps) {
   const handleEdit = (r: Product) => {
-    // abrir formulario en modal o navegar a edición (por implementar)
-    alert('Editar producto: ' + r.title)
+    if (onEdit) {
+      onEdit(r);
+    } else {
+      alert('Editar producto: ' + r.title);
+    }
   }
 
   const handleDelete = async (r: Product) => {
-    const ok = await confirm('¿Borrar producto?', `Vas a borrar "${r.title}"`)
+    const ok = await confirm('¿Mover a papelera?', `Vas a mover "${r.title}" a la papelera`)
     if (!ok) return
-    // aquí iría la llamada a la API para borrar
-    await toastSuccess('Producto borrado')
+    
+    if (onDelete) {
+      try {
+        await onDelete(r.id);
+      } catch (error) {
+        console.error('Error al borrar:', error);
+      }
+    }
   }
 
   return (

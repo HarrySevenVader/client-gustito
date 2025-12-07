@@ -17,6 +17,9 @@ interface ProductFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  editMode?: boolean;
+  productId?: number;
+  initialData?: Partial<ProductFormData>;
 }
 
 interface Categoria {
@@ -24,7 +27,7 @@ interface Categoria {
   nombre_categoria: string;
 }
 
-export default function ProductFormModal({ isOpen, onClose, onSuccess }: ProductFormModalProps) {
+export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode = false, productId, initialData }: ProductFormModalProps) {
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -36,6 +39,30 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
     imagen_url: '',
     activo: true,
   });
+
+  // Cargar datos iniciales si está en modo edición
+  useEffect(() => {
+    if (isOpen && editMode && initialData) {
+      setFormData({
+        nombre_comida: initialData.nombre_comida || '',
+        descripcion: initialData.descripcion || '',
+        categoria_id: initialData.categoria_id || 0,
+        precio: initialData.precio || 0,
+        imagen_url: initialData.imagen_url || '',
+        activo: initialData.activo !== undefined ? initialData.activo : true,
+      });
+    } else if (isOpen && !editMode) {
+      // Resetear formulario al abrir en modo crear
+      setFormData({
+        nombre_comida: '',
+        descripcion: '',
+        categoria_id: categorias.length > 0 ? categorias[0].id_categoria : 0,
+        precio: 0,
+        imagen_url: '',
+        activo: true,
+      });
+    }
+  }, [isOpen, editMode, initialData, categorias]);
 
   // Cargar categorías desde el backend
   useEffect(() => {
@@ -83,8 +110,13 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
     setLoading(true);
 
     try {
-      const response = await fetch('/api/comidas', {
-        method: 'POST',
+      const url = editMode && productId 
+        ? `/api/comidas?id=${productId}` 
+        : '/api/comidas';
+      const method = editMode ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -94,12 +126,12 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
       const data = await response.json();
 
       if (response.ok) {
-        await toastSuccess('Producto creado exitosamente');
+        await toastSuccess(editMode ? 'Producto actualizado exitosamente' : 'Producto creado exitosamente');
         // Limpiar formulario
         setFormData({
           nombre_comida: '',
           descripcion: '',
-          categoria_id: 1,
+          categoria_id: categorias.length > 0 ? categorias[0].id_categoria : 1,
           precio: 0,
           imagen_url: '',
           activo: true,
@@ -107,7 +139,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
         onSuccess();
         onClose();
       } else {
-        toastError(data.mensaje || 'Error al crear producto');
+        toastError(data.mensaje || `Error al ${editMode ? 'actualizar' : 'crear'} producto`);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -123,7 +155,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2>Agregar Producto</h2>
+          <h2>{editMode ? 'Editar Producto' : 'Agregar Producto'}</h2>
           <button onClick={onClose} className={styles.closeBtn}>×</button>
         </div>
 
@@ -181,11 +213,11 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
               <input
                 id="precio"
                 type="number"
-                value={formData.precio}
+                value={formData.precio || ''}
                 onChange={(e) => setFormData({ ...formData, precio: parseFloat(e.target.value) || 0 })}
                 min="0"
                 step="10"
-                placeholder="0"
+                placeholder="Ingrese el precio"
                 required
               />
             </div>
@@ -193,12 +225,25 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
 
           <div className={styles.formGroup}>
             <label htmlFor="imagen">URL de la Imagen</label>
+            {/* 
+              SUGERENCIAS DE FUENTES DE IMÁGENES GRATUITAS:
+              - Unsplash: https://unsplash.com (imágenes de alta calidad gratis)
+              - Pexels: https://www.pexels.com (fotos gratis sin derechos de autor)
+              - Pixabay: https://pixabay.com (imágenes y vectores gratis)
+              - Imgur: https://imgur.com (subir tus propias imágenes)
+              
+              CÓMO OBTENER LA URL:
+              1. Busca la imagen en una de estas páginas
+              2. Haz clic derecho sobre la imagen
+              3. Selecciona "Copiar dirección de imagen" o "Copy image address"
+              4. Pega la URL aquí
+            */}
             <input
               id="imagen"
               type="url"
               value={formData.imagen_url}
               onChange={(e) => setFormData({ ...formData, imagen_url: e.target.value })}
-              placeholder="https://ejemplo.com/imagen.jpg"
+              placeholder="https://images.unsplash.com/photo-ejemplo.jpg"
             />
             {formData.imagen_url && (
               <div className={styles.imagePreview}>
@@ -225,7 +270,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess }: Product
               Cancelar
             </button>
             <button type="submit" className={styles.submitBtn} disabled={loading}>
-              {loading ? 'Guardando...' : 'Guardar Producto'}
+              {loading ? 'Guardando...' : (editMode ? 'Actualizar Producto' : 'Guardar Producto')}
             </button>
           </div>
         </form>
