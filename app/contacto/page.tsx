@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { toastSuccess, toastError } from '@/components/swalHelper';
 import './contacto.css';
 
 export default function ContactoPage() {
@@ -12,12 +13,11 @@ export default function ContactoPage() {
         nombre: '',
         apellido: '',
         correo: '',
-        telefono: '',
+        celular: '',
         mensaje: ''
     });
     const [charCount, setCharCount] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitMessage, setSubmitMessage] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -31,16 +31,62 @@ export default function ContactoPage() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Validación básica
+        if (!formData.nombre.trim() || !formData.apellido.trim() || !formData.correo.trim() || 
+            !formData.celular.trim() || !formData.mensaje.trim()) {
+            toastError('Todos los campos son obligatorios');
+            return;
+        }
+
+        // Validar formato de email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.correo)) {
+            toastError('Por favor ingresa un correo electrónico válido');
+            return;
+        }
+
+        // Validar longitud del mensaje
+        if (formData.mensaje.length > 500) {
+            toastError('El mensaje no puede exceder los 500 caracteres');
+            return;
+        }
+
         setIsSubmitting(true);
-        setTimeout(() => {
+
+        try {
+            const response = await fetch('http://localhost:4000/api/consultas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                await toastSuccess(data.mensaje || '¡Tu consulta ha sido enviada exitosamente! Te contactaremos pronto.');
+                // Limpiar formulario
+                setFormData({
+                    nombre: '',
+                    apellido: '',
+                    correo: '',
+                    celular: '',
+                    mensaje: ''
+                });
+                setCharCount(0);
+            } else {
+                toastError(data.mensaje || 'Error al enviar la consulta');
+            }
+        } catch (error) {
+            console.error('Error al enviar consulta:', error);
+            toastError('Error al conectar con el servidor. Por favor, intenta nuevamente.');
+        } finally {
             setIsSubmitting(false);
-            setSubmitMessage('¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
-            setFormData({ nombre: '', apellido: '', correo: '', telefono: '', mensaje: '' });
-            setCharCount(0);
-            setTimeout(() => setSubmitMessage(''), 5000);
-        }, 1500);
+        }
     };
 
     return (
@@ -111,8 +157,8 @@ export default function ContactoPage() {
                                         <input type="email" id="correo" name="correo" value={formData.correo} onChange={handleChange} required placeholder="ejemplo@correo.com" />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="telefono">Número de teléfono móvil *</label>
-                                        <input type="tel" id="telefono" name="telefono" value={formData.telefono} onChange={handleChange} required placeholder="1234567890" />
+                                        <label htmlFor="celular">Número de teléfono móvil *</label>
+                                        <input type="tel" id="celular" name="celular" value={formData.celular} onChange={handleChange} required placeholder="912345678" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="mensaje">Mensaje *</label>
@@ -126,11 +172,6 @@ export default function ContactoPage() {
                                 <motion.button type="submit" disabled={isSubmitting} className="submit-btn" whileTap={{ scale: 0.97 }}>
                                     {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
                                 </motion.button>
-                                {submitMessage && (
-                                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="alert-success">
-                                        {submitMessage}
-                                    </motion.div>
-                                )}
                             </form>
                         </motion.div>
                     </div>
@@ -139,6 +180,6 @@ export default function ContactoPage() {
             <Footer />
         </main>
     );
-} //xd
+}
 
 

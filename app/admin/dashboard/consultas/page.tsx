@@ -1,23 +1,84 @@
-import DashboardLayout from '../../../../components/DashboardLayout'
-import QueryList from '../../../../components/QueryList'
+'use client';
 
-const sampleQueries = [
-  { id: 101, consulta: 'Quisiera pedir un envío especial para un cumpleaños', email: 'cliente1@example.com', created_at: '2025-11-01 10:22:00' },
-  { id: 102, consulta: '¿Los productos contienen gluten?', email: 'cliente2@example.com', created_at: '2025-10-22 15:12:41' },
-  { id: 103, consulta: '¿Tienen sucursal abierta el domingo?', email: 'usuario@correo.cl', created_at: '2025-10-10 09:05:12' },
-]
+import { useState, useEffect } from 'react';
+import DashboardLayout from '../../../../components/DashboardLayout';
+import QueryList from '../../../../components/QueryList';
+import { toastSuccess, toastError } from '../../../../components/swalHelper';
+
+interface Consulta {
+  id_consulta: number;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  celular: string;
+  mensaje: string;
+  fecha_envio: string;
+}
 
 export default function QueriesPage() {
+  const [consultas, setConsultas] = useState<Consulta[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchConsultas = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:4000/api/consultas');
+      const data = await response.json();
+
+      if (data.ok && data.data) {
+        setConsultas(data.data);
+      } else {
+        toastError(data.mensaje || 'Error al cargar consultas');
+      }
+    } catch (error) {
+      console.error('Error al cargar consultas:', error);
+      toastError('Error al conectar con el servidor');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchConsultas();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:4000/api/consultas/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        await toastSuccess(data.mensaje || 'Consulta eliminada exitosamente');
+        // Recargar consultas
+        fetchConsultas();
+      } else {
+        toastError(data.mensaje || 'Error al eliminar consulta');
+      }
+    } catch (error) {
+      console.error('Error al eliminar consulta:', error);
+      toastError('Error al conectar con el servidor');
+    }
+  };
+
   return (
     <DashboardLayout>
       <section>
         <h1>Consultas</h1>
-        <p>Visualiza y responde las consultas realizadas por usuarios.</p>
+        <p>Visualiza y gestiona las consultas realizadas por usuarios.</p>
 
         <div style={{ height: 12 }} />
 
-        <QueryList rows={sampleQueries} />
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+            Cargando consultas...
+          </div>
+        ) : (
+          <QueryList rows={consultas} onDelete={handleDelete} />
+        )}
       </section>
     </DashboardLayout>
-  )
+  );
 }
