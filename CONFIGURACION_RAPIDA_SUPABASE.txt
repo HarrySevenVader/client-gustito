@@ -1,0 +1,110 @@
+═══════════════════════════════════════════════════════════════
+CONFIGURACIÓN RÁPIDA DE SUPABASE STORAGE - COPIAR Y PEGAR
+═══════════════════════════════════════════════════════════════
+
+📍 URL: https://supabase.com
+📍 Proyecto: zwxjzrkivkxiunaynwjp
+
+═══════════════════════════════════════════════════════════════
+PASO 1: CREAR BUCKET
+═══════════════════════════════════════════════════════════════
+
+Ve a: Storage > New bucket
+
+Name:
+imagenes
+
+✅ Public bucket: MARCAR (activar)
+
+Botón: Create bucket
+
+═══════════════════════════════════════════════════════════════
+PASO 2: CREAR 4 POLÍTICAS
+═══════════════════════════════════════════════════════════════
+
+Ve a: Storage > Policies > Schema: OTHER POLICIES UNDER STORAGE.OBJECTS > New Policy > For full customization
+
+───────────────────────────────────────────────────────────────
+POLÍTICA 1: INSERT
+───────────────────────────────────────────────────────────────
+
+Policy name:
+Permitir subida de imágenes
+
+Allowed operation:
+INSERT
+
+Policy definition:
+(bucket_id = 'imagenes'::text)
+
+Target roles: public
+
+WITH CHECK expression:
+(bucket_id = 'imagenes'::text)
+
+Botón: Review > Save policy
+
+───────────────────────────────────────────────────────────────
+POLÍTICA 2: SELECT
+───────────────────────────────────────────────────────────────
+
+Policy name:
+Permitir lectura pública
+
+Allowed operation:
+SELECT
+
+Policy definition:
+(bucket_id = 'imagenes'::text)
+
+Target roles: public
+
+Botón: Review > Save policy
+
+───────────────────────────────────────────────────────────────
+POLÍTICA 3: UPDATE
+───────────────────────────────────────────────────────────────
+
+Policy name:
+Permitir actualización de imágenes
+
+Allowed operation:
+UPDATE
+
+Policy definition:
+(bucket_id = 'imagenes'::text)
+
+Target roles: public
+
+WITH CHECK expression:
+(bucket_id = 'imagenes'::text)
+
+Botón: Review > Save policy
+
+───────────────────────────────────────────────────────────────
+POLÍTICA 4: DELETE
+───────────────────────────────────────────────────────────────
+
+Policy name:
+Permitir eliminación de imágenes
+
+Allowed operation:
+DELETE
+
+Policy definition:
+(bucket_id = 'imagenes'::text)
+
+Target roles: public
+
+Botón: Review > Save policy
+
+═══════════════════════════════════════════════════════════════
+VERIFICACIÓN
+═══════════════════════════════════════════════════════════════
+
+Ejecutar en terminal:
+node test-supabase-storage.js
+
+Debe decir: "TODO ESTÁ CONFIGURADO CORRECTAMENTE"
+
+═══════════════════════════════════════════════════════════════

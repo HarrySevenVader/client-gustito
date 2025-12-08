@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './adminStyles.module.css';
 import { toastSuccess, toastError } from './swalHelper';
+import supabase from '../lib/supabaseClient';
 
 interface ProductFormData {
   nombre_comida: string;
@@ -30,7 +31,10 @@ interface Categoria {
 export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode = false, productId, initialData }: ProductFormModalProps) {
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState<ProductFormData>({
     nombre_comida: '',
     descripcion: '',
@@ -51,6 +55,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
         imagen_url: initialData.imagen_url || '',
         activo: initialData.activo !== undefined ? initialData.activo : true,
       });
+      setImagePreview(initialData.imagen_url || '');
     } else if (isOpen && !editMode) {
       // Resetear formulario al abrir en modo crear
       setFormData({
@@ -61,6 +66,8 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
         imagen_url: '',
         activo: true,
       });
+      setImageFile(null);
+      setImagePreview('');
     }
   }, [isOpen, editMode, initialData, categorias]);
 
@@ -90,6 +97,88 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
     }
   }, [isOpen]);
 
+  // Manejar selección de archivo de imagen
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validar tipo de archivo
+      if (!file.type.startsWith('image/')) {
+        toastError('Por favor selecciona un archivo de imagen válido');
+        return;
+      }
+      
+      // Validar tamaño (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toastError('La imagen no debe superar los 5MB');
+        return;
+      }
+
+      setImageFile(file);
+      
+      // Crear preview local
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Limpiar el input para permitir reseleccionar la misma imagen
+    e.target.value = '';
+  };
+
+  // Subir imagen a Supabase Storage
+  const uploadImageToSupabase = async (file: File): Promise<string | null> => {
+    if (!supabase) {
+      toastError('Error: Supabase no está configurado. Verifica tus variables de entorno.');
+      return null;
+    }
+
+    try {
+      setUploadingImage(true);
+      
+      // Generar nombre único para el archivo
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `productos/${fileName}`;
+
+      // Subir archivo a Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('imagenes') // Nombre del bucket que crearás en Supabase
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) {
+        console.error('Error al subir imagen:', error);
+        
+        // Mostrar mensaje específico según el error
+        if (error.message.includes('Bucket not found') || error.message.includes('404')) {
+          toastError('❌ El bucket "imagenes" no existe en Supabase. Por favor créalo siguiendo las instrucciones del archivo CONFIGURACION_SUPABASE_STORAGE.md');
+        } else if (error.message.includes('policy')) {
+          toastError('❌ Error de permisos: Configura las políticas RLS del bucket "imagenes"');
+        } else {
+          toastError(`Error al subir imagen: ${error.message}`);
+        }
+        return null;
+      }
+
+      // Obtener URL pública de la imagen
+      const { data: urlData } = supabase.storage
+        .from('imagenes')
+        .getPublicUrl(filePath);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Error al subir imagen:', error);
+      toastError('Error inesperado al subir la imagen');
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -110,6 +199,20 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
     setLoading(true);
 
     try {
+      let imagenUrl = formData.imagen_url;
+
+      // Si hay un archivo de imagen seleccionado, subirlo primero
+      if (imageFile) {
+        const uploadedUrl = await uploadImageToSupabase(imageFile);
+        if (uploadedUrl) {
+          imagenUrl = uploadedUrl;
+        } else {
+          // Si falla la subida, no continuar
+          setLoading(false);
+          return;
+        }
+      }
+
       const url = editMode && productId 
         ? `/api/comidas?id=${productId}` 
         : '/api/comidas';
@@ -120,7 +223,10 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          imagen_url: imagenUrl
+        }),
       });
 
       const data = await response.json();
@@ -136,6 +242,8 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
           imagen_url: '',
           activo: true,
         });
+        setImageFile(null);
+        setImagePreview('');
         onSuccess();
         onClose();
       } else {
@@ -224,32 +332,44 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="imagen">URL de la Imagen</label>
-            {/* 
-              SUGERENCIAS DE FUENTES DE IMÁGENES GRATUITAS:
-              - Unsplash: https://unsplash.com (imágenes de alta calidad gratis)
-              - Pexels: https://www.pexels.com (fotos gratis sin derechos de autor)
-              - Pixabay: https://pixabay.com (imágenes y vectores gratis)
-              - Imgur: https://imgur.com (subir tus propias imágenes)
-              
-              CÓMO OBTENER LA URL:
-              1. Busca la imagen en una de estas páginas
-              2. Haz clic derecho sobre la imagen
-              3. Selecciona "Copiar dirección de imagen" o "Copy image address"
-              4. Pega la URL aquí
-            */}
-            <input
-              id="imagen"
-              type="url"
-              value={formData.imagen_url}
-              onChange={(e) => setFormData({ ...formData, imagen_url: e.target.value })}
-              placeholder="https://images.unsplash.com/photo-ejemplo.jpg"
-            />
-            {formData.imagen_url && (
+            <label htmlFor="imagen">Imagen del Producto</label>
+            
+            {/* Input para subir archivo desde el ordenador */}
+            <div className={styles.imageUploadContainer}>
+              <input
+                id="imagen-file"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <button
+                type="button"
+                onClick={() => document.getElementById('imagen-file')?.click()}
+                className={styles.uploadBtn}
+                disabled={uploadingImage}
+              >
+                {uploadingImage ? 'Subiendo...' : '📁 Seleccionar imagen desde mi ordenador'}
+              </button>
+            </div>
+
+            {/* Preview de la imagen */}
+            {imagePreview && (
               <div className={styles.imagePreview}>
-                <img src={formData.imagen_url} alt="Preview" onError={(e) => {
+                <img src={imagePreview} alt="Preview" onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
                 }} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageFile(null);
+                    setImagePreview('');
+                    setFormData({ ...formData, imagen_url: '' });
+                  }}
+                  className={styles.removeImageBtn}
+                >
+                  ✕ Eliminar imagen
+                </button>
               </div>
             )}
           </div>
@@ -266,11 +386,11 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
           </div>
 
           <div className={styles.modalActions}>
-            <button type="button" onClick={onClose} className={styles.cancelBtn} disabled={loading}>
+            <button type="button" onClick={onClose} className={styles.cancelBtn} disabled={loading || uploadingImage}>
               Cancelar
             </button>
-            <button type="submit" className={styles.submitBtn} disabled={loading}>
-              {loading ? 'Guardando...' : (editMode ? 'Actualizar Producto' : 'Guardar Producto')}
+            <button type="submit" className={styles.submitBtn} disabled={loading || uploadingImage}>
+              {loading ? 'Guardando...' : uploadingImage ? 'Subiendo imagen...' : (editMode ? 'Actualizar Producto' : 'Guardar Producto')}
             </button>
           </div>
         </form>
