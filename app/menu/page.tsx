@@ -7,9 +7,8 @@ import Footer from '@/components/Footer';
 import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
-import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida } from '@/types/menu';
+import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida, Categoria } from '@/types/menu';
 import {
-    categorias,
     sucursales,
     getPrecioFinal,
     isDisponible,
@@ -23,7 +22,33 @@ export default function MenuPage() {
         search: '',
     });
     const [comidas, setComidas] = useState<Comida[]>([]);
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Cargar categorías desde el backend
+    useEffect(() => {
+        const fetchCategorias = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/categorias');
+                const data = await response.json();
+
+                if (data.ok && data.data) {
+                    // Transformar datos del backend al formato esperado
+                    const categoriasAPI: Categoria[] = data.data.map((cat: any) => ({
+                        id: cat.id_categoria,
+                        nombre: cat.nombre_categoria,
+                    }));
+                    setCategorias(categoriasAPI);
+                } else {
+                    console.error('Error al cargar categorías:', data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error al cargar categorías:', error);
+            }
+        };
+
+        fetchCategorias();
+    }, []);
 
     // Cargar comidas desde la API
     useEffect(() => {
