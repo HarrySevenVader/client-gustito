@@ -40,6 +40,13 @@ export default function ProductList({ rows, onEdit, onDelete }: ProductListProps
     }
   }
 
+  // Función para truncar texto largo
+  const truncateText = (text: string | undefined, maxLength: number = 100): string => {
+    if (!text) return '—';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  }
+
   return (
     <div className={styles.productList}>
       {rows.length === 0 ? (
@@ -57,8 +64,8 @@ export default function ProductList({ rows, onEdit, onDelete }: ProductListProps
             <img src={p.image || '/placeholder.svg'} alt={p.title} className={styles.productImage} />
 
             <div className={styles.productInfo}>
-              <div className={styles.productTitle}>{p.title}</div>
-              <div className={styles.productDesc}>{p.description ?? '—'}</div>
+              <div className={styles.productTitle}>{truncateText(p.title, 50)}</div>
+              <div className={styles.productDesc}>{truncateText(p.description, 100)}</div>
               <div className={styles.productMeta}>Creado: {p.date ?? '-'}</div>
             </div>
 

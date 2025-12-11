@@ -38,13 +38,13 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
           <p style="margin: 8px 0;"><strong>📅 Fecha:</strong> ${fechaFormateada}</p>
           <hr style="margin: 12px 0;">
           <p style="margin: 8px 0;"><strong>💬 Mensaje:</strong></p>
-          <p style="margin: 8px 0; padding: 12px; background: #f5f5f5; border-radius: 8px; white-space: pre-wrap;">${consulta.mensaje}</p>
+          <div style="margin: 8px 0; padding: 12px; background: #f5f5f5; border-radius: 8px; white-space: pre-wrap; height: 200px; overflow-y: auto;">${consulta.mensaje}</div>
         </div>
       `,
       icon: 'info',
       confirmButtonText: 'Cerrar',
       confirmButtonColor: '#17a84a',
-      width: '600px'
+      width: '500px'
     });
   };
 
@@ -81,6 +81,15 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
     <div className={styles.tableWrap}>
       <h3 style={{ marginTop: 0 }}>Consultas Recibidas ({rows.length})</h3>
       <table className={styles.table}>
+        <colgroup>
+          <col style={{ width: '50px' }} />
+          <col style={{ width: '150px' }} />
+          <col style={{ width: '180px' }} />
+          <col style={{ width: '120px' }} />
+          <col style={{ width: 'auto' }} />
+          <col style={{ width: '100px' }} />
+          <col style={{ width: '180px' }} />
+        </colgroup>
         <thead>
           <tr>
             <th className={styles.th}>ID</th>
@@ -95,23 +104,27 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
         <tbody>
           {rows.map(consulta => (
             <tr key={consulta.id_consulta}>
-              <td className={styles.td}>{consulta.id_consulta}</td>
-              <td className={styles.td}>{consulta.nombre} {consulta.apellido}</td>
-              <td className={styles.td}>{consulta.correo}</td>
+              <td className={styles.td} style={{ textAlign: 'center' }}>{consulta.id_consulta}</td>
+              <td className={styles.td} title={`${consulta.nombre} ${consulta.apellido}`}>
+                {consulta.nombre} {consulta.apellido}
+              </td>
+              <td className={styles.td} title={consulta.correo}>
+                {consulta.correo}
+              </td>
               <td className={styles.td}>{consulta.celular}</td>
-              <td className={styles.td} style={{ maxWidth: 300 }}>
-                {consulta.mensaje.length > 50 
-                  ? `${consulta.mensaje.substring(0, 50)}...` 
+              <td className={styles.td} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }} title={consulta.mensaje}>
+                {consulta.mensaje.length > 60 
+                  ? `${consulta.mensaje.substring(0, 60)}...` 
                   : consulta.mensaje}
               </td>
-              <td className={styles.td}>
+              <td className={styles.td} style={{ whiteSpace: 'nowrap' }}>
                 {new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric'
                 })}
               </td>
-              <td className={styles.td}>
+              <td className={styles.tdActions}>
                 <button 
                   className={styles.viewBtn} 
                   style={{ marginRight: 8 }} 

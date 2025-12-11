@@ -3,7 +3,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ComidaConPrecio } from '@/types/menu';
 import MenuCard from './MenuCard';
+import ProductoDetalle from './ProductoDetalle';
 import { UtensilsCrossed } from 'lucide-react';
+import { useState } from 'react';
 
 interface MenuGridProps {
     comidas: ComidaConPrecio[];
@@ -11,6 +13,19 @@ interface MenuGridProps {
 }
 
 export default function MenuGrid({ comidas, isLoading = false }: MenuGridProps) {
+    const [selectedProduct, setSelectedProduct] = useState<ComidaConPrecio | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenDetalle = (comida: ComidaConPrecio) => {
+        setSelectedProduct(comida);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseDetalle = () => {
+        setIsModalOpen(false);
+        setTimeout(() => setSelectedProduct(null), 300);
+    };
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-20">
@@ -67,10 +82,21 @@ export default function MenuGrid({ comidas, isLoading = false }: MenuGridProps) 
                     className="menu-grid"
                 >
                     {comidas.map((comida, index) => (
-                        <MenuCard key={comida.id} comida={comida} index={index} />
+                        <MenuCard 
+                            key={comida.id} 
+                            comida={comida} 
+                            index={index}
+                            onClickDetalle={() => handleOpenDetalle(comida)}
+                        />
                     ))}
                 </motion.div>
             </AnimatePresence>
+
+            <ProductoDetalle
+                comida={selectedProduct}
+                isOpen={isModalOpen}
+                onClose={handleCloseDetalle}
+            />
         </div>
     );
 }

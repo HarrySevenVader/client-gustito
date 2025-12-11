@@ -7,14 +7,21 @@ import Image from 'next/image';
 interface MenuCardProps {
     comida: ComidaConPrecio;
     index: number;
+    onClickDetalle: () => void;
 }
 
-export default function MenuCard({ comida, index }: MenuCardProps) {
+export default function MenuCard({ comida, index, onClickDetalle }: MenuCardProps) {
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('es-CL', {
             style: 'currency',
             currency: 'CLP',
         }).format(price);
+    };
+
+    const truncateText = (text: string, maxLength: number = 80): string => {
+        if (!text) return '';
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + '...';
     };
 
     const hasPriceChange = comida.precio !== comida.precio_final;
@@ -25,6 +32,8 @@ export default function MenuCard({ comida, index }: MenuCardProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.08 }}
             className="menu-card"
+            onClick={onClickDetalle}
+            style={{ cursor: 'pointer' }}
         >
             <div className="menu-card__image">
                 <Image
@@ -42,10 +51,10 @@ export default function MenuCard({ comida, index }: MenuCardProps) {
             </div>
             <div className="menu-card__body">
                 <h3>{comida.nombre}</h3>
-                <p>{comida.descripcion}</p>
+                <p>{truncateText(comida.descripcion, 80)}</p>
                 {comida.observacion && (
                     <div className="menu-card__note">
-                        <strong>Nota:</strong> {comida.observacion}
+                        <strong>Nota:</strong> {truncateText(comida.observacion, 50)}
                     </div>
                 )}
                 <div className="menu-card__footer">
@@ -55,9 +64,30 @@ export default function MenuCard({ comida, index }: MenuCardProps) {
                         )}
                         <span className="current">{formatPrice(comida.precio_final)}</span>
                     </div>
-                    <button className="menu-card__add" aria-label={`Agregar ${comida.nombre} al carrito`}>
-                        Agregar
-                    </button>
+                    {comida.activo ? (
+                        <button 
+                            className="menu-card__add" 
+                            aria-label={`Agregar ${comida.nombre} al carrito`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                // Aquí se agregará la funcionalidad del carrito
+                            }}
+                        >
+                            Disponible
+                        </button>
+                    ) : (
+                        <button 
+                            className="menu-card__add" 
+                            disabled
+                            style={{ 
+                                background: '#999', 
+                                cursor: 'not-allowed',
+                                boxShadow: 'none'
+                            }}
+                        >
+                            No disponible
+                        </button>
+                    )}
                 </div>
             </div>
         </motion.div>

@@ -85,7 +85,7 @@ export default function MenuPage() {
 
     // Filter and process comidas based on current filters
     const filteredComidas = useMemo(() => {
-        let result = comidas.filter((comida) => comida.activo);
+        let result = comidas;
 
         // Filter by sucursal availability
         if (filters.sucursal_id) {

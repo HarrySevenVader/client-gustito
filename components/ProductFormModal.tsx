@@ -281,15 +281,19 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="descripcion">Descripción *</label>
+            <label htmlFor="descripcion">Descripción * (máximo 500 caracteres)</label>
             <textarea
               id="descripcion"
               value={formData.descripcion}
               onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
               placeholder="Describe el producto..."
               rows={3}
+              maxLength={500}
               required
             />
+            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              {formData.descripcion.length}/500 caracteres
+            </small>
           </div>
 
           <div className={styles.formRow}>
