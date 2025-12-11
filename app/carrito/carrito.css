@@ -1,0 +1,431 @@
+/* Página del Carrito */
+.carrito-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+}
+
+.carrito-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+  width: 100%;
+  flex: 1 0 auto;
+}
+
+/* Empty State */
+.carrito-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(4, 20, 10, 0.08);
+  margin-top: 40px;
+}
+
+.carrito-empty-icon {
+  color: #d1d5db;
+  margin-bottom: 24px;
+}
+
+.carrito-empty h2 {
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2E2E2E;
+  margin-bottom: 12px;
+}
+
+.carrito-empty p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+/* Header */
+.carrito-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.carrito-header h1 {
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2E2E2E;
+  margin: 0;
+}
+
+/* Información de Sucursal */
+.carrito-sucursal-info {
+  background: linear-gradient(135deg, #fff5f0 0%, #ffffff 100%);
+  border: 2px solid #ff6b35;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sucursal-info-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #2E2E2E;
+  font-size: 15px;
+}
+
+.sucursal-info-content svg {
+  color: #ff6b35;
+  flex-shrink: 0;
+}
+
+.sucursal-info-content strong {
+  font-weight: 600;
+}
+
+.sucursal-direccion {
+  color: #666;
+  font-size: 14px;
+}
+
+.carrito-btn-change-sucursal {
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #ff6b35;
+  border-radius: 8px;
+  color: #ff6b35;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.carrito-btn-change-sucursal:hover {
+  background: #ff6b35;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Content Layout */
+.carrito-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+/* Items List */
+.carrito-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.carrito-item {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 100px 1fr auto auto auto auto;
+  gap: 20px;
+  align-items: center;
+  position: relative;
+  transition: box-shadow 0.3s;
+}
+
+.carrito-item:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.carrito-item-image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f2f2f2;
+  flex-shrink: 0;
+}
+
+.carrito-img {
+  object-fit: cover;
+}
+
+.carrito-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.carrito-item-info h3 {
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2E2E2E;
+  margin: 0;
+}
+
+.carrito-item-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carrito-item-category {
+  display: inline-block;
+  background: rgba(245, 124, 0, 0.1);
+  color: var(--gustito-orange, #F57C00);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.carrito-item-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.carrito-item-price .price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gustito-orange, #F57C00);
+}
+
+.carrito-item-price .price-label {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.carrito-item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8f9fa;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.qty-btn {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.qty-btn:hover {
+  background: var(--gustito-orange, #F57C00);
+  border-color: var(--gustito-orange, #F57C00);
+  color: white;
+}
+
+.qty-value {
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.carrito-item-subtotal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.subtotal-label {
+  font-size: 0.75rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subtotal-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #2E2E2E;
+}
+
+.carrito-item-remove {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.carrito-item-remove:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Summary */
+.carrito-summary {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.carrito-summary h2 {
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2E2E2E;
+  margin: 0 0 24px 0;
+}
+
+.carrito-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #666;
+}
+
+.summary-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 8px 0;
+}
+
+.summary-total {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #2E2E2E;
+  margin-top: 8px;
+}
+
+/* Buttons */
+.carrito-btn-primary,
+.carrito-btn-pagar {
+  width: 100%;
+  background: linear-gradient(90deg, var(--gustito-orange, #F57C00), #e86f00);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(245, 124, 0, 0.35);
+  transition: all 0.3s;
+}
+
+.carrito-btn-primary:hover,
+.carrito-btn-pagar:hover {
+  background: linear-gradient(90deg, #e86f00, var(--gustito-orange, #F57C00));
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(245, 124, 0, 0.45);
+}
+
+.carrito-btn-pagar {
+  margin-top: 24px;
+}
+
+.carrito-btn-continue {
+  width: 100%;
+  background: white;
+  color: var(--gustito-orange, #F57C00);
+  border: 2px solid var(--gustito-orange, #F57C00);
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.3s;
+}
+
+.carrito-btn-continue:hover {
+  background: rgba(245, 124, 0, 0.05);
+}
+
+.carrito-btn-clear {
+  background: transparent;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.carrito-btn-clear:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .carrito-content {
+    grid-template-columns: 1fr;
+  }
+
+  .carrito-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .carrito-item {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+  }
+
+  .carrito-item-price,
+  .carrito-item-quantity,
+  .carrito-item-subtotal {
+    grid-column: 2;
+  }
+
+  .carrito-item-remove {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .carrito-header h1 {
+    font-size: 2rem;
+  }
+}

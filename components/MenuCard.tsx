@@ -67,10 +67,10 @@ export default function MenuCard({ comida, index, onClickDetalle }: MenuCardProp
                     {comida.activo ? (
                         <button 
                             className="menu-card__add" 
-                            aria-label={`Agregar ${comida.nombre} al carrito`}
+                            aria-label={`Ver detalles de ${comida.nombre}`}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                // Aquí se agregará la funcionalidad del carrito
+                                onClickDetalle();
                             }}
                         >
                             Disponible

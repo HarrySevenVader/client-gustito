@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingCart, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '@/contexts/CartContext';
 
 interface NavbarProps {
     dark?: boolean;
@@ -12,6 +13,8 @@ interface NavbarProps {
 export default function Navbar({ dark = false }: NavbarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const { getItemCount, sucursal } = useCart();
+    const itemCount = getItemCount();
 
     useEffect(() => {
         if (dark) return; // No scroll effect for dark navbar
@@ -79,6 +82,52 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                 </motion.span>
                             </Link>
                         ))}
+                        
+                        {/* Cart Icon */}
+                        <Link href="/carrito">
+                            <motion.div
+                                className="relative cursor-pointer"
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: navLinks.length * 0.1 }}
+                            >
+                                <ShoppingCart
+                                    size={28}
+                                    className={`transition-colors duration-300 hover:text-gustito-orange ${dark
+                                        ? 'text-white'
+                                        : isScrolled
+                                            ? 'text-gustito-dark'
+                                            : 'text-white'
+                                        }`}
+                                />
+                                {itemCount > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-gustito-orange text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                        {itemCount}
+                                    </span>
+                                )}
+                            </motion.div>
+                        </Link>
+
+                        {/* Sucursal Indicator */}
+                        {sucursal && (
+                            <motion.div
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+                                    dark 
+                                        ? 'bg-white/10 text-white' 
+                                        : isScrolled 
+                                            ? 'bg-gray-100 text-gustito-dark' 
+                                            : 'bg-white/10 text-white'
+                                }`}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: (navLinks.length + 1) * 0.1 }}
+                            >
+                                <MapPin size={18} />
+                                <span className="text-sm font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                                    {sucursal.nombre_sucursal}
+                                </span>
+                            </motion.div>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}

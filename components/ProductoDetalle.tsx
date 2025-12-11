@@ -5,7 +5,11 @@ import { ComidaConPrecio } from '@/types/menu';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import styles from './ProductoDetalle.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useCart } from '@/contexts/CartContext';
+import { toastSuccess } from './swalHelper';
+import SucursalSelector from './SucursalSelector';
+import type { Sucursal } from '@/contexts/CartContext';
 
 interface ProductoDetalleProps {
     comida: ComidaConPrecio | null;
@@ -14,6 +18,9 @@ interface ProductoDetalleProps {
 }
 
 export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDetalleProps) {
+    const { addToCart, sucursal, setSucursal } = useCart();
+    const [showSucursalSelector, setShowSucursalSelector] = useState(false);
+    
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -38,6 +45,28 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
         if (!text) return '';
         if (text.length <= maxLength) return text;
         return text.substring(0, maxLength);
+    };
+
+    const handleAddToCart = () => {
+        // Si no hay sucursal seleccionada, mostrar selector
+        if (!sucursal) {
+            setShowSucursalSelector(true);
+            return;
+        }
+        
+        addToCart(comida);
+        toastSuccess(`${comida.nombre} agregado al carrito`);
+        onClose();
+    };
+
+    const handleSucursalSelected = (selectedSucursal: Sucursal) => {
+        setSucursal(selectedSucursal);
+        setShowSucursalSelector(false);
+        
+        // Ahora sí agregar al carrito
+        addToCart(comida);
+        toastSuccess(`${comida.nombre} agregado al carrito`);
+        onClose();
     };
 
     const hasPriceChange = comida.precio !== comida.precio_final;
@@ -101,13 +130,25 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
                                         )}
                                         <span className={styles.currentPrice}>{formatPrice(comida.precio_final)}</span>
                                     </div>
-                                    <button className={styles.addBtn} aria-label={`Agregar ${comida.nombre} al carrito`}>
+                                    <button 
+                                        className={styles.addBtn} 
+                                        onClick={handleAddToCart}
+                                        aria-label={`Agregar ${comida.nombre} al carrito`}
+                                    >
                                         Agregar al carrito
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </motion.div>
+
+                    {/* Modal de selección de sucursal */}
+                    <SucursalSelector
+                        isOpen={showSucursalSelector}
+                        onClose={() => setShowSucursalSelector(false)}
+                        onSelect={handleSucursalSelected}
+                        currentSucursal={sucursal}
+                    />
                 </motion.div>
             )}
         </AnimatePresence>
