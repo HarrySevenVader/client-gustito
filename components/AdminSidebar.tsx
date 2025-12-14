@@ -3,18 +3,19 @@ import styles from './adminStyles.module.css'
 import React from 'react'
 import supabase from '../lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { useTheme } from '../contexts/ThemeContext'
 
 type Props = { active?: string; onNavigate?: (path: string)=>void }
 
 export default function AdminSidebar({ active = 'inicio', onNavigate }: Props) {
   const router = useRouter()
+  const { theme, toggleTheme } = useTheme()
 
   const items = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'productos', label: 'Ver productos' },
     { id: 'noticias', label: 'Ver noticias' },
     { id: 'consultas', label: 'Ver consultas' },
-    { id: 'sucursales', label: 'Sucursales' },
   ]
 
   const handleSignOut = async () => {
@@ -54,7 +55,14 @@ export default function AdminSidebar({ active = 'inicio', onNavigate }: Props) {
         ))}
       </nav>
 
-      <div style={{ marginTop: 'auto' }}>
+      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <button 
+          onClick={toggleTheme} 
+          className={styles.themeToggle}
+          title={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
+        >
+          {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
+        </button>
         <button onClick={handleSignOut} className={styles.actionBtn} style={{ width: '100%' }}>
           Cerrar sesión
         </button>

@@ -3,8 +3,9 @@ import React from 'react'
 import styles from './adminStyles.module.css'
 import AdminSidebar from './AdminSidebar'
 import AdminTopbar from './AdminTopbar'
+import { ThemeProvider } from '../contexts/ThemeContext'
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+function DashboardContent({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.root}>
       <div className={styles.layout}>
@@ -16,5 +17,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </div>
     </div>
+  )
+}
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider>
+      <DashboardContent>{children}</DashboardContent>
+    </ThemeProvider>
   )
 }
