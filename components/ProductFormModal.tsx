@@ -12,6 +12,7 @@ interface ProductFormData {
   precio: number;
   imagen_url: string;
   activo: boolean;
+  sucursales: number[]; // IDs de sucursales seleccionadas
 }
 
 interface ProductFormModalProps {
@@ -28,11 +29,19 @@ interface Categoria {
   nombre_categoria: string;
 }
 
+interface Sucursal {
+  id_sucursal: number;
+  nombre_sucursal: string;
+  direccion_sucursal?: string;
+}
+
 export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode = false, productId, initialData }: ProductFormModalProps) {
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
+  const [loadingSucursales, setLoadingSucursales] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [sucursales, setSucursales] = useState<Sucursal[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState<ProductFormData>({
@@ -42,20 +51,49 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
     precio: 0,
     imagen_url: '',
     activo: true,
+    sucursales: [],
   });
 
   // Cargar datos iniciales si está en modo edición
   useEffect(() => {
-    if (isOpen && editMode && initialData) {
-      setFormData({
-        nombre_comida: initialData.nombre_comida || '',
-        descripcion: initialData.descripcion || '',
-        categoria_id: initialData.categoria_id || 0,
-        precio: initialData.precio || 0,
-        imagen_url: initialData.imagen_url || '',
-        activo: initialData.activo !== undefined ? initialData.activo : true,
-      });
-      setImagePreview(initialData.imagen_url || '');
+    if (isOpen && editMode && productId) {
+      // Cargar producto completo desde el backend para obtener sucursales
+      const cargarProducto = async () => {
+        try {
+          const response = await fetch(`http://localhost:4000/api/comidas/${productId}`);
+          const data = await response.json();
+          
+          if (data.ok && data.data) {
+            const producto = data.data;
+            setFormData({
+              nombre_comida: producto.nombre_comida || '',
+              descripcion: producto.descripcion || '',
+              categoria_id: producto.categoria_id || 0,
+              precio: producto.precio || 0,
+              imagen_url: producto.imagen_url || '',
+              activo: producto.activo !== undefined ? producto.activo : true,
+              sucursales: producto.sucursales || [], // Array de IDs desde el backend
+            });
+            setImagePreview(producto.imagen_url || '');
+          }
+        } catch (error) {
+          console.error('Error al cargar producto:', error);
+          // Fallback a initialData si falla
+          if (initialData) {
+            setFormData({
+              nombre_comida: initialData.nombre_comida || '',
+              descripcion: initialData.descripcion || '',
+              categoria_id: initialData.categoria_id || 0,
+              precio: initialData.precio || 0,
+              imagen_url: initialData.imagen_url || '',
+              activo: initialData.activo !== undefined ? initialData.activo : true,
+              sucursales: initialData.sucursales || [],
+            });
+            setImagePreview(initialData.imagen_url || '');
+          }
+        }
+      };
+      cargarProducto();
     } else if (isOpen && !editMode) {
       // Resetear formulario al abrir en modo crear
       setFormData({
@@ -65,11 +103,12 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
         precio: 0,
         imagen_url: '',
         activo: true,
+        sucursales: [],
       });
       setImageFile(null);
       setImagePreview('');
     }
-  }, [isOpen, editMode, initialData, categorias]);
+  }, [isOpen, editMode, productId, initialData, categorias]);
 
   // Cargar categorías desde el backend
   useEffect(() => {
@@ -94,6 +133,30 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
 
     if (isOpen) {
       fetchCategorias();
+    }
+  }, [isOpen]);
+
+  // Cargar sucursales desde el backend
+  useEffect(() => {
+    const fetchSucursales = async () => {
+      try {
+        setLoadingSucursales(true);
+        const response = await fetch('http://localhost:4000/api/sucursales');
+        const data = await response.json();
+        
+        if (data.ok && data.data) {
+          setSucursales(data.data);
+        }
+      } catch (error) {
+        console.error('Error al cargar sucursales:', error);
+        toastError('Error al cargar sucursales');
+      } finally {
+        setLoadingSucursales(false);
+      }
+    };
+
+    if (isOpen) {
+      fetchSucursales();
     }
   }, [isOpen]);
 
@@ -195,6 +258,10 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
       toastError('El precio debe ser mayor a 0');
       return;
     }
+    if (formData.sucursales.length === 0) {
+      toastError('Selecciona al menos una sucursal');
+      return;
+    }
 
     setLoading(true);
 
@@ -214,8 +281,8 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
       }
 
       const url = editMode && productId 
-        ? `/api/comidas?id=${productId}` 
-        : '/api/comidas';
+        ? `http://localhost:4000/api/comidas/${productId}` 
+        : 'http://localhost:4000/api/comidas';
       const method = editMode ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -241,6 +308,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
           precio: 0,
           imagen_url: '',
           activo: true,
+          sucursales: [],
         });
         setImageFile(null);
         setImagePreview('');
@@ -387,6 +455,74 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
               />
               <span>Producto activo</span>
             </label>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Disponible en Sucursales *</label>
+            {loadingSucursales ? (
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>Cargando sucursales...</p>
+            ) : sucursales.length === 0 ? (
+              <p style={{ color: '#999', fontSize: '0.9rem' }}>No hay sucursales disponibles</p>
+            ) : (
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+                gap: '12px',
+                marginTop: '8px'
+              }}>
+                {sucursales.map((sucursal) => (
+                  <label 
+                    key={sucursal.id_sucursal} 
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '10px 12px',
+                      border: formData.sucursales.includes(sucursal.id_sucursal) 
+                        ? '2px solid #ff6b35' 
+                        : '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      background: formData.sucursales.includes(sucursal.id_sucursal) 
+                        ? '#fff5f0' 
+                        : 'white',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.sucursales.includes(sucursal.id_sucursal)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFormData({ 
+                            ...formData, 
+                            sucursales: [...formData.sucursales, sucursal.id_sucursal] 
+                          });
+                        } else {
+                          setFormData({ 
+                            ...formData, 
+                            sucursales: formData.sucursales.filter(id => id !== sucursal.id_sucursal) 
+                          });
+                        }
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <span style={{ 
+                      fontSize: '0.9rem', 
+                      fontWeight: formData.sucursales.includes(sucursal.id_sucursal) ? '600' : '400',
+                      color: formData.sucursales.includes(sucursal.id_sucursal) ? '#ff6b35' : '#333'
+                    }}>
+                      {sucursal.nombre_sucursal}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
+            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '8px', display: 'block' }}>
+              {formData.sucursales.length > 0 
+                ? `${formData.sucursales.length} sucursal(es) seleccionada(s)` 
+                : 'Selecciona al menos una sucursal'}
+            </small>
           </div>
 
           <div className={styles.modalActions}>

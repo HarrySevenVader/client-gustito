@@ -7,9 +7,12 @@ import { X } from 'lucide-react';
 import styles from './ProductoDetalle.module.css';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
-import { toastSuccess } from './swalHelper';
+import { toastSuccess, toastError } from './swalHelper';
 import SucursalSelector from './SucursalSelector';
 import type { Sucursal } from '@/contexts/CartContext';
+
+const MAX_CANTIDAD_POR_PRODUCTO = 20;
+const MAX_TOTAL_CARRITO = 100000;
 
 interface ProductoDetalleProps {
     comida: ComidaConPrecio | null;
@@ -18,7 +21,7 @@ interface ProductoDetalleProps {
 }
 
 export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDetalleProps) {
-    const { addToCart, sucursal, setSucursal } = useCart();
+    const { addToCart, sucursal, setSucursal, items, getTotal } = useCart();
     const [showSucursalSelector, setShowSucursalSelector] = useState(false);
     
     useEffect(() => {
@@ -48,6 +51,24 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
     };
 
     const handleAddToCart = () => {
+        // No permitir agregar si el producto no está disponible
+        if (!comida.activo) return;
+        
+        // Verificar límite por producto
+        const itemEnCarrito = items.find(item => item.id === comida.id);
+        if (itemEnCarrito && itemEnCarrito.cantidad >= MAX_CANTIDAD_POR_PRODUCTO) {
+            toastError(`Máximo ${MAX_CANTIDAD_POR_PRODUCTO} unidades por producto. Para pedidos grandes, contáctanos directamente.`);
+            return;
+        }
+        
+        // Verificar límite total del carrito
+        const totalActual = getTotal();
+        const nuevoTotal = totalActual + comida.precio_final;
+        if (nuevoTotal > MAX_TOTAL_CARRITO) {
+            toastError(`El total del pedido no puede superar ${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(MAX_TOTAL_CARRITO)}. Para pedidos grandes, contáctanos directamente.`);
+            return;
+        }
+        
         // Si no hay sucursal seleccionada, mostrar selector
         if (!sucursal) {
             setShowSucursalSelector(true);
@@ -131,11 +152,12 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
                                         <span className={styles.currentPrice}>{formatPrice(comida.precio_final)}</span>
                                     </div>
                                     <button 
-                                        className={styles.addBtn} 
+                                        className={`${styles.addBtn} ${!comida.activo ? styles.disabled : ''}`}
                                         onClick={handleAddToCart}
-                                        aria-label={`Agregar ${comida.nombre} al carrito`}
+                                        disabled={!comida.activo}
+                                        aria-label={comida.activo ? `Agregar ${comida.nombre} al carrito` : `${comida.nombre} no disponible`}
                                     >
-                                        Agregar al carrito
+                                        {comida.activo ? 'Agregar al carrito' : 'No disponible'}
                                     </button>
                                 </div>
                             </div>
@@ -148,6 +170,7 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
                         onClose={() => setShowSucursalSelector(false)}
                         onSelect={handleSucursalSelected}
                         currentSucursal={sucursal}
+                        availableSucursales={comida.sucursales || []} // Usar sucursales del producto
                     />
                 </motion.div>
             )}

@@ -7,13 +7,7 @@ import Footer from '@/components/Footer';
 import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
-import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida, Categoria } from '@/types/menu';
-import {
-    sucursales,
-    getPrecioFinal,
-    isDisponible,
-    getObservacion,
-} from '@/lib/mockData';
+import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida, Categoria, Sucursal } from '@/types/menu';
 
 export default function MenuPage() {
     const [filters, setFilters] = useState<MenuFiltersType>({
@@ -23,6 +17,7 @@ export default function MenuPage() {
     });
     const [comidas, setComidas] = useState<Comida[]>([]);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
+    const [sucursales, setSucursales] = useState<Sucursal[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Cargar categorías desde el backend
@@ -50,24 +45,60 @@ export default function MenuPage() {
         fetchCategorias();
     }, []);
 
-    // Cargar comidas desde la API
+    // Cargar sucursales desde el backend
     useEffect(() => {
-        const fetchComidas = async () => {
+        const fetchSucursales = async () => {
             try {
-                setLoading(true);
-                const response = await fetch('/api/comidas');
+                const response = await fetch('http://localhost:4000/api/sucursales');
                 const data = await response.json();
 
                 if (data.ok && data.data) {
                     // Transformar datos del backend al formato esperado
+                    const sucursalesAPI: Sucursal[] = data.data.map((suc: any) => ({
+                        id: suc.id_sucursal,
+                        nombre: suc.nombre_sucursal,
+                        direccion: suc.direccion || '',
+                        telefono: suc.telefono || '',
+                        whatsapp: suc.whatsapp || '',
+                    }));
+                    setSucursales(sucursalesAPI);
+                } else {
+                    console.error('Error al cargar sucursales:', data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error al cargar sucursales:', error);
+            }
+        };
+
+        fetchSucursales();
+    }, []);
+
+    // Cargar comidas desde la API del menú (ya incluye filtrado por sucursal si está en filters)
+    useEffect(() => {
+        const fetchComidas = async () => {
+            try {
+                setLoading(true);
+                
+                // Usar endpoint que devuelve TODOS los productos (activos e inactivos)
+                // El backend debe modificarse para no filtrar por activo en /api/menu
+                const url = filters.sucursal_id 
+                    ? `http://localhost:4000/api/menu?sucursal_id=${filters.sucursal_id}`
+                    : 'http://localhost:4000/api/menu';
+                
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.ok && data.data) {
+                    // El backend ya devuelve los productos filtrados y con formato correcto
                     const comidasAPI: Comida[] = data.data.map((comida: any) => ({
                         id: comida.id_comida,
                         nombre: comida.nombre_comida,
                         descripcion: comida.descripcion,
                         categoria_id: comida.categoria_id,
                         imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
-                        precio: comida.precio,
+                        precio: comida.precio_final || comida.precio, // Usar precio_final si existe
                         activo: comida.activo,
+                        sucursales: comida.sucursales || [], // Array de IDs de sucursales desde backend
                     }));
                     setComidas(comidasAPI);
                 } else {
@@ -81,18 +112,13 @@ export default function MenuPage() {
         };
 
         fetchComidas();
-    }, []);
+    }, [filters.sucursal_id]); // Recargar cuando cambia la sucursal seleccionada
 
-    // Filter and process comidas based on current filters
+    // Filter and process comidas based on current filters (categoria y búsqueda)
     const filteredComidas = useMemo(() => {
         let result = comidas;
 
-        // Filter by sucursal availability
-        if (filters.sucursal_id) {
-            result = result.filter((comida) =>
-                isDisponible(comida.id, filters.sucursal_id)
-            );
-        }
+        // El filtrado por sucursal ya lo hace el backend, solo filtramos por categoría y búsqueda
 
         // Filter by categoria
         if (filters.categoria_id) {
@@ -109,19 +135,20 @@ export default function MenuPage() {
             );
         }
 
-        // Map to ComidaConPrecio with final prices
+        // Map to ComidaConPrecio (el backend ya incluye precio_final)
         const comidasConPrecio: ComidaConPrecio[] = result.map((comida) => {
             const categoria = categorias.find((c) => c.id === comida.categoria_id);
             return {
                 ...comida,
-                precio_final: getPrecioFinal(comida, filters.sucursal_id),
-                observacion: getObservacion(comida.id, filters.sucursal_id),
+                precio_final: comida.precio, // El backend ya devuelve el precio correcto
+                observacion: '', // No hay observaciones en la nueva estructura
                 categoria_nombre: categoria?.nombre,
+                sucursales: comida.sucursales || [], // Incluir sucursales
             };
         });
 
         return comidasConPrecio;
-    }, [comidas, filters]);
+    }, [comidas, filters.categoria_id, filters.search, categorias]);
 
     return (
         <main className="menu-page">

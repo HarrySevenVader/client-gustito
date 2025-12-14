@@ -55,14 +55,12 @@ export default function MenuFilters({
                 <div className="relative">
                     <label className="mb-2">Buscar comida</label>
                     <div className="relative">
-                        {/* Icono de búsqueda centrado; se aumenta el padding del input para no chocar con el placeholder */}
-                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400/70" size={18} />
                         <input
                             type="text"
                             value={filters.search}
                             onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
                             placeholder="Nombre del plato..."
-                            className="w-full h-10 py-2 pl-12 pr-3 rounded-md border border-gray-300 focus:border-gustito-orange focus:ring-2 focus:ring-gustito-orange/40 outline-none placeholder:text-gray-400 transition-colors"
+                            className="w-full h-10 py-2 px-3 rounded-md border border-gray-300 focus:border-gustito-orange focus:ring-2 focus:ring-gustito-orange/40 outline-none placeholder:text-gray-400 transition-colors"
                         />
                     </div>
                 </div>

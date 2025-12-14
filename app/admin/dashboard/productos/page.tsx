@@ -16,6 +16,7 @@ interface Producto {
   imagen_url: string;
   precio: number;
   activo: boolean;
+  sucursales?: number[]; // Array de IDs de sucursales
   created_at?: string;
 }
 
@@ -29,18 +30,22 @@ export default function ProductsPage() {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/comidas');
+      const response = await fetch('http://localhost:4000/api/comidas');
       const data = await response.json();
 
       console.log('Datos recibidos del backend:', data);
 
       if (data.ok && data.data) {
         // Transformar los datos del backend al formato del frontend
-        // Filtrar solo los productos activos
+        // MOSTRAR productos activos e inactivos, PERO NO los que están en papelera
         const productosTransformados = data.data
           .filter((comida: any) => {
-            console.log(`Producto: ${comida.nombre_comida}, Activo: ${comida.activo}`);
-            return comida.activo === true;
+            // Excluir productos en papelera (pueden tener diferentes nombres de campo)
+            const estaEnPapelera = comida.en_papelera === true || 
+                                   comida.eliminado === true || 
+                                   (comida.deleted_at != null && comida.deleted_at !== undefined) ||
+                                   (comida.eliminado_at != null && comida.eliminado_at !== undefined);
+            return !estaEnPapelera;
           })
           .map((comida: any) => ({
             id: comida.id_comida,
@@ -50,9 +55,9 @@ export default function ProductsPage() {
             imagen_url: comida.imagen_url,
             precio: comida.precio,
             activo: comida.activo,
+            sucursales: comida.sucursales || [], // Array de IDs desde backend
             created_at: comida.created_at,
           }));
-        console.log('Productos filtrados (activos):', productosTransformados);
         setProductos(productosTransformados);
       } else {
         console.error('Error al cargar productos:', data.mensaje);
@@ -84,7 +89,7 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: number | string) => {
     try {
-      const response = await fetch(`/api/comidas?id=${id}`, {
+      const response = await fetch(`http://localhost:4000/api/comidas/${id}`, {
         method: 'DELETE',
       });
 
@@ -161,6 +166,7 @@ export default function ProductsPage() {
           precio: editingProduct.precio,
           imagen_url: editingProduct.imagen_url,
           activo: editingProduct.activo,
+          sucursales: editingProduct.sucursales || [],
         } : undefined}
       />
     </DashboardLayout>

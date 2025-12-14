@@ -7,11 +7,14 @@ import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import { Trash2, Plus, Minus, ShoppingBag, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { confirm, toastSuccess } from '@/components/swalHelper';
+import { confirm, toastSuccess, toastError } from '@/components/swalHelper';
 import { useState } from 'react';
 import SucursalSelector from '@/components/SucursalSelector';
 import type { Sucursal } from '@/contexts/CartContext';
 import './carrito.css';
+
+const MAX_CANTIDAD_POR_PRODUCTO = 20;
+const MAX_TOTAL_CARRITO = 100000;
 
 export default function CarritoPage() {
   const { items, removeFromCart, updateQuantity, clearCart, getTotal, sucursal, setSucursal } = useCart();
@@ -49,6 +52,14 @@ export default function CarritoPage() {
   const handlePagar = () => {
     // Aquí implementarás la lógica de pago
     toastSuccess('Funcionalidad de pago en desarrollo');
+  };
+
+  const handleIncrementQuantity = (itemId: number, currentQuantity: number) => {
+    if (currentQuantity >= MAX_CANTIDAD_POR_PRODUCTO) {
+      toastError(`Máximo ${MAX_CANTIDAD_POR_PRODUCTO} unidades por producto. Para pedidos grandes, contáctanos directamente.`);
+      return;
+    }
+    updateQuantity(itemId, currentQuantity + 1);
   };
 
   if (items.length === 0) {
@@ -160,9 +171,11 @@ export default function CarritoPage() {
                   </button>
                   <span className="qty-value">{item.cantidad}</span>
                   <button
-                    onClick={() => updateQuantity(item.id, item.cantidad + 1)}
-                    className="qty-btn"
+                    onClick={() => handleIncrementQuantity(item.id, item.cantidad)}
+                    className={`qty-btn ${item.cantidad >= MAX_CANTIDAD_POR_PRODUCTO ? 'disabled' : ''}`}
+                    disabled={item.cantidad >= MAX_CANTIDAD_POR_PRODUCTO}
                     aria-label="Aumentar cantidad"
+                    title={item.cantidad >= MAX_CANTIDAD_POR_PRODUCTO ? `Máximo ${MAX_CANTIDAD_POR_PRODUCTO} unidades` : 'Aumentar cantidad'}
                   >
                     <Plus size={16} />
                   </button>
@@ -206,6 +219,13 @@ export default function CarritoPage() {
                 <span>Total</span>
                 <span>{formatPrice(getTotal())}</span>
               </div>
+              
+              {/* Advertencia si está cerca del límite */}
+              {getTotal() > MAX_TOTAL_CARRITO * 0.8 && (
+                <div className="carrito-warning">
+                  <p>📋 Para pedidos grandes, te recomendamos contactarnos directamente para mejor atención.</p>
+                </div>
+              )}
             </div>
 
             <button onClick={handlePagar} className="carrito-btn-pagar">

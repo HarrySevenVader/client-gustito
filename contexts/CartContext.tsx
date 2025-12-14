@@ -3,6 +3,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ComidaConPrecio } from '@/types/menu';
 
+// Límites del carrito
+const MAX_CANTIDAD_POR_PRODUCTO = 20;
+const MAX_TOTAL_CARRITO = 100000;
+
 export interface CartItem extends ComidaConPrecio {
   cantidad: number;
 }
@@ -79,6 +83,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existingItem = currentItems.find(item => item.id === producto.id);
       
       if (existingItem) {
+        // Validar límite por producto
+        if (existingItem.cantidad >= MAX_CANTIDAD_POR_PRODUCTO) {
+          return currentItems; // No agregar más
+        }
         // Si ya existe, incrementar cantidad
         return currentItems.map(item =>
           item.id === producto.id
@@ -86,6 +94,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             : item
         );
       } else {
+        // Validar límite total del carrito
+        const totalActual = currentItems.reduce((sum, item) => sum + (item.precio_final * item.cantidad), 0);
+        const nuevoTotal = totalActual + producto.precio_final;
+        
+        if (nuevoTotal > MAX_TOTAL_CARRITO) {
+          return currentItems; // No agregar si excede el límite
+        }
+        
         // Si no existe, agregar nuevo item
         return [...currentItems, { ...producto, cantidad: 1 }];
       }
@@ -107,6 +123,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (cantidad <= 0) {
       removeFromCart(productoId);
       return;
+    }
+    
+    // Validar límite por producto
+    if (cantidad > MAX_CANTIDAD_POR_PRODUCTO) {
+      cantidad = MAX_CANTIDAD_POR_PRODUCTO;
     }
     
     setItems(currentItems =>

@@ -1,4 +1,5 @@
 import LoginForm from '@/components/LoginForm'
+import Link from 'next/link'
 import './admin.css'
 
 export const metadata = {
@@ -154,24 +155,28 @@ export default function LoginPage() {
             </p>
 
             <div style={{ marginTop: 28, display: 'flex', gap: 12 }}>
-              <button style={{
-                background: 'linear-gradient(90deg,#ff6a00,#ff3d00)',
-                border: 'none',
-                color: 'white',
-                padding: '10px 18px',
-                borderRadius: 999,
-                fontWeight: 700,
-                cursor: 'pointer'
-              }}>Ver Carta</button>
+              <Link href="/">
+                <button style={{
+                  background: 'linear-gradient(90deg,#ff6a00,#ff3d00)',
+                  border: 'none',
+                  color: 'white',
+                  padding: '10px 18px',
+                  borderRadius: 999,
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}>Visita Gustito</button>
+              </Link>
 
-              <button style={{
-                background: 'transparent',
-                border: '1px solid rgba(255,255,255,0.25)',
-                color: 'white',
-                padding: '10px 18px',
-                borderRadius: 999,
-                cursor: 'pointer'
-              }}>Sucursales</button>
+              <Link href="/menu">
+                <button style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  color: 'white',
+                  padding: '10px 18px',
+                  borderRadius: 999,
+                  cursor: 'pointer'
+                }}>Ver Carta</button>
+              </Link>
             </div>
           </div>
 

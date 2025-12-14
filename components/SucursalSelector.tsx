@@ -16,9 +16,10 @@ interface SucursalSelectorProps {
   onClose: () => void;
   onSelect: (sucursal: Sucursal) => void;
   currentSucursal?: Sucursal | null;
+  availableSucursales?: number[]; // IDs de sucursales donde el producto está disponible
 }
 
-export default function SucursalSelector({ isOpen, onClose, onSelect, currentSucursal }: SucursalSelectorProps) {
+export default function SucursalSelector({ isOpen, onClose, onSelect, currentSucursal, availableSucursales }: SucursalSelectorProps) {
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(currentSucursal?.id_sucursal || null);
@@ -27,7 +28,7 @@ export default function SucursalSelector({ isOpen, onClose, onSelect, currentSuc
     if (isOpen) {
       fetchSucursales();
     }
-  }, [isOpen]);
+  }, [isOpen, availableSucursales]);
 
   const fetchSucursales = async () => {
     try {
@@ -37,7 +38,13 @@ export default function SucursalSelector({ isOpen, onClose, onSelect, currentSuc
 
       if (data.ok && data.data) {
         // Filtrar solo sucursales activas
-        const activas = data.data.filter((s: any) => s.activo !== false);
+        let activas = data.data.filter((s: any) => s.activo !== false);
+        
+        // Si se especificaron sucursales disponibles, filtrar por ellas
+        if (availableSucursales && availableSucursales.length > 0) {
+          activas = activas.filter((s: any) => availableSucursales.includes(s.id_sucursal));
+        }
+        
         setSucursales(activas);
       }
     } catch (error) {
@@ -80,7 +87,11 @@ export default function SucursalSelector({ isOpen, onClose, onSelect, currentSuc
           <div className={styles.header}>
             <MapPin size={32} className={styles.icon} />
             <h2>Selecciona tu Sucursal</h2>
-            <p>Elige la sucursal donde retirarás tu pedido</p>
+            <p>
+              {availableSucursales && availableSucursales.length > 0
+                ? 'Este producto está disponible en las siguientes sucursales:'
+                : 'Elige la sucursal donde retirarás tu pedido'}
+            </p>
           </div>
 
           {loading ? (
@@ -90,39 +101,49 @@ export default function SucursalSelector({ isOpen, onClose, onSelect, currentSuc
             </div>
           ) : (
             <>
-              <div className={styles.sucursalesList}>
-                {sucursales.map((sucursal) => (
-                  <div
-                    key={sucursal.id_sucursal}
-                    className={`${styles.sucursalCard} ${selectedId === sucursal.id_sucursal ? styles.selected : ''}`}
-                    onClick={() => setSelectedId(sucursal.id_sucursal)}
-                  >
-                    <div className={styles.radioCircle}>
-                      {selectedId === sucursal.id_sucursal && <div className={styles.radioInner} />}
-                    </div>
-                    <div className={styles.sucursalInfo}>
-                      <h3>{sucursal.nombre_sucursal}</h3>
-                      <p>{sucursal.direccion_sucursal}</p>
-                    </div>
+              {sucursales.length === 0 ? (
+                <div className={styles.loading}>
+                  <p style={{ color: '#ff6b35', fontWeight: '500' }}>
+                    No hay sucursales disponibles para este producto en este momento.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.sucursalesList}>
+                    {sucursales.map((sucursal) => (
+                      <div
+                        key={sucursal.id_sucursal}
+                        className={`${styles.sucursalCard} ${selectedId === sucursal.id_sucursal ? styles.selected : ''}`}
+                        onClick={() => setSelectedId(sucursal.id_sucursal)}
+                      >
+                        <div className={styles.radioCircle}>
+                          {selectedId === sucursal.id_sucursal && <div className={styles.radioInner} />}
+                        </div>
+                        <div className={styles.sucursalInfo}>
+                          <h3>{sucursal.nombre_sucursal}</h3>
+                          <p>{sucursal.direccion_sucursal}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
-              <div className={styles.footer}>
-                <button
-                  className={styles.btnCancel}
-                  onClick={onClose}
-                >
-                  Cancelar
-                </button>
-                <button
-                  className={styles.btnConfirm}
-                  onClick={handleSelect}
-                  disabled={!selectedId}
-                >
-                  Confirmar Sucursal
-                </button>
-              </div>
+                  <div className={styles.footer}>
+                    <button
+                      className={styles.btnCancel}
+                      onClick={onClose}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      className={styles.btnConfirm}
+                      onClick={handleSelect}
+                      disabled={!selectedId}
+                    >
+                      Confirmar Sucursal
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </motion.div>

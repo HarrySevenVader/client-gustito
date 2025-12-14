@@ -19,6 +19,7 @@ export interface Comida {
 	imagen_url: string;
 	precio: number;
 	activo: boolean;
+	sucursales?: number[]; // IDs de sucursales donde está disponible
 }
 
 export interface ComidaSucursal {
@@ -39,5 +40,6 @@ export type ComidaConPrecio = Comida & {
 	precio_final: number;
 	observacion?: string;
 	categoria_nombre?: string;
+	sucursales?: number[]; // IDs de sucursales donde está disponible
 };
 
