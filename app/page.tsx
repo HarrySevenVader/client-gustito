@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import CTASection from '@/components/CTASection';
+import NewsCarousel from '@/components/NewsCarousel';
 import Products from '@/components/Products';
 import AboutUs from '@/components/AboutUs';
 import Footer from '@/components/Footer';
@@ -10,7 +10,7 @@ export default function Home() {
     <main className="min-h-screen">
       <Navbar />
       <Hero />
-      <CTASection />
+      <NewsCarousel />
       <Products />
       <AboutUs />
       <Footer />

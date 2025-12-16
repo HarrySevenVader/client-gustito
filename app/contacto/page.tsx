@@ -33,9 +33,9 @@ export default function ContactoPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         // Validación básica
-        if (!formData.nombre.trim() || !formData.apellido.trim() || !formData.correo.trim() || 
+        if (!formData.nombre.trim() || !formData.apellido.trim() || !formData.correo.trim() ||
             !formData.celular.trim() || !formData.mensaje.trim()) {
             toastError('Todos los campos son obligatorios');
             return;

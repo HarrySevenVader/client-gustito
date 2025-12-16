@@ -26,7 +26,8 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      timeZone: 'America/Santiago'
     });
 
     Swal.fire({
@@ -87,7 +88,7 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
           <col style={{ width: '180px' }} />
           <col style={{ width: '120px' }} />
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '100px' }} />
+          <col style={{ width: '130px' }} />
           <col style={{ width: '180px' }} />
         </colgroup>
         <thead>
@@ -121,7 +122,8 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
                 {new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
                   year: 'numeric',
                   month: 'short',
-                  day: 'numeric'
+                  day: 'numeric',
+                  timeZone: 'America/Santiago'
                 })}
               </td>
               <td className={styles.tdActions}>
