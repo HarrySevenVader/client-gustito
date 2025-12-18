@@ -8,6 +8,9 @@ import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
 import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida, Categoria, Sucursal } from '@/types/menu';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const PRODUCTOS_POR_PAGINA = 8;
 
 export default function MenuPage() {
     const [filters, setFilters] = useState<MenuFiltersType>({
@@ -19,6 +22,7 @@ export default function MenuPage() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [sucursales, setSucursales] = useState<Sucursal[]>([]);
     const [loading, setLoading] = useState(true);
+    const [paginaActual, setPaginaActual] = useState(1);
 
     // Cargar categorías desde el backend
     useEffect(() => {
@@ -79,8 +83,19 @@ export default function MenuPage() {
             try {
                 setLoading(true);
                 
-                // Usar endpoint que devuelve TODOS los productos (activos e inactivos)
-                // El backend debe modificarse para no filtrar por activo en /api/menu
+                // 1. Obtener IDs de productos en papelera
+                let productosEnPapeleraIds: number[] = [];
+                try {
+                    const papeleraResponse = await fetch('http://localhost:4000/api/comidas/papelera');
+                    const papeleraData = await papeleraResponse.json();
+                    if (papeleraData.ok && papeleraData.data) {
+                        productosEnPapeleraIds = papeleraData.data.map((p: any) => p.id_comida);
+                    }
+                } catch (error) {
+                    console.error('Error al cargar papelera:', error);
+                }
+                
+                // 2. Obtener todos los productos del menú
                 const url = filters.sucursal_id 
                     ? `http://localhost:4000/api/menu?sucursal_id=${filters.sucursal_id}`
                     : 'http://localhost:4000/api/menu';
@@ -89,17 +104,19 @@ export default function MenuPage() {
                 const data = await response.json();
 
                 if (data.ok && data.data) {
-                    // El backend ya devuelve los productos filtrados y con formato correcto
-                    const comidasAPI: Comida[] = data.data.map((comida: any) => ({
-                        id: comida.id_comida,
-                        nombre: comida.nombre_comida,
-                        descripcion: comida.descripcion,
-                        categoria_id: comida.categoria_id,
-                        imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
-                        precio: comida.precio_final || comida.precio, // Usar precio_final si existe
-                        activo: comida.activo,
-                        sucursales: comida.sucursales || [], // Array de IDs de sucursales desde backend
-                    }));
+                    // Filtrar productos que NO estén en papelera
+                    const comidasAPI: Comida[] = data.data
+                        .filter((comida: any) => !productosEnPapeleraIds.includes(comida.id_comida))
+                        .map((comida: any) => ({
+                            id: comida.id_comida,
+                            nombre: comida.nombre_comida,
+                            descripcion: comida.descripcion,
+                            categoria_id: comida.categoria_id,
+                            imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
+                            precio: comida.precio_final || comida.precio, // Usar precio_final si existe
+                            activo: comida.activo,
+                            sucursales: comida.sucursales || [], // Array de IDs de sucursales desde backend
+                        }));
                     setComidas(comidasAPI);
                 } else {
                     console.error('Error al cargar comidas:', data.mensaje);
@@ -150,6 +167,31 @@ export default function MenuPage() {
         return comidasConPrecio;
     }, [comidas, filters.categoria_id, filters.search, categorias]);
 
+    // Resetear a página 1 cuando cambian los filtros
+    useEffect(() => {
+        setPaginaActual(1);
+    }, [filters.categoria_id, filters.sucursal_id, filters.search]);
+
+    // Calcular productos paginados
+    const totalPaginas = Math.ceil(filteredComidas.length / PRODUCTOS_POR_PAGINA);
+    const indiceFinal = paginaActual * PRODUCTOS_POR_PAGINA;
+    const indiceInicial = indiceFinal - PRODUCTOS_POR_PAGINA;
+    const comidasPaginadas = filteredComidas.slice(indiceInicial, indiceFinal);
+
+    const handlePaginaAnterior = () => {
+        if (paginaActual > 1) {
+            setPaginaActual(paginaActual - 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
+    const handlePaginaSiguiente = () => {
+        if (paginaActual < totalPaginas) {
+            setPaginaActual(paginaActual + 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     return (
         <main className="menu-page">
             <Navbar dark />
@@ -192,7 +234,118 @@ export default function MenuPage() {
                                 </p>
                             </div>
                         ) : (
-                            <MenuGrid comidas={filteredComidas} />
+                            <>
+                                <MenuGrid comidas={comidasPaginadas} />
+                                {totalPaginas > 1 && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.4 }}
+                                        className="pagination-container"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            gap: '1rem',
+                                            marginTop: '2.5rem',
+                                            marginBottom: '2rem'
+                                        }}
+                                    >
+                                        <button
+                                            onClick={handlePaginaAnterior}
+                                            disabled={paginaActual === 1}
+                                            className="pagination-arrow"
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                width: '50px',
+                                                height: '50px',
+                                                borderRadius: '12px',
+                                                border: '2px solid #FF6B35',
+                                                background: paginaActual === 1 ? '#f5f5f5' : 'white',
+                                                color: paginaActual === 1 ? '#ccc' : '#FF6B35',
+                                                cursor: paginaActual === 1 ? 'not-allowed' : 'pointer',
+                                                transition: 'all 0.3s ease',
+                                                fontSize: '1.2rem',
+                                                fontWeight: 'bold'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                if (paginaActual !== 1) {
+                                                    e.currentTarget.style.background = '#FF6B35';
+                                                    e.currentTarget.style.color = 'white';
+                                                    e.currentTarget.style.transform = 'scale(1.05)';
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (paginaActual !== 1) {
+                                                    e.currentTarget.style.background = 'white';
+                                                    e.currentTarget.style.color = '#FF6B35';
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                }
+                                            }}
+                                        >
+                                            <ChevronLeft size={28} />
+                                        </button>
+                                        
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                minWidth: '80px',
+                                                height: '50px',
+                                                borderRadius: '12px',
+                                                background: '#FF6B35',
+                                                color: 'white',
+                                                fontSize: '1.2rem',
+                                                fontWeight: 'bold',
+                                                padding: '0 1rem',
+                                                boxShadow: '0 4px 15px rgba(255, 107, 53, 0.3)'
+                                            }}
+                                        >
+                                            {paginaActual}
+                                        </div>
+
+                                        <button
+                                            onClick={handlePaginaSiguiente}
+                                            disabled={paginaActual === totalPaginas}
+                                            className="pagination-arrow"
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                width: '50px',
+                                                height: '50px',
+                                                borderRadius: '12px',
+                                                border: '2px solid #FF6B35',
+                                                background: paginaActual === totalPaginas ? '#f5f5f5' : 'white',
+                                                color: paginaActual === totalPaginas ? '#ccc' : '#FF6B35',
+                                                cursor: paginaActual === totalPaginas ? 'not-allowed' : 'pointer',
+                                                transition: 'all 0.3s ease',
+                                                fontSize: '1.2rem',
+                                                fontWeight: 'bold'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                if (paginaActual !== totalPaginas) {
+                                                    e.currentTarget.style.background = '#FF6B35';
+                                                    e.currentTarget.style.color = 'white';
+                                                    e.currentTarget.style.transform = 'scale(1.05)';
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (paginaActual !== totalPaginas) {
+                                                    e.currentTarget.style.background = 'white';
+                                                    e.currentTarget.style.color = '#FF6B35';
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                }
+                                            }}
+                                        >
+                                            <ChevronRight size={28} />
+                                        </button>
+                                    </motion.div>
+                                )}
+                            </>
                         )}
                     </motion.div>
                 </section>

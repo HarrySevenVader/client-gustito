@@ -4,65 +4,43 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Newspaper, Calendar } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface Noticia {
-    id: number;
-    title: string;
-    date: string;
-    description: string;
-    image: string;
+    id_noticia: number;
+    titulo: string;
+    contenido: string;
+    imagen: string | null;
+    fecha_publicacion: string;
+    estado: 'activo' | 'inactivo';
 }
 
-// Datos de muestra - se reemplazarán cuando haya backend
-const noticiasDefault: Noticia[] = [
-    { 
-        id: 1, 
-        title: 'Apertura nueva sucursal', 
-        date: '2025-08-30', 
-        description: 'Hemos abierto una nueva sucursal en el centro de la ciudad con atención extendida. ¡Te esperamos!', 
-        image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop' 
-    },
-    { 
-        id: 2, 
-        title: 'Promoción de verano', 
-        date: '2025-07-14', 
-        description: 'Descuentos especiales en helados y bebidas hasta fin de mes. Aprovecha esta oportunidad única.', 
-        image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=800&auto=format&fit=crop' 
-    },
-    { 
-        id: 3, 
-        title: 'Evento degustación', 
-        date: '2025-06-02', 
-        description: 'Te invitamos a una degustación gratuita este sábado en nuestra sucursal principal.', 
-        image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop' 
-    },
-    { 
-        id: 4, 
-        title: 'Nuevo horario extendido', 
-        date: '2025-05-10', 
-        description: 'Ampliamos horario los fines de semana para mejor servicio. Ahora abiertos hasta las 23:00.', 
-        image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop' 
-    },
-    { 
-        id: 5, 
-        title: 'Receta del mes', 
-        date: '2025-04-01', 
-        description: 'Aprende a preparar nuestra empanada especial con ingredientes locales frescos.', 
-        image: 'https://images.unsplash.com/photo-1604467707321-70f018d5ebb3?w=800&auto=format&fit=crop' 
-    },
-    { 
-        id: 6, 
-        title: 'Sello de calidad', 
-        date: '2025-03-20', 
-        description: 'Recibimos un reconocimiento por el uso de ingredientes de calidad y preparación artesanal.', 
-        image: 'https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?w=800&auto=format&fit=crop' 
-    },
-];
-
 export default function NewsCarousel() {
-    const [noticias] = useState<Noticia[]>(noticiasDefault);
+    const [noticias, setNoticias] = useState<Noticia[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    // Cargar noticias activas desde el backend
+    useEffect(() => {
+        const fetchNoticias = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/noticias/activas');
+                const data = await response.json();
+                
+                if (data.ok && data.data) {
+                    setNoticias(data.data);
+                }
+            } catch (error) {
+                console.error('Error al cargar noticias:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNoticias();
+    }, []);
 
     // Mostrar 4 noticias en pantallas grandes, 3 en desktop, 2 en tablet, 1 en mobile
     const getVisibleCount = () => {
@@ -113,6 +91,14 @@ export default function NewsCarousel() {
     };
 
     const visibleNoticias = noticias.slice(currentIndex, currentIndex + visibleCount);
+
+    const handleNoticiaClick = (id: number) => {
+        router.push(`/noticias/${id}`);
+    };
+
+    if (loading || noticias.length === 0) {
+        return null; // O mostrar un skeleton loader
+    }
 
     return (
         <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
@@ -174,8 +160,8 @@ export default function NewsCarousel() {
                             <AnimatePresence mode="popLayout" initial={false}>
                                 {visibleNoticias.map((noticia, index) => (
                                     <motion.article
-                                        key={noticia.id}
-                                        className="flex-shrink-0 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+                                        key={noticia.id_noticia}
+                                        className="flex-shrink-0 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
                                         style={{ 
                                             width: visibleCount === 1 ? '100%' 
                                                 : visibleCount === 2 ? 'calc(50% - 12px)' 
@@ -187,12 +173,13 @@ export default function NewsCarousel() {
                                         exit={{ opacity: 0, x: -50 }}
                                         transition={{ duration: 0.4, delay: index * 0.1 }}
                                         whileHover={{ y: -5 }}
+                                        onClick={() => handleNoticiaClick(noticia.id_noticia)}
                                     >
                                         {/* Image */}
                                         <div className="relative h-48 overflow-hidden">
                                             <Image
-                                                src={noticia.image}
-                                                alt={noticia.title}
+                                                src={noticia.imagen || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop'}
+                                                alt={noticia.titulo}
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                                 className="object-cover transition-transform duration-500 hover:scale-110"
@@ -204,16 +191,16 @@ export default function NewsCarousel() {
                                         <div className="p-6">
                                             <div className="flex items-center gap-2 text-gustito-orange text-sm mb-3">
                                                 <Calendar size={14} />
-                                                <time dateTime={noticia.date}>{formatDate(noticia.date)}</time>
+                                                <time dateTime={noticia.fecha_publicacion}>{formatDate(noticia.fecha_publicacion)}</time>
                                             </div>
                                             <h3 
                                                 className="text-xl font-bold text-gustito-dark mb-3 line-clamp-2"
                                                 style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                                             >
-                                                {noticia.title}
+                                                {noticia.titulo}
                                             </h3>
                                             <p className="text-gustito-dark/70 line-clamp-3">
-                                                {noticia.description}
+                                                {noticia.contenido.substring(0, 100)}...
                                             </p>
                                         </div>
                                     </motion.article>

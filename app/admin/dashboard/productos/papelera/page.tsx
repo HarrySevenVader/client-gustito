@@ -6,6 +6,9 @@ import DashboardLayout from '../../../../../components/DashboardLayout';
 import TrashList from '../../../../../components/TrashList';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const ITEMS_POR_PAGINA = 8;
 
 interface Producto {
   id: number;
@@ -21,6 +24,7 @@ interface Producto {
 export default function PapeleraPage() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [paginaActual, setPaginaActual] = useState(1);
   const router = useRouter();
 
   const fetchProductosEliminados = async () => {
@@ -107,6 +111,20 @@ export default function PapeleraPage() {
     image: p.imagen_url || '/placeholder.svg',
   }));
 
+  // Cálculo de paginación
+  const totalPaginas = Math.ceil(productosFormateados.length / ITEMS_POR_PAGINA);
+  const indiceFinal = paginaActual * ITEMS_POR_PAGINA;
+  const indiceInicial = indiceFinal - ITEMS_POR_PAGINA;
+  const productosPaginados = productosFormateados.slice(indiceInicial, indiceFinal);
+
+  const handlePaginaAnterior = () => {
+    if (paginaActual > 1) setPaginaActual(paginaActual - 1);
+  };
+
+  const handlePaginaSiguiente = () => {
+    if (paginaActual < totalPaginas) setPaginaActual(paginaActual + 1);
+  };
+
   return (
     <DashboardLayout>
       <section>
@@ -127,11 +145,78 @@ export default function PapeleraPage() {
         {loading ? (
           <p>Cargando productos eliminados...</p>
         ) : (
-          <TrashList 
-            rows={productosFormateados} 
-            onRestore={handleRestore}
-            onDeletePermanently={handleDeletePermanently}
-          />
+          <>
+            <TrashList 
+              rows={productosPaginados} 
+              onRestore={handleRestore}
+              onDeletePermanently={handleDeletePermanently}
+            />
+            {totalPaginas > 1 && (
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '1rem',
+                marginTop: '2rem'
+              }}>
+                <button
+                  onClick={handlePaginaAnterior}
+                  disabled={paginaActual === 1}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '45px',
+                    height: '45px',
+                    borderRadius: '8px',
+                    border: '2px solid #FF6B35',
+                    background: paginaActual === 1 ? '#f5f5f5' : 'white',
+                    color: paginaActual === 1 ? '#ccc' : '#FF6B35',
+                    cursor: paginaActual === 1 ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '70px',
+                  height: '45px',
+                  borderRadius: '8px',
+                  background: '#FF6B35',
+                  color: 'white',
+                  fontSize: '1.1rem',
+                  fontWeight: 'bold',
+                  padding: '0 1rem',
+                }}>
+                  {paginaActual}
+                </div>
+
+                <button
+                  onClick={handlePaginaSiguiente}
+                  disabled={paginaActual === totalPaginas}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '45px',
+                    height: '45px',
+                    borderRadius: '8px',
+                    border: '2px solid #FF6B35',
+                    background: paginaActual === totalPaginas ? '#f5f5f5' : 'white',
+                    color: paginaActual === totalPaginas ? '#ccc' : '#FF6B35',
+                    cursor: paginaActual === totalPaginas ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
     </DashboardLayout>
