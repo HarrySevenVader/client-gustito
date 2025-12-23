@@ -19,7 +19,11 @@ export default function Footer() {
 
     return (
         <footer className="bg-gustito-dark text-white" id="contacto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="w-full flex py-16">
+                {/* Espaciador izquierdo */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
+                
+                <div className="flex-1 px-4 sm:px-8 lg:px-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Brand Section */}
                     <motion.div
@@ -172,6 +176,10 @@ export default function Footer() {
                         </div>
                     </div>
                 </motion.div>
+                </div>
+                
+                {/* Espaciador derecho */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
             </div>
         </footer>
     );

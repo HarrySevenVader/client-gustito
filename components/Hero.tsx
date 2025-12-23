@@ -19,7 +19,7 @@ export default function Hero() {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export default function Hero() {
                 </motion.div>
 
                 <motion.p
-                    className="text-xl sm:text-2xl md:text-3xl text-white/90 mb-12 max-w-3xl mx-auto"
+                    className="text-xl sm:text-2xl md:text-3xl text-white/90 mb-12 max-w-3xl text-center"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
@@ -45,20 +45,20 @@ export default function Hero() {
 
                 {/* CTA Buttons */}
                 <motion.div
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                    className="flex flex-col sm:flex-row gap-6 justify-center items-center"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
                     <a
                         href="#menu"
-                        className="px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
+                        className="px-14 py-6 bg-gustito-orange text-white text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
                     >
                         Ver Carta
                     </a>
                     <a
                         href="#sucursales"
-                        className="px-8 py-4 bg-transparent border-2 border-white text-white text-lg font-semibold rounded-2xl hover:bg-white hover:text-gustito-orange transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
+                        className="px-14 py-6 bg-transparent border-2 border-white text-white text-xl font-semibold rounded-2xl hover:bg-white hover:text-gustito-orange transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
                     >
                         Sucursales
                     </a>

@@ -29,7 +29,11 @@ export default function AboutUs() {
 
     return (
         <section className="py-20 bg-white" id="nosotros">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full flex">
+                {/* Espaciador izquierdo */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
+                
+                <div className="flex-1 px-4 sm:px-8 lg:px-0">
                 {/* Section Header */}
                 <motion.div
                     className="text-center mb-16"
@@ -44,15 +48,15 @@ export default function AboutUs() {
                     >
                         Sobre <span className="text-gustito-orange">Nosotros</span>
                     </h2>
-                    <p className="text-xl text-gustito-dark/70 max-w-3xl mx-auto">
+                    <p className="text-xl text-gustito-dark/70 max-w-4xl mx-auto">
                         Somos una familia chilena dedicada a llevar los auténticos sabores de nuestra tierra a tu mesa.
                         Desde 2014, hemos servido con orgullo comida casera que reconforta el alma.
                     </p>
                 </motion.div>
 
                 {/* Features Grid */}
-                <div className="flex justify-center mb-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl">
+                <div className="mb-16">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                         {features.map((feature, index) => (
                             <motion.div
                                 key={feature.title}
@@ -79,53 +83,55 @@ export default function AboutUs() {
                 </div>
 
                 {/* Story Section */}
-                <div className="flex justify-center">
-                    <motion.div
-                        className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl w-full"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        {/* Image */}
-                        <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                            <div
-                                className="absolute inset-0 bg-cover bg-center"
-                                style={{
-                                    backgroundImage: `url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2000&auto=format&fit=crop')`,
-                                }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        </div>
+                <motion.div
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    {/* Image */}
+                    <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                        <div
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{
+                                backgroundImage: `url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2000&auto=format&fit=crop')`,
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    </div>
 
-                        {/* Content */}
-                        <div>
-                            <h3
-                                className="text-3xl md:text-4xl font-bold text-gustito-dark mb-6"
-                                style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
-                            >
-                                Nuestra <span className="text-gustito-green">Historia</span>
-                            </h3>
-                            <div className="space-y-4 text-lg text-gustito-dark/80">
-                                <p>
-                                    Todo comenzó en 2014, cuando la familia Rodríguez decidió compartir las recetas tradicionales
-                                    que habían pasado de generación en generación. Lo que empezó como un pequeño local en
-                                    Providencia, hoy se ha convertido en una cadena querida por miles de chilenos.
-                                </p>
-                                <p>
-                                    En <span className="font-semibold text-gustito-orange">Gustito</span>, creemos que la comida
-                                    es más que nutrición: es amor, tradición y comunidad. Cada completo, cada empanada, cada
-                                    plato que servimos lleva el sello de nuestra pasión por la gastronomía chilena.
-                                </p>
-                                <p>
-                                    Hoy, con múltiples sucursales en Santiago, seguimos comprometidos con la calidad, el sabor
-                                    auténtico y el servicio que nos caracteriza. <span className="font-semibold text-gustito-green">
-                                        ¡Gracias por ser parte de la familia Gustito!</span>
-                                </p>
-                            </div>
+                    {/* Content */}
+                    <div>
+                        <h3
+                            className="text-3xl md:text-4xl font-bold text-gustito-dark mb-6"
+                            style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                        >
+                            Nuestra <span className="text-gustito-green">Historia</span>
+                        </h3>
+                        <div className="space-y-4 text-lg text-gustito-dark/80">
+                            <p>
+                                Todo comenzó en 2014, cuando la familia Rodríguez decidió compartir las recetas tradicionales
+                                que habían pasado de generación en generación. Lo que empezó como un pequeño local en
+                                Providencia, hoy se ha convertido en una cadena querida por miles de chilenos.
+                            </p>
+                            <p>
+                                En <span className="font-semibold text-gustito-orange">Gustito</span>, creemos que la comida
+                                es más que nutrición: es amor, tradición y comunidad. Cada completo, cada empanada, cada
+                                plato que servimos lleva el sello de nuestra pasión por la gastronomía chilena.
+                            </p>
+                            <p>
+                                Hoy, con múltiples sucursales en Santiago, seguimos comprometidos con la calidad, el sabor
+                                auténtico y el servicio que nos caracteriza. <span className="font-semibold text-gustito-green">
+                                    ¡Gracias por ser parte de la familia Gustito!</span>
+                            </p>
                         </div>
-                    </motion.div>
+                    </div>
+                </motion.div>
                 </div>
+                
+                {/* Espaciador derecho */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
             </div>
         </section>
     );

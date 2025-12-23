@@ -43,8 +43,11 @@ export default function Navbar({ dark = false }: NavbarProps) {
                     : 'bg-transparent'
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
+            <div className="w-full flex">
+                {/* Espaciador izquierdo */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
+
+                <div className="flex-1 flex justify-between items-center h-20 px-4 sm:px-8 lg:px-0">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
                         <motion.h1
@@ -82,7 +85,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                 </motion.span>
                             </Link>
                         ))}
-                        
+
                         {/* Cart Icon */}
                         <Link href="/carrito">
                             <motion.div
@@ -111,13 +114,12 @@ export default function Navbar({ dark = false }: NavbarProps) {
                         {/* Sucursal Indicator */}
                         {sucursal && (
                             <motion.div
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
-                                    dark 
-                                        ? 'bg-white/10 text-white' 
-                                        : isScrolled 
-                                            ? 'bg-gray-100 text-gustito-dark' 
-                                            : 'bg-white/10 text-white'
-                                }`}
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg ${dark
+                                    ? 'bg-white/10 text-white'
+                                    : isScrolled
+                                        ? 'bg-gray-100 text-gustito-dark'
+                                        : 'bg-white/10 text-white'
+                                    }`}
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: (navLinks.length + 1) * 0.1 }}
@@ -144,6 +146,9 @@ export default function Navbar({ dark = false }: NavbarProps) {
                         {isOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
                 </div>
+
+                {/* Espaciador derecho */}
+                <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
             </div>
 
             {/* Mobile Menu */}

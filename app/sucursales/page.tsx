@@ -182,7 +182,7 @@ export default function SucursalesPage() {
 
                                 {/* Spacer between branches */}
                                 {index < sucursales.length - 1 && (
-                                    <div className="h-20 my-8 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                                    <div className="h-20 my-8"></div>
                                 )}
                             </div>
                         ))}
