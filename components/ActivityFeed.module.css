@@ -1,0 +1,142 @@
+.feedContainer {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 7px;
+  padding: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  max-width: 100%;
+}
+
+.feedContainer:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 6px 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+.feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.feed::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.feed::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.feed::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.activityItem {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  transition: all 0.3s ease;
+  animation: slideInLeft 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.activityItem:hover {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  transform: translateX(2px);
+}
+
+.iconCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.activityItem:hover .iconCircle {
+  transform: scale(1.1);
+}
+
+.product {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.consulta {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.noticia {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityTitle {
+  font-size: 10px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 9px;
+  color: #6b7280;
+  margin-bottom: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.timestamp {
+  font-size: 8px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

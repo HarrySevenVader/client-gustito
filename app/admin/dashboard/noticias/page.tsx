@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../components/DashboardLayout';
-import NewsList from '../../../../components/NewsList';
+import NewsCard from '../../../../components/NewsCard';
 import NewsFormModal from '../../../../components/NewsFormModal';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ITEMS_POR_PAGINA = 8;
+const ITEMS_POR_PAGINA = 6;
 
 interface Noticia {
   id_noticia: number;
@@ -37,13 +37,18 @@ export default function NoticiasPage() {
       const response = await fetch('http://localhost:4000/api/noticias');
       const data = await response.json();
 
+      console.log('📰 Respuesta API noticias:', data);
+
       if (data.ok && data.data) {
+        console.log('✅ Noticias cargadas:', data.data.length);
         setNoticias(data.data);
       } else {
-        console.error('Error al cargar noticias:', data.mensaje);
+        console.error('❌ Error al cargar noticias:', data.mensaje);
+        toastError('Error al cargar noticias');
       }
     } catch (error) {
-      console.error('Error al cargar noticias:', error);
+      console.error('❌ Error al cargar noticias:', error);
+      toastError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
     }
@@ -114,21 +119,11 @@ export default function NoticiasPage() {
     setIsModalOpen(true);
   };
 
-  // Transformar las noticias al formato esperado por NewsList
-  const noticiasFormateadas = noticias.map((n) => ({
-    id: n.id_noticia,
-    title: n.titulo,
-    date: new Date(n.fecha_publicacion).toLocaleDateString('es-CL'),
-    description: n.contenido.substring(0, 100) + '...',
-    image: n.imagen || '/placeholder.svg',
-    estado: n.estado,
-  }));
-
   // Cálculo de paginación
-  const totalPaginas = Math.ceil(noticiasFormateadas.length / ITEMS_POR_PAGINA);
+  const totalPaginas = Math.ceil(noticias.length / ITEMS_POR_PAGINA);
   const indiceFinal = paginaActual * ITEMS_POR_PAGINA;
   const indiceInicial = indiceFinal - ITEMS_POR_PAGINA;
-  const noticiasPaginadas = noticiasFormateadas.slice(indiceInicial, indiceFinal);
+  const noticiasPaginadas = noticias.slice(indiceInicial, indiceFinal);
 
   const handlePaginaAnterior = () => {
     if (paginaActual > 1) setPaginaActual(paginaActual - 1);
@@ -184,11 +179,39 @@ export default function NoticiasPage() {
           <p>Cargando noticias...</p>
         ) : (
           <>
-            <NewsList 
-              rows={noticiasPaginadas} 
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '20px',
+              marginBottom: '24px'
+            }}>
+              {noticiasPaginadas.map((noticia) => (
+                <NewsCard
+                  key={noticia.id_noticia}
+                  id={noticia.id_noticia}
+                  titulo={noticia.titulo}
+                  contenido={noticia.contenido}
+                  imagen={noticia.imagen}
+                  fecha={noticia.fecha_publicacion}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+            
+            {noticiasPaginadas.length === 0 && (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                background: '#f9fafb',
+                borderRadius: '12px',
+                color: '#6b7280'
+              }}>
+                <p style={{ fontSize: '18px', fontWeight: '600' }}>📰 No hay noticias publicadas</p>
+                <p style={{ fontSize: '14px', marginTop: '8px' }}>Comienza agregando tu primera noticia</p>
+              </div>
+            )}
+            
             {totalPaginas > 1 && (
               <div style={{
                 display: 'flex',

@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../../components/DashboardLayout';
-import NewsTrashList from '../../../../../components/NewsTrashList';
+import NewsTrashCard from '../../../../../components/NewsTrashCard';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ITEMS_POR_PAGINA = 8;
+const ITEMS_POR_PAGINA = 6;
 
 interface Noticia {
   id_noticia: number;
@@ -32,13 +32,17 @@ export default function PapeleraNoticiasPage() {
       const response = await fetch('http://localhost:4000/api/noticias/papelera');
       const data = await response.json();
 
+      console.log('🗑️ Respuesta papelera:', data);
+
       if (data.ok && data.data) {
+        console.log('✅ Noticias eliminadas:', data.data.length);
         setNoticias(data.data);
       } else {
-        console.error('Error al cargar noticias eliminadas:', data.mensaje);
+        console.error('❌ Error al cargar papelera:', data.mensaje);
+        toastError('Error al cargar noticias eliminadas');
       }
     } catch (error) {
-      console.error('Error al cargar noticias eliminadas:', error);
+      console.error('❌ Error al cargar noticias eliminadas:', error);
       toastError('Error al cargar la papelera');
     } finally {
       setLoading(false);
@@ -89,20 +93,11 @@ export default function PapeleraNoticiasPage() {
     }
   };
 
-  // Transformar las noticias al formato esperado
-  const noticiasFormateadas = noticias.map((n) => ({
-    id: n.id_noticia,
-    title: n.titulo,
-    date: new Date(n.fecha_publicacion).toLocaleDateString('es-CL'),
-    description: n.contenido.substring(0, 100) + '...',
-    image: n.imagen || '/placeholder.svg',
-  }));
-
   // Cálculo de paginación
-  const totalPaginas = Math.ceil(noticiasFormateadas.length / ITEMS_POR_PAGINA);
+  const totalPaginas = Math.ceil(noticias.length / ITEMS_POR_PAGINA);
   const indiceFinal = paginaActual * ITEMS_POR_PAGINA;
   const indiceInicial = indiceFinal - ITEMS_POR_PAGINA;
-  const noticiasPaginadas = noticiasFormateadas.slice(indiceInicial, indiceFinal);
+  const noticiasPaginadas = noticias.slice(indiceInicial, indiceFinal);
 
   const handlePaginaAnterior = () => {
     if (paginaActual > 1) setPaginaActual(paginaActual - 1);
@@ -133,11 +128,39 @@ export default function PapeleraNoticiasPage() {
           <p>Cargando noticias eliminadas...</p>
         ) : (
           <>
-            <NewsTrashList 
-              rows={noticiasPaginadas} 
-              onRestore={handleRestore}
-              onDeletePermanently={handleDeletePermanently}
-            />
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '20px',
+              marginBottom: '24px'
+            }}>
+              {noticiasPaginadas.map((noticia) => (
+                <NewsTrashCard
+                  key={noticia.id_noticia}
+                  id={noticia.id_noticia}
+                  titulo={noticia.titulo}
+                  contenido={noticia.contenido}
+                  imagen={noticia.imagen}
+                  fecha={noticia.fecha_publicacion}
+                  onRestore={handleRestore}
+                  onDeletePermanently={handleDeletePermanently}
+                />
+              ))}
+            </div>
+            
+            {noticiasPaginadas.length === 0 && (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                background: '#f9fafb',
+                borderRadius: '12px',
+                color: '#6b7280'
+              }}>
+                <p style={{ fontSize: '18px', fontWeight: '600' }}>🗑️ La papelera está vacía</p>
+                <p style={{ fontSize: '14px', marginTop: '8px' }}>No hay noticias eliminadas</p>
+              </div>
+            )}
+            
             {totalPaginas > 1 && (
               <div style={{
                 display: 'flex',
