@@ -9,6 +9,7 @@ interface Sucursal {
   id_sucursal: number;
   nombre_sucursal: string;
   direccion_sucursal: string;
+  telefono?: string;
 }
 
 interface SucursalSelectorProps {

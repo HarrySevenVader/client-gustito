@@ -50,8 +50,46 @@ export default function CarritoPage() {
   };
 
   const handlePagar = () => {
-    // Aquí implementarás la lógica de pago
-    toastSuccess('Funcionalidad de pago en desarrollo');
+    if (!sucursal) {
+      toastError('Por favor selecciona una sucursal para continuar');
+      setShowSucursalSelector(true);
+      return;
+    }
+
+    if (!sucursal.telefono) {
+      toastError('Esta sucursal no tiene un número de WhatsApp configurado');
+      return;
+    }
+
+    // Generar mensaje de WhatsApp
+    const mensaje = generarMensajeWhatsApp();
+    const numeroLimpio = sucursal.telefono.replace(/[^0-9]/g, '');
+    const urlWhatsApp = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`;
+    
+    // Abrir WhatsApp en nueva ventana
+    window.open(urlWhatsApp, '_blank');
+  };
+
+  const generarMensajeWhatsApp = () => {
+    let mensaje = '¡Hola! 👋 Quiero realizar el siguiente pedido:\n\n';
+    mensaje += `📍 *Sucursal: ${sucursal?.nombre_sucursal}*\n`;
+    mensaje += `📌 ${sucursal?.direccion_sucursal}\n\n`;
+    mensaje += '*Productos:*\n';
+    mensaje += '─────────────────\n';
+    
+    items.forEach((item, index) => {
+      mensaje += `${index + 1}. *${item.nombre}*\n`;
+      mensaje += `   Cantidad: ${item.cantidad}\n`;
+      mensaje += `   Precio unitario: ${formatPrice(item.precio_final)}\n`;
+      mensaje += `   Subtotal: ${formatPrice(item.precio_final * item.cantidad)}\n\n`;
+    });
+    
+    mensaje += '─────────────────\n';
+    mensaje += `*Total de productos:* ${items.reduce((acc, item) => acc + item.cantidad, 0)}\n`;
+    mensaje += `*Total a pagar:* ${formatPrice(getTotal())}\n\n`;
+    mensaje += '¡Espero su confirmación! 😊';
+    
+    return mensaje;
   };
 
   const handleIncrementQuantity = (itemId: number, currentQuantity: number) => {
@@ -229,7 +267,7 @@ export default function CarritoPage() {
             </div>
 
             <button onClick={handlePagar} className="carrito-btn-pagar">
-              Proceder al Pago
+              💬 Enviar pedido por WhatsApp
             </button>
 
             <Link href="/menu">
