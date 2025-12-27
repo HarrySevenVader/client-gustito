@@ -23,8 +23,7 @@
 
 .contacto-hero {
   text-align: center;
-  /* Aumentamos separación desde el navbar fijo */
-  padding-top: 1.75rem; /* antes 0 */
+  padding-top: 6rem;
   margin-bottom: 2.5rem;
 }
 

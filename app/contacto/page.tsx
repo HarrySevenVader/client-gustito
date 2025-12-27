@@ -176,10 +176,11 @@ export default function ContactoPage() {
                         </motion.div>
                     </div>
                 </section>
+                
+                {/* Spacer para separación del footer */}
+                <div style={{ paddingBottom: '3rem' }}></div>
             </div>
             <Footer />
         </main>
     );
 }
-
-
