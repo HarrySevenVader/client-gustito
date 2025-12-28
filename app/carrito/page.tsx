@@ -7,7 +7,7 @@ import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import { Trash2, Plus, Minus, ShoppingBag, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { confirm, toastSuccess, toastError } from '@/components/swalHelper';
+import { confirm, toastSuccess, toastError, alertSuccess } from '@/components/swalHelper';
 import { useState } from 'react';
 import SucursalSelector from '@/components/SucursalSelector';
 import type { Sucursal } from '@/contexts/CartContext';
@@ -68,6 +68,11 @@ export default function CarritoPage() {
     
     // Abrir WhatsApp en nueva ventana
     window.open(urlWhatsApp, '_blank');
+
+    // Mostrar modal de éxito y limpiar carrito
+    alertSuccess('Pedido enviado por WhatsApp exitoso').then(() => {
+      clearCart();
+    });
   };
 
   const generarMensajeWhatsApp = () => {

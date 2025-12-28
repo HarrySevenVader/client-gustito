@@ -392,6 +392,17 @@
   margin-top: 24px;
 }
 
+/* Override: WhatsApp order button to light navy */
+.carrito-btn-pagar {
+  background: linear-gradient(90deg, #3B5B8A, #4C6EA8);
+  box-shadow: 0 8px 20px rgba(59, 91, 138, 0.35);
+}
+
+.carrito-btn-pagar:hover {
+  background: linear-gradient(90deg, #4C6EA8, #3B5B8A);
+  box-shadow: 0 12px 28px rgba(59, 91, 138, 0.45);
+}
+
 .carrito-btn-continue {
   width: 100%;
   background: white;

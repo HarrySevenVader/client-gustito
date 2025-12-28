@@ -30,3 +30,14 @@ export async function toastError(title = 'Error') {
     try { window.alert(title) } catch (_) {}
   }
 }
+
+// Modal de éxito (no toast), espera confirmación del usuario
+export async function alertSuccess(title = 'Hecho', text = '') {
+  try {
+    // @ts-ignore - import dinámico opcional de sweetalert2 si está instalado
+    const Swal = (await import('sweetalert2')).default
+    await Swal.fire({ title, text, icon: 'success', confirmButtonText: 'OK' })
+  } catch (err) {
+    try { window.alert((text ? title + '\n\n' + text : title)) } catch (_) {}
+  }
+}
