@@ -50,20 +50,42 @@ export default function Navbar({ dark = false }: NavbarProps) {
                 <div className="flex-1 flex justify-between items-center h-20 px-4 sm:px-8 lg:px-0">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
-                        <motion.h1
-                            className={`text-3xl font-bold transition-colors duration-300 ${dark
-                                ? 'text-gustito-orange'
-                                : isScrolled
-                                    ? 'text-gustito-orange'
-                                    : 'text-white'
-                                }`}
-                            style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                        <motion.div
+                            className="flex flex-col items-start"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            Gustito
-                        </motion.h1>
+                            <h1
+                                className={`text-4xl font-black transition-colors duration-300 ${dark
+                                    ? 'text-gustito-orange'
+                                    : isScrolled
+                                        ? 'text-gustito-orange'
+                                        : 'text-white'
+                                    }`}
+                                style={{ 
+                                    fontFamily: "'Baloo 2', 'Poppins', sans-serif",
+                                    textShadow: '3px 3px 0px rgba(0,0,0,0.3), -1px -1px 0px rgba(0,0,0,0.3), 1px -1px 0px rgba(0,0,0,0.3), -1px 1px 0px rgba(0,0,0,0.3)',
+                                    letterSpacing: '0.02em'
+                                }}
+                            >
+                                Gustito
+                            </h1>
+                            <p 
+                                className={`text-xs font-semibold -mt-1 transition-colors duration-300 ${dark
+                                    ? 'text-gray-300'
+                                    : isScrolled
+                                        ? 'text-gustito-dark'
+                                        : 'text-white'
+                                    }`}
+                                style={{ 
+                                    fontFamily: "'Poppins', sans-serif",
+                                    letterSpacing: '0.05em'
+                                }}
+                            >
+                                Maipú - Talagante - Huechuraba
+                            </p>
+                        </motion.div>
                     </Link>
 
                     {/* Desktop Navigation */}
