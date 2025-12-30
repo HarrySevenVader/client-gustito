@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import DashboardLayout from '../../../../components/DashboardLayout';
 import QueryList from '../../../../components/QueryList';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -90,9 +91,7 @@ export default function QueriesPage() {
         <div style={{ height: 12 }} />
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-            Cargando consultas...
-          </div>
+          <LoadingSpinner message="Cargando consultas..." />
         ) : (
           <>
             <QueryList rows={consultasPaginadas} onDelete={handleDelete} />

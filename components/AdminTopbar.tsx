@@ -30,7 +30,15 @@ export default function AdminTopbar({ title = 'Panel' }: { title?: string }) {
     ;(async () => {
       try {
         const { data, error } = await supabase.auth.getUser()
-        if (error) return console.warn('supabase getUser error', error)
+        if (error) {
+          // Si hay error de refresh token, limpiar sesión
+          if (error.message?.includes('refresh') || error.message?.includes('token')) {
+            await supabase.auth.signOut()
+            localStorage.removeItem('supabase_session')
+          }
+          console.warn('supabase getUser error', error)
+          return
+        }
         if (mounted) setUser(data.user)
       } catch (err) {
         console.warn('supabase getUser failed', err)
@@ -38,9 +46,13 @@ export default function AdminTopbar({ title = 'Panel' }: { title?: string }) {
     })()
 
     // listen to auth state changes (optional)
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) setUser(session.user)
-      if (!session) setUser(null)
+      if (!session) {
+        setUser(null)
+        // Limpiar localStorage si no hay sesión
+        localStorage.removeItem('supabase_session')
+      }
     })
 
     return () => {

@@ -1,0 +1,14 @@
+import styles from './LoadingSpinner.module.css';
+
+interface LoadingSpinnerProps {
+  message?: string;
+}
+
+export default function LoadingSpinner({ message = 'Cargando...' }: LoadingSpinnerProps) {
+  return (
+    <div className={styles.loading}>
+      <div className={styles.spinner}></div>
+      <p className={styles.message}>{message}</p>
+    </div>
+  );
+}

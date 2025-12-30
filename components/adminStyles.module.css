@@ -219,7 +219,8 @@
 .productActions { display:flex; gap:8px }
 
 /* Small utility button for view action in query table */
-.viewBtn { background: transparent; border: 1px solid rgba(11,107,47,0.08); color: var(--green-600); padding:8px 10px; border-radius:8px; font-weight:700; cursor:pointer }
+.viewBtn { background: #FF6B35; border: none; color: white; padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer; transition: background 0.2s ease; }
+.viewBtn:hover { background: #ff5722; }
 
 /* News grid */
 .newsGrid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px }

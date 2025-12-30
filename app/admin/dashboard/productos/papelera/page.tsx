@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../../components/DashboardLayout';
 import TrashList from '../../../../../components/TrashList';
+import LoadingSpinner from '../../../../../components/LoadingSpinner';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -143,7 +144,7 @@ export default function PapeleraPage() {
         </div>
 
         {loading ? (
-          <p>Cargando productos eliminados...</p>
+          <LoadingSpinner message="Cargando papelera..." />
         ) : (
           <>
             <TrashList 
@@ -151,6 +152,20 @@ export default function PapeleraPage() {
               onRestore={handleRestore}
               onDeletePermanently={handleDeletePermanently}
             />
+            
+            {productosPaginados.length === 0 && (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                background: '#f9fafb',
+                borderRadius: '12px',
+                color: '#6b7280'
+              }}>
+                <p style={{ fontSize: '18px', fontWeight: '600' }}>🗑️ La papelera está vacía</p>
+                <p style={{ fontSize: '14px', marginTop: '8px' }}>Los productos eliminados aparecerán aquí</p>
+              </div>
+            )}
+            
             {totalPaginas > 1 && (
               <div style={{
                 display: 'flex',

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../components/DashboardLayout';
 import NewsCard from '../../../../components/NewsCard';
 import NewsFormModal from '../../../../components/NewsFormModal';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -176,7 +177,7 @@ export default function NoticiasPage() {
         </div>
 
         {loading ? (
-          <p>Cargando noticias...</p>
+          <LoadingSpinner message="Cargando noticias..." />
         ) : (
           <>
             <div style={{

@@ -14,12 +14,14 @@ export default function LoginForm() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setIsAuthenticating(true)
     setLoading(true)
 
     const email = username.trim()
@@ -28,12 +30,14 @@ export default function LoginForm() {
     if (!emailRegex.test(email)) {
       setError('Introduce un correo válido')
       setLoading(false)
+      setIsAuthenticating(false)
       return
     }
 
     if (!supabase) {
       setError('Supabase no está configurado')
       setLoading(false)
+      setIsAuthenticating(false)
       return
     }
 
@@ -46,21 +50,27 @@ export default function LoginForm() {
       if (error) {
         setError(error.message || 'Error en autenticación')
         setLoading(false)
+        setIsAuthenticating(false)
         return
       }
 
       if (!data.session) {
         setError('No se pudo iniciar sesión')
         setLoading(false)
+        setIsAuthenticating(false)
         return
       }
 
-      // Guardar sesión y redirigir
+      // Guardar sesión y redirigir después de un breve momento
       localStorage.setItem('supabase_session', JSON.stringify(data.session))
-      router.push('/admin/dashboard')
+      
+      setTimeout(() => {
+        router.push('/admin/dashboard')
+      }, 500)
     } catch (err: any) {
       setError(err?.message || 'Error inesperado')
       setLoading(false)
+      setIsAuthenticating(false)
     }
   }
 
@@ -76,7 +86,12 @@ export default function LoginForm() {
 
       <div className={styles.topText}>Accede a la administración del sitio</div>
 
-      <form className={styles.form} onSubmit={handleSubmit}>
+      {isAuthenticating ? (
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+        </div>
+      ) : (
+        <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>Usuario</label>
         <input
           className={`${styles.input} ${styles.inputLight}`}
@@ -118,6 +133,7 @@ export default function LoginForm() {
 
         <div className={styles.hint}>Solo administradores. No hay registro ni recuperación.</div>
       </form>
+      )}
     </div>
   )
 }

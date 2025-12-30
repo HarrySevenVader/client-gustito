@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../components/DashboardLayout';
 import ProductList from '../../../../components/ProductList';
 import ProductFormModal from '../../../../components/ProductFormModal';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -161,7 +162,7 @@ export default function ProductsPage() {
         </div>
 
         {loading ? (
-          <p>Cargando productos...</p>
+          <LoadingSpinner message="Cargando productos..." />
         ) : (
           <>
             <ProductList 

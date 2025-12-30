@@ -48,17 +48,6 @@ export default function TrashList({ rows, onRestore, onDeletePermanently }: Tras
     }
   }
 
-  if (rows.length === 0) {
-    return (
-      <div className={styles.emptyTrash}>
-        <p>🗑️ La papelera está vacía</p>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(0,0,0,0.5)' }}>
-          Los productos eliminados aparecerán aquí
-        </p>
-      </div>
-    )
-  }
-
   return (
     <div className={styles.productList}>
       {rows.map((p) => (

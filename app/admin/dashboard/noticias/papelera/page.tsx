@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../../components/DashboardLayout';
 import NewsTrashCard from '../../../../../components/NewsTrashCard';
+import LoadingSpinner from '../../../../../components/LoadingSpinner';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -125,7 +126,7 @@ export default function PapeleraNoticiasPage() {
         </div>
 
         {loading ? (
-          <p>Cargando noticias eliminadas...</p>
+          <LoadingSpinner message="Cargando papelera..." />
         ) : (
           <>
             <div style={{
