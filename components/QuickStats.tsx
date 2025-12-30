@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './QuickStats.module.css';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface QuickStatItem {
   label: string;
@@ -14,8 +15,9 @@ interface QuickStatsProps {
 }
 
 export default function QuickStats({ stats }: QuickStatsProps) {
+  const { theme } = useTheme();
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
       <h3 className={styles.title}>Estadísticas Rápidas</h3>
       <div className={styles.grid}>
         {stats.map((stat, index) => (

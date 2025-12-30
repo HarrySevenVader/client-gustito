@@ -4,6 +4,7 @@ import styles from './adminStyles.module.css'
 import AdminSidebar from './AdminSidebar'
 import AdminTopbar from './AdminTopbar'
 import { ThemeProvider } from '../contexts/ThemeContext'
+import { ActivityProvider } from '../contexts/ActivityContext'
 
 function DashboardContent({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +24,9 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
-      <DashboardContent>{children}</DashboardContent>
+      <ActivityProvider>
+        <DashboardContent>{children}</DashboardContent>
+      </ActivityProvider>
     </ThemeProvider>
   )
 }

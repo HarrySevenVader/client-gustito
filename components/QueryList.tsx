@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './adminStyles.module.css'
 import { confirm } from './swalHelper'
 import Swal from 'sweetalert2'
+import { useTheme } from '../contexts/ThemeContext'
 
 type Query = {
   id_consulta: number;
@@ -20,32 +21,39 @@ interface QueryListProps {
 }
 
 export default function QueryList({ rows, onDelete }: QueryListProps) {
+  const { theme } = useTheme();
   const handleView = (consulta: Query) => {
-    const fechaFormateada = new Date(consulta.fecha_envio).toLocaleString('es-CL', {
+    const fechaFormateada = new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
       timeZone: 'America/Santiago'
     });
+
+    const isDark = theme === 'dark';
 
     Swal.fire({
       title: `Consulta de ${consulta.nombre} ${consulta.apellido}`,
       html: `
-        <div style="text-align: left; padding: 10px;">
-          <p style="margin: 8px 0;"><strong>📧 Email:</strong> ${consulta.correo}</p>
-          <p style="margin: 8px 0;"><strong>📱 Teléfono:</strong> ${consulta.celular}</p>
-          <p style="margin: 8px 0;"><strong>📅 Fecha:</strong> ${fechaFormateada}</p>
-          <hr style="margin: 12px 0;">
-          <p style="margin: 8px 0;"><strong>💬 Mensaje:</strong></p>
-          <div style="margin: 8px 0; padding: 12px; background: #f5f5f5; border-radius: 8px; white-space: pre-wrap; height: 200px; overflow-y: auto;">${consulta.mensaje}</div>
+        <div style="text-align: left; padding: 5px;">
+          <p style="margin: 6px 0; font-size: 14px; color: ${isDark ? '#e5e7eb' : '#111827'};"><strong>📧 Email:</strong> ${consulta.correo}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: ${isDark ? '#e5e7eb' : '#111827'};"><strong>📱 Teléfono:</strong> ${consulta.celular}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: ${isDark ? '#e5e7eb' : '#111827'};"><strong>📅 Fecha:</strong> ${fechaFormateada}</p>
+          <hr style="margin: 10px 0; border-color: ${isDark ? '#374151' : '#e5e7eb'};">
+          <p style="margin: 6px 0; font-size: 14px; color: ${isDark ? '#e5e7eb' : '#111827'};"><strong>💬 Mensaje:</strong></p>
+          <div style="margin: 6px 0; padding: 10px; background: ${isDark ? '#1f2937' : '#f5f5f5'}; border-radius: 8px; white-space: pre-wrap; max-height: 200px; overflow-y: auto; font-size: 14px; color: ${isDark ? '#d1d5db' : '#111827'};">${consulta.mensaje}</div>
         </div>
       `,
       icon: 'info',
       confirmButtonText: 'Cerrar',
-      confirmButtonColor: '#17a84a',
-      width: '500px'
+      confirmButtonColor: '#FF6B35',
+      width: '600px',
+      showCloseButton: true,
+      background: isDark ? '#111827' : '#ffffff',
+      color: isDark ? '#f9fafb' : '#111827',
+      customClass: {
+        popup: 'swal-compact'
+      }
     });
   };
 
@@ -65,15 +73,13 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
     return (
       <div style={{
         textAlign: 'center',
-        padding: '60px 20px',
-        background: 'white',
+        padding: '40px',
+        background: theme === 'dark' ? '#1f2937' : '#f9fafb',
         borderRadius: '12px',
-        boxShadow: '0 8px 26px rgba(4,20,10,0.04)'
+        color: theme === 'dark' ? '#e5e7eb' : '#6b7280'
       }}>
-        <p style={{ fontSize: '2rem', margin: '0 0 8px 0' }}>📭</p>
-        <p style={{ fontSize: '1.1rem', fontWeight: 700, color: 'rgba(0,0,0,0.7)', margin: 0 }}>
-          No hay consultas pendientes
-        </p>
+        <p style={{ fontSize: '18px', fontWeight: '600' }}>📭 No hay consultas</p>
+        <p style={{ fontSize: '14px', marginTop: '8px' }}>No hay consultas pendientes</p>
       </div>
     );
   }

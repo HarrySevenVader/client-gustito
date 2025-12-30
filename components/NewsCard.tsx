@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './NewsCard.module.css';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface NewsCardProps {
   id: number;
@@ -12,6 +13,7 @@ interface NewsCardProps {
 }
 
 export default function NewsCard({ id, titulo, contenido, imagen, fecha, onEdit, onDelete }: NewsCardProps) {
+  const { theme } = useTheme();
   const formatearFecha = (fechaStr: string) => {
     const fecha = new Date(fechaStr);
     const dia = fecha.getDate().toString().padStart(2, '0');
@@ -27,7 +29,7 @@ export default function NewsCard({ id, titulo, contenido, imagen, fecha, onEdit,
   };
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${theme === 'dark' ? styles.dark : ''}`}>
       <div className={styles.imageContainer}>
         {imagen ? (
           <img 

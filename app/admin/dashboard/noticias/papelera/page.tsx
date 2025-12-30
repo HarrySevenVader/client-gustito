@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../../components/DashboardLayout';
 import NewsTrashCard from '../../../../../components/NewsTrashCard';
 import LoadingSpinner from '../../../../../components/LoadingSpinner';
+import { useActivity } from '../../../../../contexts/ActivityContext';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTheme } from '../../../../../contexts/ThemeContext';
 
 const ITEMS_POR_PAGINA = 6;
 
@@ -22,10 +24,12 @@ interface Noticia {
 }
 
 export default function PapeleraNoticiasPage() {
+  const { addActivity } = useActivity();
   const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [loading, setLoading] = useState(true);
   const [paginaActual, setPaginaActual] = useState(1);
   const router = useRouter();
+  const { theme } = useTheme();
 
   const fetchNoticiasEliminadas = async () => {
     try {
@@ -56,6 +60,10 @@ export default function PapeleraNoticiasPage() {
 
   const handleRestore = async (id: number | string) => {
     try {
+      // Obtener título de la noticia antes de restaurar
+      const noticia = noticias.find(n => n.id_noticia === id);
+      const tituloNoticia = noticia?.titulo || 'Noticia';
+      
       const response = await fetch(`http://localhost:4000/api/noticias/${id}/restaurar`, {
         method: 'POST',
       });
@@ -64,6 +72,16 @@ export default function PapeleraNoticiasPage() {
 
       if (response.ok) {
         await toastSuccess('Noticia restaurada exitosamente');
+        
+        // Registrar actividad
+        addActivity({
+          type: 'noticia',
+          action: 'restaurar',
+          title: 'Noticia restaurada',
+          description: tituloNoticia,
+          icon: '♻️'
+        });
+        
         fetchNoticiasEliminadas();
       } else {
         toastError(data.mensaje || 'Error al restaurar noticia');
@@ -153,9 +171,9 @@ export default function PapeleraNoticiasPage() {
               <div style={{
                 textAlign: 'center',
                 padding: '40px',
-                background: '#f9fafb',
+                background: theme === 'dark' ? '#1f2937' : '#f9fafb',
                 borderRadius: '12px',
-                color: '#6b7280'
+                color: theme === 'dark' ? '#e5e7eb' : '#6b7280'
               }}>
                 <p style={{ fontSize: '18px', fontWeight: '600' }}>🗑️ La papelera está vacía</p>
                 <p style={{ fontSize: '14px', marginTop: '8px' }}>No hay noticias eliminadas</p>

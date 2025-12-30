@@ -5,6 +5,7 @@ import DashboardLayout from '../../../components/DashboardLayout';
 import StatCardAdvanced from '../../../components/StatCardAdvanced';
 import ActivityFeed, { Activity } from '../../../components/ActivityFeed';
 import QuickStats from '../../../components/QuickStats';
+import { useActivity } from '../../../contexts/ActivityContext';
 import styles from './dashboard.module.css';
 
 interface DashboardStats {
@@ -21,6 +22,7 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
+  const { recentActivities } = useActivity();
   const [stats, setStats] = useState<DashboardStats>({
     totalProductos: 0,
     totalConsultas: 0,
@@ -38,12 +40,12 @@ export default function DashboardPage() {
 
   useEffect(() => {
     cargarDatos();
-  }, []);
+  }, [recentActivities]); // Recargar cuando hay nuevas actividades en el log
 
   const cargarDatos = async () => {
     try {
-      // Inicializar array de actividades
-      const activityList: Activity[] = [];
+      // Inicializar array de actividades con metadata de fecha
+      const activityList: Array<Activity & { rawDate: Date }> = [];
 
       // Cargar productos
       const resProductos = await fetch('/api/comidas');
@@ -60,19 +62,23 @@ export default function DashboardPage() {
         
         console.log(`✅ Productos: ${totalProductos} total, ${productosActivos} activos`);
         
-        // Agregar productos recientes a actividad
+        // Agregar productos actualizados recientemente
         dataProductos.data
           .filter((p: any) => p.activo)
-          .slice(0, 3)
           .forEach((p: any) => {
-            activityList.push({
-              id: `product-${p.id_comida}`,
-              type: 'product',
-              title: 'Producto actualizado',
-              description: p.nombre_comida,
-              timestamp: p.created_at ? formatearTiempo(p.created_at) : 'Hace un momento',
-              icon: '🍽️'
-            });
+            // Usar updated_at si existe, sino created_at
+            const fechaProducto = p.updated_at || p.created_at;
+            if (fechaProducto) {
+              activityList.push({
+                id: `product-${p.id_comida}`,
+                type: 'product',
+                title: 'Producto actualizado',
+                description: p.nombre_comida,
+                timestamp: formatearTiempo(fechaProducto),
+                icon: '🍽️',
+                rawDate: new Date(fechaProducto)
+              });
+            }
           });
       }
 
@@ -88,7 +94,7 @@ export default function DashboardPage() {
         console.log(`✅ Total consultas: ${totalConsultas}`);
       }
 
-      // Cargar consultas recientes para actividad
+      // Cargar TODAS las consultas para ordenarlas por fecha real
       const resRecientes = await fetch('http://localhost:4000/api/consultas/recientes');
       const dataRecientes = await resRecientes.json();
       
@@ -96,14 +102,15 @@ export default function DashboardPage() {
       
       if (resRecientes.ok && dataRecientes.data) {
         console.log(`✅ Consultas recientes encontradas: ${dataRecientes.data.length}`);
-        dataRecientes.data.slice(0, 4).forEach((c: any) => {
+        dataRecientes.data.forEach((c: any) => {
           activityList.push({
             id: `consulta-${c.id_consulta}`,
             type: 'consulta',
             title: 'Nueva consulta recibida',
             description: `${c.nombre} ${c.apellido} - ${c.mensaje.substring(0, 45)}...`,
             timestamp: formatearTiempo(c.fecha_envio),
-            icon: '💬'
+            icon: '💬',
+            rawDate: new Date(c.fecha_envio)
           });
         });
       }
@@ -122,19 +129,21 @@ export default function DashboardPage() {
           
           console.log(`✅ Noticias activas encontradas: ${totalNoticias}`);
           
-          // Agregar noticias a actividad
-          noticiasActivas
-            .slice(0, 2)
-            .forEach((n: any) => {
+          // Agregar TODAS las noticias para ordenarlas por fecha
+          noticiasActivas.forEach((n: any) => {
+            const fechaNoticia = n.fecha_publicacion || n.fec_creacion;
+            if (fechaNoticia) {
               activityList.push({
                 id: `noticia-${n.id_noticia}`,
                 type: 'noticia',
                 title: 'Noticia publicada',
                 description: n.titulo,
-                timestamp: formatearTiempo(n.fecha_publicacion || n.fec_creacion),
-                icon: '📰'
+                timestamp: formatearTiempo(fechaNoticia),
+                icon: '📰',
+                rawDate: new Date(fechaNoticia)
               });
-            });
+            }
+          });
         } else {
           console.warn('⚠️ No se pudieron cargar las noticias o no hay datos');
         }
@@ -142,14 +151,19 @@ export default function DashboardPage() {
         console.error('❌ Error al cargar noticias:', errorNoticias);
       }
 
-      // Ordenar actividades por ID (más recientes primero)
-      activityList.sort((a, b) => {
-        const idA = parseInt(a.id.split('-')[1]);
-        const idB = parseInt(b.id.split('-')[1]);
-        return idB - idA;
-      });
+      // ORDENAR POR FECHA REAL - más recientes primero
+      activityList.sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+
+      // ORDENAR POR FECHA REAL - más recientes primero
+      activityList.sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
       console.log('📋 Total actividades:', activityList.length);
+      console.log('📋 Primeras 3 actividades:', activityList.slice(0, 3).map(a => ({
+        tipo: a.type,
+        descripcion: a.description,
+        fecha: a.rawDate.toLocaleString('es-CL'),
+        timestamp: a.timestamp
+      })));
       console.log('📊 Resumen final:', { totalProductos, productosActivos, totalConsultas, totalNoticias });
 
       // Calcular tendencias basadas en datos reales
@@ -170,7 +184,26 @@ export default function DashboardPage() {
         }
       });
 
-      setActivities(activityList.slice(0, 8));
+      // Tomar solo las 8 actividades más recientes (ya ordenadas por fecha)
+      const activitiesFinal = activityList.slice(0, 8).map(({ rawDate, ...rest }) => rest);
+      
+      // Combinar con actividades del log en tiempo real
+      const logActivities: Activity[] = recentActivities.map(log => ({
+        id: log.id,
+        type: log.type,
+        title: log.title,
+        description: log.description,
+        timestamp: log.timestamp,
+        icon: log.icon
+      }));
+      
+      // Combinar y ordenar todas las actividades
+      const allActivities = [...logActivities, ...activitiesFinal];
+      const uniqueActivities = allActivities.filter((activity, index, self) => 
+        index === self.findIndex(a => a.description === activity.description && a.type === activity.type)
+      );
+      
+      setActivities(uniqueActivities.slice(0, 8));
 
     } catch (error) {
       console.error('❌ Error al cargar datos del dashboard:', error);

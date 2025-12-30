@@ -6,6 +6,7 @@ import DashboardLayout from '../../../../components/DashboardLayout';
 import NewsCard from '../../../../components/NewsCard';
 import NewsFormModal from '../../../../components/NewsFormModal';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { useActivity } from '../../../../contexts/ActivityContext';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -24,6 +25,7 @@ interface Noticia {
 }
 
 export default function NoticiasPage() {
+  const { addActivity } = useActivity();
   const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,6 +90,10 @@ export default function NoticiasPage() {
 
   const handleDelete = async (id: number | string) => {
     try {
+      // Obtener título de la noticia antes de eliminar
+      const noticia = noticias.find(n => n.id_noticia === id);
+      const tituloNoticia = noticia?.titulo || 'Noticia';
+      
       const response = await fetch(`http://localhost:4000/api/noticias/${id}`, {
         method: 'DELETE',
       });
@@ -96,6 +102,16 @@ export default function NoticiasPage() {
 
       if (response.ok) {
         await toastSuccess('Noticia movida a la papelera');
+        
+        // Registrar actividad
+        addActivity({
+          type: 'noticia',
+          action: 'eliminar',
+          title: 'Noticia eliminada',
+          description: tituloNoticia,
+          icon: '🗑️'
+        });
+        
         fetchNoticias();
         fetchLimite();
       } else {

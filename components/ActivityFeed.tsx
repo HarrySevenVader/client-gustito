@@ -2,6 +2,7 @@
 'use client';
 
 import styles from './ActivityFeed.module.css';
+import { useTheme } from '../contexts/ThemeContext';
 
 export interface Activity {
   id: number;
@@ -17,6 +18,7 @@ interface ActivityFeedProps {
 }
 
 export default function ActivityFeed({ activities }: ActivityFeedProps) {
+  const { theme } = useTheme();
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'product': return styles.product;
@@ -27,7 +29,7 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
   };
 
   return (
-    <div className={styles.feedContainer}>
+    <div className={`${styles.feedContainer} ${theme === 'dark' ? styles.dark : ''}`}>
       <h3 className={styles.title}>Actividad Reciente</h3>
       <div className={styles.feed}>
         {activities.length === 0 ? (

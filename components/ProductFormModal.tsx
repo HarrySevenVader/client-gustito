@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './adminStyles.module.css';
 import { toastSuccess, toastError } from './swalHelper';
+import { useActivity } from '../contexts/ActivityContext';
 import supabase from '../lib/supabaseClient';
 
 interface ProductFormData {
@@ -36,6 +37,7 @@ interface Sucursal {
 }
 
 export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode = false, productId, initialData }: ProductFormModalProps) {
+  const { addActivity } = useActivity();
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
   const [loadingSucursales, setLoadingSucursales] = useState(false);
@@ -300,6 +302,16 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
 
       if (response.ok) {
         await toastSuccess(editMode ? 'Producto actualizado exitosamente' : 'Producto creado exitosamente');
+        
+        // Registrar actividad
+        addActivity({
+          type: 'product',
+          action: editMode ? 'editar' : 'crear',
+          title: editMode ? 'Producto actualizado' : 'Producto creado',
+          description: formData.nombre_comida,
+          icon: '🍽️'
+        });
+        
         // Limpiar formulario
         setFormData({
           nombre_comida: '',
@@ -328,7 +340,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
+    <div className={styles.modalOverlay}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2>{editMode ? 'Editar Producto' : 'Agregar Producto'}</h2>

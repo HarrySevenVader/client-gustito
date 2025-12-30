@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { X, Upload, Image as ImageIcon } from 'lucide-react';
 import { toastSuccess, toastError } from './swalHelper';
+import { useActivity } from '../contexts/ActivityContext';
+import { useTheme } from '../contexts/ThemeContext';
 import styles from './LoginForm.module.css';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -28,6 +30,8 @@ export default function NewsFormModal({
   noticiaId,
   initialData,
 }: NewsFormModalProps) {
+  const { addActivity } = useActivity();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     titulo: '',
     contenido: '',
@@ -171,6 +175,16 @@ export default function NewsFormModal({
         await toastSuccess(
           editMode ? 'Noticia actualizada exitosamente' : 'Noticia creada exitosamente'
         );
+        
+        // Registrar actividad
+        addActivity({
+          type: 'noticia',
+          action: editMode ? 'editar' : 'crear',
+          title: editMode ? 'Noticia actualizada' : 'Noticia creada',
+          description: formData.titulo,
+          icon: '📰'
+        });
+        
         onSuccess();
         onClose();
       } else {
@@ -185,6 +199,7 @@ export default function NewsFormModal({
   };
 
   if (!isOpen) return null;
+const isDark = theme === 'dark';
 
   return (
     <div
@@ -201,11 +216,10 @@ export default function NewsFormModal({
         zIndex: 1000,
         padding: '20px',
       }}
-      onClick={onClose}
     >
       <div
         style={{
-          backgroundColor: 'white',
+          backgroundColor: isDark ? '#1f2937' : 'white',
           borderRadius: '12px',
           padding: '30px',
           maxWidth: '700px',
@@ -213,6 +227,7 @@ export default function NewsFormModal({
           maxHeight: '90vh',
           overflow: 'auto',
           position: 'relative',
+          transition: 'background-color 0.4s ease',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -226,18 +241,30 @@ export default function NewsFormModal({
             border: 'none',
             cursor: 'pointer',
             padding: '5px',
+            color: isDark ? '#f9fafb' : '#000',
+            transition: 'color 0.4s ease',
           }}
         >
           <X size={24} />
         </button>
 
-        <h2 style={{ marginBottom: '20px', color: '#2c3e50' }}>
+        <h2 style={{ 
+          marginBottom: '20px', 
+          color: isDark ? '#f9fafb' : '#2c3e50',
+          transition: 'color 0.4s ease',
+        }}>
           {editMode ? '✏️ Editar Noticia' : '➕ Crear Nueva Noticia'}
         </h2>
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '8px', 
+              fontWeight: '500',
+              color: isDark ? '#e5e7eb' : '#000',
+              transition: 'color 0.4s ease',
+            }}>
               Título *
             </label>
             <input
@@ -250,15 +277,24 @@ export default function NewsFormModal({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #ddd',
+                border: isDark ? '1px solid #374151' : '1px solid #ddd',
                 borderRadius: '8px',
                 fontSize: '16px',
+                backgroundColor: isDark ? '#374151' : 'white',
+                color: isDark ? '#f9fafb' : '#000',
+                transition: 'all 0.4s ease',
               }}
             />
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '8px', 
+              fontWeight: '500',
+              color: isDark ? '#e5e7eb' : '#000',
+              transition: 'color 0.4s ease',
+            }}>
               Contenido *
             </label>
             <textarea
@@ -271,27 +307,38 @@ export default function NewsFormModal({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #ddd',
+                border: isDark ? '1px solid #374151' : '1px solid #ddd',
                 borderRadius: '8px',
                 fontSize: '16px',
                 fontFamily: 'inherit',
                 resize: 'vertical',
+                backgroundColor: isDark ? '#374151' : 'white',
+                color: isDark ? '#f9fafb' : '#000',
+                transition: 'all 0.4s ease',
               }}
             />
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '8px', 
+              fontWeight: '500',
+              color: isDark ? '#e5e7eb' : '#000',
+              transition: 'color 0.4s ease',
+            }}>
               Imagen
             </label>
             <div
               style={{
-                border: '2px dashed #ddd',
+                border: isDark ? '2px dashed #4b5563' : '2px dashed #ddd',
                 borderRadius: '8px',
                 padding: '20px',
                 textAlign: 'center',
                 cursor: 'pointer',
                 position: 'relative',
+                backgroundColor: isDark ? '#374151' : 'transparent',
+                transition: 'all 0.4s ease',
               }}
               onClick={() => document.getElementById('news-image-upload')?.click()}
             >
@@ -343,11 +390,11 @@ export default function NewsFormModal({
                 </div>
               ) : (
                 <div>
-                  <Upload size={40} style={{ margin: '0 auto 10px', color: '#999' }} />
-                  <p style={{ color: '#666', margin: 0 }}>
+                  <Upload size={40} style={{ margin: '0 auto 10px', color: isDark ? '#9ca3af' : '#999' }} />
+                  <p style={{ color: isDark ? '#d1d5db' : '#666', margin: 0 }}>
                     Haz clic para subir una imagen
                   </p>
-                  <p style={{ color: '#999', fontSize: '14px', marginTop: '5px' }}>
+                  <p style={{ color: isDark ? '#9ca3af' : '#999', fontSize: '14px', marginTop: '5px' }}>
                     Máximo 5MB
                   </p>
                 </div>
@@ -356,7 +403,13 @@ export default function NewsFormModal({
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '8px', 
+              fontWeight: '500',
+              color: isDark ? '#e5e7eb' : '#000',
+              transition: 'color 0.4s ease',
+            }}>
               Estado
             </label>
             <select
@@ -367,10 +420,13 @@ export default function NewsFormModal({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #ddd',
+                border: isDark ? '1px solid #374151' : '1px solid #ddd',
                 borderRadius: '8px',
                 fontSize: '16px',
                 cursor: 'pointer',
+                backgroundColor: isDark ? '#374151' : 'white',
+                color: isDark ? '#f9fafb' : '#000',
+                transition: 'all 0.4s ease',
               }}
             >
               <option value="activo">Activo (visible al público)</option>
@@ -386,10 +442,12 @@ export default function NewsFormModal({
               style={{
                 padding: '12px 24px',
                 borderRadius: '8px',
-                border: '1px solid #ddd',
-                background: 'white',
+                border: isDark ? '1px solid #4b5563' : '1px solid #ddd',
+                background: isDark ? '#374151' : 'white',
+                color: isDark ? '#f9fafb' : '#000',
                 cursor: (loading || uploadingImage) ? 'not-allowed' : 'pointer',
                 fontSize: '16px',
+                transition: 'all 0.4s ease',
               }}
             >
               Cancelar
@@ -406,6 +464,7 @@ export default function NewsFormModal({
                 cursor: (loading || uploadingImage) ? 'not-allowed' : 'pointer',
                 fontSize: '16px',
                 fontWeight: '600',
+                transition: 'all 0.4s ease',
               }}
             >
               {loading ? 'Guardando...' : uploadingImage ? 'Subiendo imagen...' : editMode ? 'Actualizar' : 'Crear'}

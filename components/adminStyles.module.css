@@ -57,12 +57,17 @@
   height: 100vh;
   z-index: 40;
   overflow: auto; /* allow scrolling inside sidebar if content exceeds viewport */
-  transition: background 0.3s ease;
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.sidebar.dark {
+  background: linear-gradient(180deg, #1a0b2e 0%, #2d1b4e 50%, #4a1f7a 100%);
+  box-shadow: 6px 0 24px rgba(147, 51, 234, 0.4), 0 0 60px rgba(168, 85, 247, 0.15);
 }
 
 :global([data-theme="dark"]) .sidebar {
-  background: var(--sidebar-bg);
-  box-shadow: 6px 0 24px rgba(0,0,0,0.5);
+  background: linear-gradient(180deg, #1a0b2e 0%, #2d1b4e 50%, #4a1f7a 100%);
+  box-shadow: 6px 0 24px rgba(147, 51, 234, 0.4), 0 0 60px rgba(168, 85, 247, 0.15);
 }
 
 .brand {
@@ -81,6 +86,13 @@
   color: #052014;
   font-weight: 900;
   font-size: 1.2rem;
+  transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.sidebar.dark .brandLogo {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
 }
 .brandText {
   font-weight: 800;
@@ -99,9 +111,30 @@
   color: var(--muted-white);
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
-.navItem:hover { background: rgba(255,255,255,0.04) }
-.navItem.active { background: rgba(255,255,255,0.08); color: white }
+.navItem:hover { 
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+.navItem.active { 
+  background: rgba(255,255,255,0.08); 
+  color: white;
+}
+
+.sidebar.dark .navItem:hover {
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.2));
+  color: #e9d5ff;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+  border-left: 3px solid #a855f7;
+}
+
+.sidebar.dark .navItem.active {
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.2));
+  color: #e9d5ff;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+  border-left: 3px solid #a855f7;
+}
 
 .topbar {
   display:flex;

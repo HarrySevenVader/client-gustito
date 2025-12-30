@@ -2,14 +2,29 @@
 import styles from './adminStyles.module.css'
 import React from 'react'
 import supabase from '../lib/supabaseClient'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
 
 type Props = { active?: string; onNavigate?: (path: string)=>void }
 
-export default function AdminSidebar({ active = 'inicio', onNavigate }: Props) {
+export default function AdminSidebar({ active, onNavigate }: Props) {
   const router = useRouter()
+  const pathname = usePathname()
   const { theme, toggleTheme } = useTheme()
+  
+  // Determinar la sección activa basándose en la ruta actual
+  const getActiveSection = () => {
+    if (active) return active; // Si se pasa explícitamente, usarlo
+    
+    if (pathname === '/admin/dashboard') return 'inicio';
+    if (pathname?.includes('/productos')) return 'productos';
+    if (pathname?.includes('/noticias')) return 'noticias';
+    if (pathname?.includes('/consultas')) return 'consultas';
+    
+    return ''; // Ninguno activo
+  }
+  
+  const activeSection = getActiveSection()
 
   const items = [
     { id: 'inicio', label: 'Inicio' },
@@ -27,7 +42,7 @@ export default function AdminSidebar({ active = 'inicio', onNavigate }: Props) {
   }
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''}`}>
       <div className={styles.brand}>
         <div className={styles.brandLogo}>G</div>
         <div>
@@ -40,7 +55,7 @@ export default function AdminSidebar({ active = 'inicio', onNavigate }: Props) {
         {items.map(it => (
           <div
             key={it.id}
-            className={styles.navItem + (it.id === active ? ` ${styles.active}` : '')}
+            className={styles.navItem + (it.id === activeSection ? ` ${styles.active}` : '')}
             onClick={() => {
               if (onNavigate) return onNavigate(it.id)
               const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`

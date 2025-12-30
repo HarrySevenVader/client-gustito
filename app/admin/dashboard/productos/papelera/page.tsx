@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from '../../../../../components/DashboardLayout';
 import TrashList from '../../../../../components/TrashList';
 import LoadingSpinner from '../../../../../components/LoadingSpinner';
+import { useActivity } from '../../../../../contexts/ActivityContext';
 import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTheme } from '../../../../../contexts/ThemeContext';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -23,10 +25,12 @@ interface Producto {
 }
 
 export default function PapeleraPage() {
+  const { addActivity } = useActivity();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
   const [paginaActual, setPaginaActual] = useState(1);
   const router = useRouter();
+  const { theme } = useTheme();
 
   const fetchProductosEliminados = async () => {
     try {
@@ -64,6 +68,10 @@ export default function PapeleraPage() {
 
   const handleRestore = async (id: number | string) => {
     try {
+      // Obtener el nombre del producto antes de restaurarlo
+      const producto = productos.find(p => p.id === id);
+      const nombreProducto = producto?.nombre || 'Producto';
+      
       const response = await fetch(`http://localhost:4000/api/comidas/${id}/restaurar`, {
         method: 'PATCH',
       });
@@ -72,6 +80,16 @@ export default function PapeleraPage() {
 
       if (response.ok) {
         await toastSuccess('Producto restaurado exitosamente');
+        
+        // Registrar actividad
+        addActivity({
+          type: 'product',
+          action: 'restaurar',
+          title: 'Producto restaurado',
+          description: nombreProducto,
+          icon: '♻️'
+        });
+        
         fetchProductosEliminados();
       } else {
         toastError(data.mensaje || 'Error al restaurar producto');
@@ -157,9 +175,9 @@ export default function PapeleraPage() {
               <div style={{
                 textAlign: 'center',
                 padding: '40px',
-                background: '#f9fafb',
+                background: theme === 'dark' ? '#1f2937' : '#f9fafb',
                 borderRadius: '12px',
-                color: '#6b7280'
+                color: theme === 'dark' ? '#e5e7eb' : '#6b7280'
               }}>
                 <p style={{ fontSize: '18px', fontWeight: '600' }}>🗑️ La papelera está vacía</p>
                 <p style={{ fontSize: '14px', marginTop: '8px' }}>Los productos eliminados aparecerán aquí</p>

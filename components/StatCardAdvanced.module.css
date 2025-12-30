@@ -4,7 +4,7 @@
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease, border-color 0.4s ease;
   position: relative;
   overflow: hidden;
   animation: slideIn 0.5s ease-out;
@@ -188,4 +188,54 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Modo Oscuro */
+.card.dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-color: #374151;
+}
+
+.card.dark:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card.dark .title {
+  color: #9ca3af;
+}
+
+.card.dark .subtitle {
+  color: #6b7280;
+}
+
+.card.dark .value {
+  color: #f9fafb;
+  background: linear-gradient(135deg, #f9fafb 0%, #d1d5db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card.dark .trendText {
+  color: #9ca3af;
+}
+
+.card.dark.green .iconContainer {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+}
+
+.card.dark.blue .iconContainer {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+.card.dark.purple .iconContainer {
+  background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+}
+
+.card.dark.orange .iconContainer {
+  background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+}
+
+.card.dark.red .iconContainer {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './StatCardAdvanced.module.css';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface StatCardAdvancedProps {
   title: string;
@@ -22,6 +23,7 @@ export default function StatCardAdvanced({
   color = 'blue',
   subtitle 
 }: StatCardAdvancedProps) {
+  const { theme } = useTheme();
   
   const colorClasses: Record<string, string> = {
     green: styles.green,
@@ -32,7 +34,7 @@ export default function StatCardAdvanced({
   };
 
   return (
-    <div className={`${styles.card} ${colorClasses[color]}`}>
+    <div className={`${styles.card} ${colorClasses[color]} ${theme === 'dark' ? styles.dark : ''}`}>
       <div className={styles.header}>
         <div className={styles.iconContainer}>
           <span className={styles.icon}>{icon}</span>

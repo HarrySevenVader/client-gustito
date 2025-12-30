@@ -6,6 +6,7 @@ import DashboardLayout from '../../../../components/DashboardLayout';
 import ProductList from '../../../../components/ProductList';
 import ProductFormModal from '../../../../components/ProductFormModal';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { useActivity } from '../../../../contexts/ActivityContext';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -25,6 +26,7 @@ interface Producto {
 }
 
 export default function ProductsPage() {
+  const { addActivity } = useActivity();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,6 +96,10 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: number | string) => {
     try {
+      // Obtener el nombre del producto antes de eliminarlo
+      const producto = productos.find(p => p.id === id);
+      const nombreProducto = producto?.nombre || 'Producto';
+      
       const response = await fetch(`http://localhost:4000/api/comidas/${id}`, {
         method: 'DELETE',
       });
@@ -102,6 +108,16 @@ export default function ProductsPage() {
 
       if (response.ok) {
         await toastSuccess('Producto movido a la papelera');
+        
+        // Registrar actividad
+        addActivity({
+          type: 'product',
+          action: 'eliminar',
+          title: 'Producto eliminado',
+          description: nombreProducto,
+          icon: '🗑️'
+        });
+        
         fetchProductos();
       } else {
         toastError(data.mensaje || 'Error al borrar producto');

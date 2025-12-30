@@ -69,9 +69,8 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
             return;
         }
         
-        // Si no hay sucursal seleccionada, mostrar mensaje y selector
+        // Si no hay sucursal seleccionada, mostrar selector
         if (!sucursal) {
-            toastError('Por favor, selecciona una sucursal antes de agregar productos al carrito');
             setShowSucursalSelector(true);
             return;
         }
