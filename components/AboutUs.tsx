@@ -34,11 +34,11 @@ export default function AboutUs() {
             <div className="w-full flex">
                 {/* Espaciador izquierdo */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
-                
+
                 <div className="flex-1 px-4 sm:px-8 lg:px-0">
                     {/* Section Header */}
                     <motion.div
-                        className="text-center mb-16"
+                        className="flex flex-col items-center text-center mb-16"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -50,7 +50,7 @@ export default function AboutUs() {
                         >
                             Sobre <span className="text-gustito-orange">Nosotros</span>
                         </h2>
-                        <p className="text-xl text-gustito-dark/70 max-w-4xl mx-auto">
+                        <p className="text-xl text-gustito-dark/70 max-w-4xl text-center">
                             Somos una empresa gastronómica de origen familiar dedicada a ofrecer comidas rápidas con un sello casero,
                             preparadas con dedicación, ingredientes seleccionados y una atención cercana.
                         </p>
@@ -112,26 +112,26 @@ export default function AboutUs() {
                             >
                                 Nuestra <span className="text-gustito-green">Esencia</span>
                             </h3>
-                            
+
                             <div className="space-y-5 text-lg text-gustito-dark/80">
                                 <p>
-                                    En <span className="font-semibold text-gustito-orange">El Gustito</span> creemos que una buena 
-                                    comida no solo se disfruta por su sabor, sino también por la experiencia que la rodea. Nuestro 
-                                    proyecto nace del compromiso por entregar platos simples, pero bien hechos, pensados para quienes 
+                                    En <span className="font-semibold text-gustito-orange">El Gustito</span> creemos que una buena
+                                    comida no solo se disfruta por su sabor, sino también por la experiencia que la rodea. Nuestro
+                                    proyecto nace del compromiso por entregar platos simples, pero bien hechos, pensados para quienes
                                     buscan una opción rica, confiable y accesible en su día a día.
                                 </p>
                                 <p>
                                     Nos distinguimos por mantener una identidad clara: <span className="font-semibold text-gustito-orange">
-                                    preparaciones con sabor casero</span>, <span className="font-semibold text-gustito-green">
-                                    atención personalizada</span> y procesos bien ejecutados. Cada sucursal mantiene los mismos 
+                                        preparaciones con sabor casero</span>, <span className="font-semibold text-gustito-green">
+                                        atención personalizada</span> y procesos bien ejecutados. Cada sucursal mantiene los mismos
                                     estándares de calidad y servicio, asegurando una experiencia consistente.
                                 </p>
                                 <p className="font-semibold text-gustito-dark">
-                                    Más que vender comida, buscamos crear un espacio donde las personas se sientan bien atendidas, 
+                                    Más que vender comida, buscamos crear un espacio donde las personas se sientan bien atendidas,
                                     escuchadas y con ganas de volver.
                                 </p>
                             </div>
-                            
+
                             {/* Botón para conocer más */}
                             <div className="pt-6 text-center lg:text-left">
                                 <Link href="/nosotros">
@@ -148,7 +148,7 @@ export default function AboutUs() {
                         </div>
                     </motion.div>
                 </div>
-                
+
                 {/* Espaciador derecho */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
             </div>

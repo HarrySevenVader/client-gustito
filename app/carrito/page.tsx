@@ -109,7 +109,7 @@ export default function CarritoPage() {
     return (
       <main className="carrito-page">
         <Navbar dark />
-        <div className="carrito-container pt-24">
+        <div className="carrito-container">
           <motion.div
             className="carrito-empty"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -134,7 +134,7 @@ export default function CarritoPage() {
   return (
     <main className="carrito-page">
       <Navbar dark />
-      <div className="carrito-container pt-24">
+      <div className="carrito-container">
         <motion.div
           className="carrito-header"
           initial={{ opacity: 0, y: -20 }}

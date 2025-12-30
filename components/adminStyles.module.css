@@ -142,7 +142,7 @@
 }
 
 .content {
-  flex:1; padding:12px; display:flex; flex-direction:column; gap:0px;
+  flex:1; padding:24px; display:flex; flex-direction:column; gap:16px;
 }
 
 .cards { display:flex; gap:16px; flex-wrap:wrap }

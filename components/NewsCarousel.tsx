@@ -109,7 +109,7 @@ export default function NewsCarousel() {
                 <div className="flex-1 px-4 sm:px-8 lg:px-0">
                     {/* Header */}
                     <motion.div
-                        className="text-center mb-12"
+                        className="flex flex-col items-center text-center mb-12"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -124,7 +124,7 @@ export default function NewsCarousel() {
                         >
                             Últimas <span className="text-gustito-orange">Noticias</span>
                         </h2>
-                        <p className="text-lg text-gustito-dark/70 max-w-2xl mx-auto">
+                        <p className="text-lg text-gustito-dark/70 max-w-2xl text-center mt-4">
                             Mantente informado sobre promociones, eventos y novedades de Gustito
                         </p>
                     </motion.div>

@@ -132,19 +132,42 @@ export default function Navbar({ dark = false }: NavbarProps) {
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${dark
-                            ? 'text-white hover:bg-white/10'
-                            : isScrolled
-                                ? 'text-gustito-dark hover:bg-gray-100'
-                                : 'text-white hover:bg-white/10'
-                            }`}
-                        onClick={() => setIsOpen(!isOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        {isOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
+                    {/* Mobile Cart & Menu Button */}
+                    <div className="flex md:hidden items-center gap-3">
+                        {/* Mobile Cart Icon */}
+                        <Link href="/carrito">
+                            <div className="relative p-2">
+                                <ShoppingCart
+                                    size={26}
+                                    className={`transition-colors duration-300 ${dark
+                                        ? 'text-white'
+                                        : isScrolled
+                                            ? 'text-gustito-dark'
+                                            : 'text-white'
+                                        }`}
+                                />
+                                {itemCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-gustito-orange text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                        {itemCount}
+                                    </span>
+                                )}
+                            </div>
+                        </Link>
+
+                        {/* Mobile Menu Button */}
+                        <button
+                            className={`p-2 rounded-lg transition-colors duration-300 ${dark
+                                ? 'text-white hover:bg-white/10'
+                                : isScrolled
+                                    ? 'text-gustito-dark hover:bg-gray-100'
+                                    : 'text-white hover:bg-white/10'
+                                }`}
+                            onClick={() => setIsOpen(!isOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {isOpen ? <X size={28} /> : <Menu size={28} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Espaciador derecho */}

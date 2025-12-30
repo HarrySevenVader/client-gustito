@@ -55,12 +55,12 @@ export default function Products() {
                             categoria_id: comida.categoria_id,
                             activo: comida.activo,
                         }));
-                    
+
                     // Seleccionar 6 productos aleatorios
                     const productosAleatorios = productosActivos
                         .sort(() => 0.5 - Math.random())
                         .slice(0, MAX_PRODUCTS);
-                    
+
                     setProductos(productosAleatorios);
                 }
 
@@ -139,144 +139,144 @@ export default function Products() {
             <div className="w-full flex">
                 {/* Espaciador izquierdo */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
-                
+
                 <div className="flex-1 px-4 sm:px-8 lg:px-0">
-                {/* Section Header */}
-                <motion.div
-                    className="text-center mb-16"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gustito-green rounded-full mb-6">
-                        <Utensils size={32} className="text-white" />
-                    </div>
-                    <h2
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-gustito-dark mb-4"
-                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                    {/* Section Header */}
+                    <motion.div
+                        className="flex flex-col items-center text-center mb-16"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
                     >
-                        Nuestra <span className="text-gustito-orange">Carta</span>
-                    </h2>
-                    <p className="text-xl text-gustito-dark/70 max-w-2xl mx-auto">
-                        Descubre los sabores auténticos de Chile, preparados con ingredientes frescos y mucho cariño
-                    </p>
-                </motion.div>
-
-                {/* Loading State */}
-                {loading ? (
-                    <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
-                    </div>
-                ) : productos.length === 0 ? (
-                    <div className="text-center py-20">
-                        <p className="text-xl text-gustito-dark/70">No hay productos disponibles</p>
-                    </div>
-                ) : (
-                    /* Carousel Container */
-                    <div 
-                        className="relative mb-12"
-                        onMouseEnter={() => setIsAutoPlaying(false)}
-                        onMouseLeave={() => setIsAutoPlaying(true)}
-                    >
-                        {/* Navigation Buttons */}
-                        <button
-                            onClick={prevSlide}
-                            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gustito-dark hover:bg-gustito-orange hover:text-white transition-all duration-300 hover:scale-110"
-                            aria-label="Anterior"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gustito-dark hover:bg-gustito-orange hover:text-white transition-all duration-300 hover:scale-110"
-                            aria-label="Siguiente"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-
-                        {/* Products Carousel */}
-                        <div className="overflow-hidden mx-12 sm:mx-16 lg:mx-20">
-                            <motion.div 
-                                className="flex gap-4 sm:gap-6"
-                                initial={false}
-                            >
-                                <AnimatePresence mode="popLayout" initial={false}>
-                                    {visibleProductos.map((producto, index) => (
-                                        <motion.div
-                                            key={producto.id}
-                                            className="flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer"
-                                            style={{ 
-                                                width: visibleCount === 1 ? '100%' 
-                                                    : visibleCount === 2 ? 'calc(50% - 12px)' 
-                                                    : visibleCount === 3 ? 'calc(33.333% - 14px)'
-                                                    : 'calc(25% - 14px)'
-                                            }}
-                                            initial={{ opacity: 0, x: 50 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -50 }}
-                                            transition={{ duration: 0.4, delay: index * 0.1 }}
-                                            whileHover={{ y: -8 }}
-                                        >
-                                            {/* Product Image */}
-                                            <div className="relative h-56 overflow-hidden">
-                                                <Image
-                                                    src={producto.imagen_url}
-                                                    alt={producto.nombre}
-                                                    fill
-                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                                <div className="absolute top-4 left-4">
-                                                    <span className="px-3 py-1 bg-gustito-green text-white text-sm font-semibold rounded-full">
-                                                        {getCategoriaNombre(producto.categoria_id)}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            {/* Product Info */}
-                                            <div className="p-6">
-                                                <h3
-                                                    className="text-2xl font-bold text-gustito-dark mb-2 group-hover:text-gustito-orange transition-colors duration-300 line-clamp-1"
-                                                    style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
-                                                >
-                                                    {producto.nombre}
-                                                </h3>
-                                                <p className="text-gustito-dark/70 mb-4 line-clamp-2">
-                                                    {producto.descripcion}
-                                                </p>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-2xl font-bold text-gustito-orange">
-                                                        {formatPrice(producto.precio)}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </AnimatePresence>
-                            </motion.div>
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gustito-green rounded-full mb-6">
+                            <Utensils size={32} className="text-white" />
                         </div>
-                    </div>
-                )}
+                        <h2
+                            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gustito-dark mb-4"
+                            style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                        >
+                            Nuestra <span className="text-gustito-orange">Carta</span>
+                        </h2>
+                        <p className="text-xl text-gustito-dark/70 max-w-2xl text-center">
+                            Descubre los sabores auténticos de Chile, preparados con ingredientes frescos y mucho cariño
+                        </p>
+                    </motion.div>
 
-                {/* View Full Menu Button */}
-                <motion.div
-                    className="text-center mt-12"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                    <Link
-                        href="/menu"
-                        className="inline-block px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                    {/* Loading State */}
+                    {loading ? (
+                        <div className="flex justify-center items-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
+                        </div>
+                    ) : productos.length === 0 ? (
+                        <div className="text-center py-20">
+                            <p className="text-xl text-gustito-dark/70">No hay productos disponibles</p>
+                        </div>
+                    ) : (
+                        /* Carousel Container */
+                        <div
+                            className="relative mb-12"
+                            onMouseEnter={() => setIsAutoPlaying(false)}
+                            onMouseLeave={() => setIsAutoPlaying(true)}
+                        >
+                            {/* Navigation Buttons */}
+                            <button
+                                onClick={prevSlide}
+                                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gustito-dark hover:bg-gustito-orange hover:text-white transition-all duration-300 hover:scale-110"
+                                aria-label="Anterior"
+                            >
+                                <ChevronLeft size={24} />
+                            </button>
+                            <button
+                                onClick={nextSlide}
+                                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gustito-dark hover:bg-gustito-orange hover:text-white transition-all duration-300 hover:scale-110"
+                                aria-label="Siguiente"
+                            >
+                                <ChevronRight size={24} />
+                            </button>
+
+                            {/* Products Carousel */}
+                            <div className="overflow-hidden mx-12 sm:mx-16 lg:mx-20">
+                                <motion.div
+                                    className="flex gap-4 sm:gap-6"
+                                    initial={false}
+                                >
+                                    <AnimatePresence mode="popLayout" initial={false}>
+                                        {visibleProductos.map((producto, index) => (
+                                            <motion.div
+                                                key={producto.id}
+                                                className="flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer"
+                                                style={{
+                                                    width: visibleCount === 1 ? '100%'
+                                                        : visibleCount === 2 ? 'calc(50% - 12px)'
+                                                            : visibleCount === 3 ? 'calc(33.333% - 14px)'
+                                                                : 'calc(25% - 14px)'
+                                                }}
+                                                initial={{ opacity: 0, x: 50 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: -50 }}
+                                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                                whileHover={{ y: -8 }}
+                                            >
+                                                {/* Product Image */}
+                                                <div className="relative h-56 overflow-hidden">
+                                                    <Image
+                                                        src={producto.imagen_url}
+                                                        alt={producto.nombre}
+                                                        fill
+                                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                                    <div className="absolute top-4 left-4">
+                                                        <span className="px-3 py-1 bg-gustito-green text-white text-sm font-semibold rounded-full">
+                                                            {getCategoriaNombre(producto.categoria_id)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Product Info */}
+                                                <div className="p-6">
+                                                    <h3
+                                                        className="text-2xl font-bold text-gustito-dark mb-2 group-hover:text-gustito-orange transition-colors duration-300 line-clamp-1"
+                                                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                                                    >
+                                                        {producto.nombre}
+                                                    </h3>
+                                                    <p className="text-gustito-dark/70 mb-4 line-clamp-2">
+                                                        {producto.descripcion}
+                                                    </p>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-2xl font-bold text-gustito-orange">
+                                                            {formatPrice(producto.precio)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
+                                </motion.div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* View Full Menu Button */}
+                    <motion.div
+                        className="text-center mt-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                        Ver Menú Completo
-                    </Link>
-                </motion.div>
+                        <Link
+                            href="/menu"
+                            className="inline-block px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                        >
+                            Ver Menú Completo
+                        </Link>
+                    </motion.div>
                 </div>
-                
+
                 {/* Espaciador derecho */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
             </div>

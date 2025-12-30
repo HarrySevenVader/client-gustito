@@ -195,7 +195,7 @@ export default function MenuPage() {
     return (
         <main className="menu-page">
             <Navbar dark />
-            <div className="menu-container pt-24">
+            <div className="menu-container">
                 <section className="menu-hero">
                     <motion.h1
                         className="text-5xl md:text-6xl"
