@@ -21,30 +21,103 @@ export default function ContactoPage() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
+        
+        // Validación para mensaje
         if (name === 'mensaje') {
             if (value.length <= 500) {
                 setFormData(prev => ({ ...prev, [name]: value }));
                 setCharCount(value.length);
             }
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
+            return;
+        }
+        
+        // Validación para nombre y apellido: solo letras, espacios y acentos, máximo 30 caracteres
+        if (name === 'nombre' || name === 'apellido') {
+            const cleanValue = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            if (cleanValue.length <= 30) {
+                setFormData(prev => ({ ...prev, [name]: cleanValue }));
+            }
+            return;
+        }
+        
+        // Validación para correo: solo caracteres válidos, máximo 70 caracteres
+        if (name === 'correo') {
+            const cleanValue = value.replace(/[^a-zA-Z0-9@._-]/g, '');
+            if (cleanValue.length <= 70) {
+                setFormData(prev => ({ ...prev, [name]: cleanValue }));
+            }
+            return;
+        }
+        
+        // Validación para celular: solo números, espacios y el signo +, máximo 13 caracteres con formato
+        if (name === 'celular') {
+            // Limpiar todo excepto números y +
+            const cleanValue = value.replace(/[^0-9+]/g, '');
+            
+            // Formatear automáticamente: +56 9 1234 5678
+            let formatted = cleanValue;
+            if (cleanValue.startsWith('+56')) {
+                const digits = cleanValue.substring(3); // Obtener dígitos después de +56
+                if (digits.length > 0) {
+                    formatted = '+56';
+                    if (digits.length >= 1) {
+                        formatted += ' ' + digits.substring(0, 1); // Agregar el 9
+                    }
+                    if (digits.length >= 2) {
+                        formatted += ' ' + digits.substring(1, 5); // Agregar primeros 4 dígitos
+                    }
+                    if (digits.length >= 6) {
+                        formatted += ' ' + digits.substring(5, 9); // Agregar últimos 4 dígitos
+                    }
+                }
+            } else {
+                formatted = cleanValue;
+            }
+            
+            if (formatted.length <= 15) { // +56 9 1234 5678 = 15 caracteres con espacios
+                setFormData(prev => ({ ...prev, [name]: formatted }));
+            }
+            return;
         }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validación básica
+        // Validación de campos vacíos
         if (!formData.nombre.trim() || !formData.apellido.trim() || !formData.correo.trim() ||
             !formData.celular.trim() || !formData.mensaje.trim()) {
             toastError('Todos los campos son obligatorios');
             return;
         }
 
-        // Validar formato de email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Validar longitud de nombre y apellido
+        if (formData.nombre.length > 30) {
+            toastError('El nombre no puede exceder los 30 caracteres');
+            return;
+        }
+        if (formData.apellido.length > 30) {
+            toastError('El apellido no puede exceder los 30 caracteres');
+            return;
+        }
+
+        // Validar formato de email con dominios permitidos
+        const emailRegex = /^[a-zA-Z0-9._-]+@(gmail\.com|utem\.cl)$/;
         if (!emailRegex.test(formData.correo)) {
-            toastError('Por favor ingresa un correo electrónico válido');
+            toastError('Solo se permiten correos @gmail.com o @utem.cl');
+            return;
+        }
+
+        // Validar longitud del email
+        if (formData.correo.length > 70) {
+            toastError('El correo no puede exceder los 70 caracteres');
+            return;
+        }
+
+        // Validar formato de teléfono +56 9 seguido de 8 dígitos
+        const phoneRegex = /^\+56\s?9\d{8}$/;
+        if (!phoneRegex.test(formData.celular.replace(/\s/g, ''))) {
+            toastError('El teléfono debe tener formato +56 9 seguido de 8 números');
             return;
         }
 
@@ -115,21 +188,43 @@ export default function ContactoPage() {
                         >
                             <h2 className="panel-header">Información de contacto</h2>
                             <ul className="contacto-info-list">
-                                <li className="contacto-info-item">
-                                    <Phone size={22} className="icon" />
-                                    <div><strong>+56 9 1234 5678</strong><br /><span style={{ fontSize: '0.75rem', color: '#666' }}>Lun - Dom: 11:00 - 23:00</span></div>
-                                </li>
-                                <li className="contacto-info-item">
-                                    <Mail size={22} className="icon" />
-                                    <a href="mailto:contacto@gustito.cl" className="hover:text-gustito-orange">contacto@gustito.cl</a>
-                                </li>
+                                {/* Gustito Maipú */}
                                 <li className="contacto-info-item">
                                     <MapPin size={22} className="icon" />
-                                    <span>Av. Providencia 1234<br />Santiago, Chile</span>
+                                    <div>
+                                        <strong>Gustito Maipú</strong><br />
+                                        <span>Av. El Rosal 4304, Maipú</span><br />
+                                        <span style={{ fontSize: '0.85rem', color: '#666', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                                            <Phone size={14} />
+                                            +56 2 2345 6789
+                                        </span>
+                                    </div>
                                 </li>
+                                
+                                {/* Gustito Talagante */}
                                 <li className="contacto-info-item">
-                                    <Clock size={22} className="icon" />
-                                    <span>Tiempo de respuesta promedio: 24-48 hrs hábiles</span>
+                                    <MapPin size={22} className="icon" />
+                                    <div>
+                                        <strong>Gustito Talagante</strong><br />
+                                        <span>Octavio Leiva Opazo 42, Talagante</span><br />
+                                        <span style={{ fontSize: '0.85rem', color: '#666', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                                            <Phone size={14} />
+                                            +56 2 2345 6790
+                                        </span>
+                                    </div>
+                                </li>
+                                
+                                {/* Gustito Huechuraba */}
+                                <li className="contacto-info-item">
+                                    <MapPin size={22} className="icon" />
+                                    <div>
+                                        <strong>Gustito Huechuraba</strong><br />
+                                        <span>Berta Correa 1686, Huechuraba</span><br />
+                                        <span style={{ fontSize: '0.85rem', color: '#666', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                                            <Phone size={14} />
+                                            +56 2 2345 6791
+                                        </span>
+                                    </div>
                                 </li>
                             </ul>
                         </motion.div>
@@ -144,21 +239,56 @@ export default function ContactoPage() {
                                 <div className="form-grid two-cols">
                                     <div className="form-group">
                                         <label htmlFor="nombre">Nombre *</label>
-                                        <input type="text" id="nombre" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Ingresa tu nombre" />
+                                        <input 
+                                            type="text" 
+                                            id="nombre" 
+                                            name="nombre" 
+                                            value={formData.nombre} 
+                                            onChange={handleChange} 
+                                            required 
+                                            maxLength={30}
+                                            placeholder="Ingresa tu nombre" 
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="apellido">Apellido *</label>
-                                        <input type="text" id="apellido" name="apellido" value={formData.apellido} onChange={handleChange} required placeholder="Ingresa tu apellido" />
+                                        <input 
+                                            type="text" 
+                                            id="apellido" 
+                                            name="apellido" 
+                                            value={formData.apellido} 
+                                            onChange={handleChange} 
+                                            required 
+                                            maxLength={30}
+                                            placeholder="Ingresa tu apellido" 
+                                        />
                                     </div>
                                 </div>
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label htmlFor="correo">Correo electrónico *</label>
-                                        <input type="email" id="correo" name="correo" value={formData.correo} onChange={handleChange} required placeholder="ejemplo@correo.com" />
+                                        <input 
+                                            type="email" 
+                                            id="correo" 
+                                            name="correo" 
+                                            value={formData.correo} 
+                                            onChange={handleChange} 
+                                            required 
+                                            maxLength={70}
+                                            placeholder="ejemplo@gmail.com" 
+                                        />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="celular">Número de teléfono móvil *</label>
-                                        <input type="tel" id="celular" name="celular" value={formData.celular} onChange={handleChange} required placeholder="912345678" />
+                                        <label htmlFor="celular">Número de teléfono móvil * (+56 9 seguido de 8 números)</label>
+                                        <input 
+                                            type="tel" 
+                                            id="celular" 
+                                            name="celular" 
+                                            value={formData.celular} 
+                                            onChange={handleChange} 
+                                            required 
+                                            placeholder="+56 912345678" 
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="mensaje">Mensaje *</label>

@@ -18,3 +18,176 @@
 
 /* Opcional: si el layout usa decoraciones en los bordes que salen fuera del viewport, las recortamos visualmente */
 section[style] { overflow: hidden; }
+
+/* Login Container Responsive */
+.login-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 2rem;
+  align-items: center;
+}
+
+.login-content {
+  padding: 2rem 1rem;
+}
+
+.login-title {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin: 0;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+
+.login-title-highlight {
+  color: #7fe33a;
+  font-size: 5.2rem;
+  margin-top: 8px;
+}
+
+.login-subtitle {
+  font-size: 1.25rem;
+  margin-top: 24px;
+  opacity: 0.9;
+}
+
+.login-buttons {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.login-btn-primary {
+  background: linear-gradient(90deg, #ff6a00, #ff3d00);
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 106, 0, 0.4);
+}
+
+.login-btn-primary:active {
+  transform: translateY(0);
+}
+
+.login-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive: Tablet */
+@media (max-width: 1024px) {
+  .login-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 600px;
+    padding: 1.5rem;
+  }
+  
+  .login-content {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .login-title {
+    font-size: 3.5rem;
+  }
+  
+  .login-title-highlight {
+    font-size: 4rem;
+  }
+  
+  .login-buttons {
+    justify-content: center;
+  }
+  
+  .login-form-wrapper {
+    order: 2;
+  }
+}
+
+/* Responsive: Mobile */
+@media (max-width: 640px) {
+  .login-container {
+    padding: 1rem;
+    gap: 2rem;
+  }
+  
+  .login-content {
+    padding: 0.5rem;
+  }
+  
+  .login-title {
+    font-size: 2.5rem;
+  }
+  
+  .login-title-highlight {
+    font-size: 3rem;
+    margin-top: 4px;
+  }
+  
+  .login-subtitle {
+    font-size: 1rem;
+    margin-top: 16px;
+  }
+  
+  .login-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .login-btn-primary,
+  .login-btn-secondary {
+    width: 100%;
+    padding: 12px 20px;
+  }
+  
+  /* Ocultar decoraciones en móvil para mejor rendimiento */
+  .float {
+    display: none;
+  }
+}
+
+/* Responsive: Small Mobile */
+@media (max-width: 480px) {
+  .login-title {
+    font-size: 2rem;
+  }
+  
+  .login-title-highlight {
+    font-size: 2.5rem;
+  }
+  
+  .login-subtitle {
+    font-size: 0.9rem;
+  }
+}

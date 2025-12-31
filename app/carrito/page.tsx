@@ -76,23 +76,17 @@ export default function CarritoPage() {
   };
 
   const generarMensajeWhatsApp = () => {
-    let mensaje = '¡Hola! 👋 Quiero realizar el siguiente pedido:\n\n';
-    mensaje += `📍 *Sucursal: ${sucursal?.nombre_sucursal}*\n`;
-    mensaje += `📌 ${sucursal?.direccion_sucursal}\n\n`;
+    let mensaje = '¡Hola!\n\n';
+    mensaje += 'Quiero hacer un pedido de los siguientes productos:\n\n';
+    mensaje += `Sucursal: ${sucursal?.nombre_sucursal}\n`;
+    mensaje += `Dirección: ${sucursal?.direccion_sucursal}\n\n`;
     mensaje += '*Productos:*\n';
-    mensaje += '─────────────────\n';
     
     items.forEach((item, index) => {
-      mensaje += `${index + 1}. *${item.nombre}*\n`;
-      mensaje += `   Cantidad: ${item.cantidad}\n`;
-      mensaje += `   Precio unitario: ${formatPrice(item.precio_final)}\n`;
-      mensaje += `   Subtotal: ${formatPrice(item.precio_final * item.cantidad)}\n\n`;
+      mensaje += `${index + 1}. ${item.nombre} - Cantidad: ${item.cantidad}\n`;
     });
     
-    mensaje += '─────────────────\n';
-    mensaje += `*Total de productos:* ${items.reduce((acc, item) => acc + item.cantidad, 0)}\n`;
-    mensaje += `*Total a pagar:* ${formatPrice(getTotal())}\n\n`;
-    mensaje += '¡Espero su confirmación! 😊';
+    mensaje += '\nEspero su respuesta. ¡Gracias!';
     
     return mensaje;
   };
@@ -252,10 +246,6 @@ export default function CarritoPage() {
               <div className="summary-row">
                 <span>Productos ({items.reduce((acc, item) => acc + item.cantidad, 0)})</span>
                 <span>{formatPrice(getTotal())}</span>
-              </div>
-              <div className="summary-row">
-                <span>Envío</span>
-                <span className="text-green-600">Gratis</span>
               </div>
               <div className="summary-divider"></div>
               <div className="summary-row summary-total">

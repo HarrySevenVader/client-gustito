@@ -5,16 +5,16 @@ import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Clock } from 'lucide
 
 export default function Footer() {
     const socialLinks = [
-        { icon: Facebook, href: '#', label: 'Facebook' },
-        { icon: Instagram, href: '#', label: 'Instagram' },
-        { icon: Twitter, href: '#', label: 'Twitter' },
+        { icon: Instagram, href: 'https://instagram.com/gustito_maipu', label: 'Instagram Maipú' },
+        { icon: Instagram, href: 'https://instagram.com/gustito_talagante', label: 'Instagram Talagante' },
+        { icon: Instagram, href: 'https://instagram.com/gustito_huechuraba', label: 'Instagram Huechuraba' },
     ];
 
     const quickLinks = [
-        { name: 'Menú', href: '#menu' },
-        { name: 'Sucursales', href: '#sucursales' },
-        { name: 'Nosotros', href: '#nosotros' },
-        { name: 'Contacto', href: '#contacto' },
+        { name: 'Menú', href: '/menu' },
+        { name: 'Sucursales', href: '/sucursales' },
+        { name: 'Nosotros', href: '/nosotros' },
+        { name: 'Contacto', href: '/contacto' },
     ];
 
     return (
@@ -98,31 +98,45 @@ export default function Footer() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                        <h4 className="text-xl font-bold mb-6 text-gustito-green">Contacto</h4>
-                        <ul className="space-y-4">
-                            <li className="flex items-start">
-                                <Phone size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
-                                <div>
-                                    <p className="text-white/80">+56 9 1234 5678</p>
-                                    <p className="text-white/60 text-sm">Lun - Dom: 11:00 - 23:00</p>
-                                </div>
-                            </li>
-                            <li className="flex items-start">
-                                <Mail size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
-                                <a
-                                    href="mailto:contacto@gustito.cl"
-                                    className="text-white/80 hover:text-gustito-orange transition-colors duration-300"
-                                >
-                                    contacto@gustito.cl
-                                </a>
-                            </li>
+                        <h4 className="text-xl font-bold mb-6 text-gustito-green">Nuestras Sucursales</h4>
+                        <ul className="space-y-6">
+                            {/* Gustito Maipú */}
                             <li className="flex items-start">
                                 <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
-                                <p className="text-white/80">
-                                    Av. Providencia 1234
-                                    <br />
-                                    Santiago, Chile
-                                </p>
+                                <div>
+                                    <p className="text-white font-semibold mb-1">Gustito Maipú</p>
+                                    <p className="text-white/80 text-sm">Av. El Rosal 4304, Maipú</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                        <Phone size={14} />
+                                        +56 2 2345 6789
+                                    </p>
+                                </div>
+                            </li>
+                            
+                            {/* Gustito Talagante */}
+                            <li className="flex items-start">
+                                <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
+                                <div>
+                                    <p className="text-white font-semibold mb-1">Gustito Talagante</p>
+                                    <p className="text-white/80 text-sm">Octavio Leiva Opazo 42, Talagante</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                        <Phone size={14} />
+                                        +56 2 2345 6790
+                                    </p>
+                                </div>
+                            </li>
+                            
+                            {/* Gustito Huechuraba */}
+                            <li className="flex items-start">
+                                <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
+                                <div>
+                                    <p className="text-white font-semibold mb-1">Gustito Huechuraba</p>
+                                    <p className="text-white/80 text-sm">Berta Correa 1686, Huechuraba</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                        <Phone size={14} />
+                                        +56 2 2345 6791
+                                    </p>
+                                </div>
                             </li>
                         </ul>
                     </motion.div>

@@ -5,9 +5,9 @@ import supabase from '../lib/supabaseClient'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
 
-type Props = { active?: string; onNavigate?: (path: string)=>void }
+type Props = { active?: string; onNavigate?: (path: string)=>void; isOpen?: boolean; onClose?: () => void }
 
-export default function AdminSidebar({ active, onNavigate }: Props) {
+export default function AdminSidebar({ active, onNavigate, isOpen = false, onClose }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const { theme, toggleTheme } = useTheme()
@@ -42,7 +42,16 @@ export default function AdminSidebar({ active, onNavigate }: Props) {
   }
 
   return (
-    <aside className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''}`}>
+    <>
+      {/* Overlay para móvil */}
+      {isOpen && (
+        <div 
+          className={styles.sidebarOverlay}
+          onClick={onClose}
+        />
+      )}
+      
+      <aside className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
           <div 
@@ -86,6 +95,7 @@ export default function AdminSidebar({ active, onNavigate }: Props) {
               if (onNavigate) return onNavigate(it.id)
               const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`
               router.push(path)
+              if (onClose) onClose() // Cerrar sidebar en móvil
             }}
             role="button"
             tabIndex={0}
@@ -109,5 +119,6 @@ export default function AdminSidebar({ active, onNavigate }: Props) {
         </button>
       </div>
     </aside>
+    </>
   )
 }

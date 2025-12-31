@@ -13,7 +13,7 @@ interface SearchResult {
   route: string
 }
 
-export default function AdminTopbar({ title = 'Panel' }: { title?: string }) {
+export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: string; onMenuClick?: () => void }) {
   const router = useRouter()
   const [user, setUser] = useState<any | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -170,6 +170,21 @@ export default function AdminTopbar({ title = 'Panel' }: { title?: string }) {
   return (
     <div className={styles.topbar}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        {/* Botón de menú para móvil */}
+        {onMenuClick && (
+          <button 
+            onClick={onMenuClick}
+            className={styles.menuButton}
+            aria-label="Abrir menú"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        )}
+        
         <h2 style={{ margin: 0 }}>{title}</h2>
         <div className={styles.search} ref={searchRef} style={{ position: 'relative' }}>
           <input 

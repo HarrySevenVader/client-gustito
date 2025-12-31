@@ -90,6 +90,7 @@ export default function QueriesPage() {
 
         <div style={{ height: 12 }} />
 
+
         {loading ? (
           <LoadingSpinner message="Cargando consultas..." />
         ) : (

@@ -127,60 +127,29 @@ export default function LoginPage() {
             </g>
           </svg>
         </div>
-        <div style={{
-          width: '100%',
-          maxWidth: 1200,
-          padding: '2rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr 420px',
-          gap: '2rem',
-          /* asegurar que el contenido (texto y card) esté alineado al centro verticalmente */
-          alignItems: 'center'
-        }}>
-          <div style={{padding: '2rem 1rem'}}>
-            <h1 style={{
-              fontSize: '4.5rem',
-              lineHeight: 1,
-              margin: 0,
-              fontWeight: 800,
-              color: '#fff',
-              textShadow: '0 6px 24px rgba(0,0,0,0.6)'
-            }}>
+        <div className="login-container">
+          <div className="login-content">
+            <h1 className="login-title">
               Sabores que te dan un
-              <div style={{ color: '#7fe33a', fontSize: '5.2rem', marginTop: 8 }}>Gustito</div>
+              <div className="login-title-highlight">Gustito</div>
             </h1>
 
-            <p style={{ fontSize: '1.25rem', marginTop: 24, opacity: 0.9 }}>
+            <p className="login-subtitle">
               Comida casera con un toque único, hecha con amor.
             </p>
 
-            <div style={{ marginTop: 28, display: 'flex', gap: 12 }}>
+            <div className="login-buttons">
               <Link href="/">
-                <button style={{
-                  background: 'linear-gradient(90deg,#ff6a00,#ff3d00)',
-                  border: 'none',
-                  color: 'white',
-                  padding: '10px 18px',
-                  borderRadius: 999,
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}>Visita Gustito</button>
+                <button className="login-btn-primary">Visita Gustito</button>
               </Link>
 
               <Link href="/menu">
-                <button style={{
-                  background: 'transparent',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  color: 'white',
-                  padding: '10px 18px',
-                  borderRadius: 999,
-                  cursor: 'pointer'
-                }}>Ver Carta</button>
+                <button className="login-btn-secondary">Ver Carta</button>
               </Link>
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="login-form-wrapper">
             <LoginForm />
           </div>
         </div>
