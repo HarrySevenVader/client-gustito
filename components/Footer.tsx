@@ -18,8 +18,15 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-gustito-dark text-white" id="contacto">
-            <div className="w-full flex py-16">
+        <footer className="bg-gustito-dark text-white relative z-20" id="contacto" style={{ 
+            position: 'relative',
+            width: '100%',
+            marginTop: 'auto'
+        }}>
+            <div className="w-full flex py-16" style={{ 
+                background: '#1a1a1a',
+                minHeight: 'fit-content'
+            }}>
                 {/* Espaciador izquierdo */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
                 

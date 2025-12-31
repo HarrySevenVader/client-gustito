@@ -31,6 +31,8 @@ export default function LoginForm() {
       setError('Introduce un correo válido')
       setLoading(false)
       setIsAuthenticating(false)
+      // Hacer que el mensaje desaparezca después de 3 segundos
+      setTimeout(() => setError(null), 3000)
       return
     }
 
@@ -38,6 +40,7 @@ export default function LoginForm() {
       setError('Supabase no está configurado')
       setLoading(false)
       setIsAuthenticating(false)
+      setTimeout(() => setError(null), 3000)
       return
     }
 
@@ -48,9 +51,18 @@ export default function LoginForm() {
       })
 
       if (error) {
-        setError(error.message || 'Error en autenticación')
+        // Diferenciar entre error de credenciales y error del servidor
+        if (error.message.includes('Invalid login credentials') || 
+            error.message.includes('invalid') ||
+            error.message.includes('credentials')) {
+          setError('Credenciales inválidas')
+        } else {
+          setError('Credenciales inválidas')
+        }
         setLoading(false)
         setIsAuthenticating(false)
+        // Hacer que el mensaje desaparezca después de 4 segundos
+        setTimeout(() => setError(null), 4000)
         return
       }
 
@@ -58,6 +70,7 @@ export default function LoginForm() {
         setError('No se pudo iniciar sesión')
         setLoading(false)
         setIsAuthenticating(false)
+        setTimeout(() => setError(null), 4000)
         return
       }
 
@@ -68,23 +81,52 @@ export default function LoginForm() {
         router.push('/admin/dashboard')
       }, 500)
     } catch (err: any) {
-      setError(err?.message || 'Error inesperado')
+      // Si es un error de red o del servidor
+      if (err?.message?.includes('fetch') || 
+          err?.message?.includes('network') ||
+          err?.message?.includes('Failed to fetch')) {
+        setError('Servidor caído')
+      } else {
+        setError('Error inesperado')
+      }
       setLoading(false)
       setIsAuthenticating(false)
+      // Hacer que el mensaje desaparezca después de 4 segundos
+      setTimeout(() => setError(null), 4000)
     }
   }
 
   return (
     <div className={styles.card}>
-      <div className={styles.brand}>
-        <div className={styles.logo}>G</div>
-        <div>
-          <h3 className={styles.title}>Gustito</h3>
-          <p className={styles.subtitle}>Admin portal</p>
-        </div>
+      <div className={styles.brand} style={{ flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '2rem' }}>
+        <h3 
+          className={styles.title}
+          style={{
+            fontSize: '3.5rem',
+            fontWeight: 900,
+            color: '#FF6B35',
+            textShadow: '3px 3px 0px rgba(0,0,0,0.3), -1px -1px 0px rgba(0,0,0,0.3), 1px -1px 0px rgba(0,0,0,0.3), -1px 1px 0px rgba(0,0,0,0.3)',
+            letterSpacing: '0.02em',
+            fontFamily: "'Baloo 2', 'Poppins', sans-serif",
+            marginBottom: 0
+          }}
+        >
+          Gustito
+        </h3>
+        <p 
+          className={styles.subtitle}
+          style={{
+            letterSpacing: '0.05em',
+            marginTop: '-4px',
+            fontSize: '0.8rem',
+            fontWeight: 600,
+            textAlign: 'center',
+            fontFamily: "'Poppins', sans-serif"
+          }}
+        >
+          Maipú - Talagante - Huechuraba
+        </p>
       </div>
-
-      <div className={styles.topText}>Accede a la administración del sitio</div>
 
       {isAuthenticating ? (
         <div className={styles.loadingContainer}>

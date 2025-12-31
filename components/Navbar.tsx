@@ -51,7 +51,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
                         <motion.div
-                            className="flex flex-col items-start"
+                            className="flex flex-col items-center justify-center"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
@@ -66,13 +66,14 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                 style={{ 
                                     fontFamily: "'Baloo 2', 'Poppins', sans-serif",
                                     textShadow: '3px 3px 0px rgba(0,0,0,0.3), -1px -1px 0px rgba(0,0,0,0.3), 1px -1px 0px rgba(0,0,0,0.3), -1px 1px 0px rgba(0,0,0,0.3)',
-                                    letterSpacing: '0.02em'
+                                    letterSpacing: '0.02em',
+                                    marginBottom: '0px'
                                 }}
                             >
                                 Gustito
                             </h1>
                             <p 
-                                className={`text-xs font-semibold -mt-1 transition-colors duration-300 ${dark
+                                className={`text-xs font-semibold transition-colors duration-300 ${dark
                                     ? 'text-gray-300'
                                     : isScrolled
                                         ? 'text-gustito-dark'
@@ -80,7 +81,8 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                     }`}
                                 style={{ 
                                     fontFamily: "'Poppins', sans-serif",
-                                    letterSpacing: '0.05em'
+                                    letterSpacing: '0.05em',
+                                    marginTop: '-4px'
                                 }}
                             >
                                 Maipú - Talagante - Huechuraba

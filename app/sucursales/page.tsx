@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -46,6 +47,8 @@ const sucursales: Sucursal[] = [
 ];
 
 export default function SucursalesPage() {
+    const router = useRouter();
+    
     return (
         <main className="min-h-screen relative">
             {/* Background Image with Dark Overlay */}
@@ -189,48 +192,71 @@ export default function SucursalesPage() {
                     </div>
                 </section>
 
-                {/* Spacer before footer */}
-                <div className="h-16 w-full bg-transparent"></div>
-
-                {/* CTA Section */}
-                <section className="py-20 px-4 bg-gradient-to-r from-gustito-orange to-orange-600">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <motion.h2
-                            className="text-4xl md:text-5xl font-bold text-white mb-6"
-                            style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
+                {/* CTA Section - Full Width */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                    style={{
+                        width: '100%',
+                        padding: '40px 20px 60px 20px',
+                        background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+                        textAlign: 'center',
+                        margin: 0,
+                        marginTop: '60px'
+                    }}
+                >
+                    <div style={{
+                        maxWidth: '700px',
+                        margin: '0 auto'
+                    }}>
+                        <h3 style={{
+                            fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+                            fontWeight: '700',
+                            color: 'white',
+                            marginBottom: '16px',
+                            fontFamily: "'Baloo 2', 'Poppins', sans-serif"
+                        }}>
                             ¿Listo para disfrutar?
-                        </motion.h2>
-                        <motion.p
-                            className="text-xl text-white/90 mb-8"
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
+                        </h3>
+                        <p style={{
+                            color: 'rgba(255, 255, 255, 0.95)',
+                            marginBottom: '28px',
+                            fontSize: '1.1rem',
+                            lineHeight: '1.6'
+                        }}>
                             Visítanos en cualquiera de nuestras sucursales y descubre por qué somos los mejores
-                        </motion.p>
-                        <motion.a
-                            href="/menu"
-                            className="inline-block px-8 py-4 bg-white text-gustito-orange font-bold rounded-full hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
+                        </p>
+                        <button
+                            onClick={() => router.push('/menu')}
+                            style={{
+                                padding: '16px 40px',
+                                background: 'white',
+                                color: '#FF6B35',
+                                border: 'none',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-3px)';
+                                e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.25)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+                            }}
                         >
-                            Ver Nuestro Menú
-                        </motion.a>
+                            Ver nuestro menú 🍽️
+                        </button>
                     </div>
-                </section>
+                </motion.div>
 
                 <Footer />
             </div>
         </main>
     );
 }
-
-

@@ -44,10 +44,36 @@ export default function AdminSidebar({ active, onNavigate }: Props) {
   return (
     <aside className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''}`}>
       <div className={styles.brand}>
-        <div className={styles.brandLogo}>G</div>
-        <div>
-          <div className={styles.brandText}>Gustito - Admin</div>
-          <div style={{ fontSize: 12, opacity: 0.9 }}>Panel de control</div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+          <div 
+            className={styles.brandText}
+            style={{
+              fontSize: '2rem',
+              fontWeight: 900,
+              color: '#FF6B35',
+              textShadow: '2px 2px 0px rgba(0,0,0,0.2), -1px -1px 0px rgba(0,0,0,0.2), 1px -1px 0px rgba(0,0,0,0.2), -1px 1px 0px rgba(0,0,0,0.2)',
+              letterSpacing: '0.02em',
+              fontFamily: "'Baloo 2', 'Poppins', sans-serif",
+              marginBottom: 0,
+              lineHeight: 1
+            }}
+          >
+            Gustito
+          </div>
+          <div 
+            style={{ 
+              fontSize: '0.65rem', 
+              opacity: 0.9,
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+              fontFamily: "'Poppins', sans-serif",
+              marginTop: '-2px',
+              textAlign: 'center',
+              color: theme === 'dark' ? '#e0e0e0' : '#2d2d2d'
+            }}
+          >
+            Maipú - Talagante - Huechuraba
+          </div>
         </div>
       </div>
 
