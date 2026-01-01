@@ -38,9 +38,11 @@ export default function NewsTrashCard({ id, titulo, contenido, imagen, fecha, on
             className={styles.image}
           />
         ) : (
-          <div className={styles.placeholderImage}>
-            🗑️
-          </div>
+          <img 
+            src="/imagenes/noticia_sin_imagen.svg" 
+            alt="Noticia sin imagen"
+            className={styles.image}
+          />
         )}
         <div className={styles.overlay}>
           <span className={styles.badge}>Eliminada</span>

@@ -41,9 +41,9 @@ export default function MenuFilters({
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.8 }}
                             onClick={clearFilters}
-                            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gustito-orange hover:bg-gustito-orange hover:text-white transition-all duration-300 rounded-full border border-gustito-orange"
+                            className="flex items-center gap-2 px-6 py-3 text-sm font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all duration-300 rounded-full border border-blue-200"
                         >
-                            <X size={14} />
+                            <X size={16} />
                             Limpiar filtros
                         </motion.button>
                     )}

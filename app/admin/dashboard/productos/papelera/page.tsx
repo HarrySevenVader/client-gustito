@@ -127,7 +127,7 @@ export default function PapeleraPage() {
     date: p.created_at ? new Date(p.created_at).toLocaleDateString('es-CL') : '-',
     description: p.descripcion,
     price: p.precio,
-    image: p.imagen_url || '/placeholder.svg',
+    image: p.imagen_url || '/imagenes/producto_sin_imagen.svg',
   }));
 
   // Cálculo de paginación

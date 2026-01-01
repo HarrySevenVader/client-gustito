@@ -146,6 +146,51 @@
   }
 }
 
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .feedContainer {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .feed {
+    max-height: 280px;
+    gap: 8px;
+  }
+
+  .activityItem {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .iconCircle {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .activityTitle {
+    font-size: 0.85rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .timestamp {
+    font-size: 0.7rem;
+  }
+
+  .empty {
+    padding: 30px 15px;
+    font-size: 0.85rem;
+  }
+}
+
 /* Dark mode styles */
 .feedContainer.dark {
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);

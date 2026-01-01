@@ -25,3 +25,20 @@
   height: auto;
   display: block;
 }
+
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .chartCard {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .chartTitle {
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+
+  .canvas {
+    max-height: 220px;
+  }
+}

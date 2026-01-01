@@ -51,7 +51,7 @@ export default function Products() {
                             nombre: comida.nombre_comida,
                             descripcion: comida.descripcion,
                             precio: comida.precio_final || comida.precio,
-                            imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
+                            imagen_url: comida.imagen_url || '/imagenes/producto_sin_imagen.svg',
                             categoria_id: comida.categoria_id,
                             activo: comida.activo,
                         }));
@@ -262,7 +262,7 @@ export default function Products() {
 
                     {/* View Full Menu Button */}
                     <motion.div
-                        className="text-center mt-12"
+                        className="text-center mt-16"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -270,7 +270,7 @@ export default function Products() {
                     >
                         <Link
                             href="/menu"
-                            className="inline-block px-8 py-4 bg-gustito-orange text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                            className="inline-block px-16 py-5 bg-gustito-orange text-white text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[200px]"
                         >
                             Ver Menú Completo
                         </Link>

@@ -154,14 +154,21 @@ export default function Footer() {
                                 <Clock size={20} className="text-gustito-orange mr-3" />
                                 <div>
                                     <p className="font-semibold text-white">Lunes - Viernes</p>
-                                    <p className="text-white/80 text-sm">11:00 - 23:00</p>
+                                    <p className="text-white/80 text-sm">12:00 - 21:00</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
                                 <Clock size={20} className="text-gustito-orange mr-3" />
                                 <div>
-                                    <p className="font-semibold text-white">Sábado - Domingo</p>
-                                    <p className="text-white/80 text-sm">12:00 - 00:00</p>
+                                    <p className="font-semibold text-white">Sábado</p>
+                                    <p className="text-white/80 text-sm">12:30 - 21:00</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center">
+                                <Clock size={20} className="text-gustito-orange mr-3" />
+                                <div>
+                                    <p className="font-semibold text-white">Domingo</p>
+                                    <p className="text-white/80 text-sm">12:30 - 17:00</p>
                                 </div>
                             </div>
                             <div className="mt-6 p-4 bg-gustito-orange/20 rounded-xl border border-gustito-orange/30">

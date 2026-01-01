@@ -178,7 +178,7 @@ export default function NewsCarousel() {
                                             {/* Image */}
                                             <div className="relative h-48 overflow-hidden">
                                                 <Image
-                                                    src={noticia.imagen || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop'}
+                                                    src={noticia.imagen || '/imagenes/noticia_sin_imagen.svg'}
                                                     alt={noticia.titulo}
                                                     fill
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

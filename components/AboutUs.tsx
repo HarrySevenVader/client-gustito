@@ -105,15 +105,15 @@ export default function AboutUs() {
                         </div>
 
                         {/* Content */}
-                        <div className="space-y-8">
+                        <div>
                             <h3
-                                className="text-3xl md:text-4xl font-bold text-gustito-dark"
+                                className="text-3xl md:text-4xl font-bold text-gustito-dark mb-8"
                                 style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                             >
                                 Nuestra <span className="text-gustito-green">Esencia</span>
                             </h3>
 
-                            <div className="space-y-5 text-lg text-gustito-dark/80">
+                            <div className="space-y-5 text-lg text-gustito-dark/80 mb-12">
                                 <p>
                                     En <span className="font-semibold text-gustito-orange">El Gustito</span> creemos que una buena
                                     comida no solo se disfruta por su sabor, sino también por la experiencia que la rodea. Nuestro
@@ -133,11 +133,10 @@ export default function AboutUs() {
                             </div>
 
                             {/* Botón para conocer más */}
-                            <div className="pt-6 text-center lg:text-left">
+                            <div className="mt-8 text-center lg:text-left">
                                 <Link href="/nosotros">
                                     <motion.button
-                                        className="px-8 py-4 bg-gradient-to-r from-gustito-orange to-gustito-green text-white font-bold rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                                        style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
+                                        className="px-16 py-5 bg-gustito-orange text-white font-semibold rounded-2xl text-xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[200px]"
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >

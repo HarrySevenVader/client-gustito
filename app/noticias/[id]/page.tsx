@@ -216,36 +216,34 @@ export default function NoticiaDetallePage() {
       <Navbar dark />
       
       {/* Imagen Hero - Full Width */}
-      {noticia.imagen && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        style={{ 
+          position: 'relative',
+          width: '100%',
+          height: '70vh',
+          minHeight: '500px',
+          marginTop: '60px'
+        }}
+      >
+        <Image
+          src={noticia.imagen || '/imagenes/noticia_sin_imagen.svg'}
+          alt={noticia.titulo}
+          fill
           style={{ 
-            position: 'relative',
-            width: '100%',
-            height: '70vh',
-            minHeight: '500px',
-            marginTop: '60px'
+            objectFit: 'cover',
+            objectPosition: 'center'
           }}
-        >
-          <Image
-            src={noticia.imagen}
-            alt={noticia.titulo}
-            fill
-            style={{ 
-              objectFit: 'cover',
-              objectPosition: 'center'
-            }}
-            priority
-          />
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)'
-          }} />
-        </motion.div>
-      )}
+          priority
+        />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)'
+        }} />
+      </motion.div>
 
       {/* Contenido del Artículo - Full Width con padding interno */}
       <motion.article

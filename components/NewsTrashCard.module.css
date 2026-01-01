@@ -192,6 +192,46 @@
   }
 }
 
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .imageContainer {
+    height: 140px;
+  }
+
+  .content {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 0.9rem;
+    min-height: auto;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    min-height: auto;
+  }
+
+  .date {
+    font-size: 0.7rem;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .button {
+    padding: 7px 12px;
+    font-size: 0.8rem;
+  }
+}
+
 /* Dark mode styles */
 .card.dark {
   background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);

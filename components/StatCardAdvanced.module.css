@@ -105,6 +105,44 @@
   line-height: 1;
 }
 
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .card {
+    padding: 16px;
+  }
+
+  .header {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .iconContainer {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.7rem;
+  }
+
+  .value {
+    font-size: 1.6rem;
+  }
+
+  .trend {
+    font-size: 0.75rem;
+  }
+
+  .trendLabel {
+    font-size: 0.7rem;
+  }
+}
+
 .info {
   flex: 1;
 }

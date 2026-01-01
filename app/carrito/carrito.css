@@ -14,6 +14,13 @@
   flex: 1 0 auto;
 }
 
+/* Responsive móvil */
+@media (max-width: 640px) {
+  .carrito-container {
+    padding: 5rem 0.75rem 2rem;
+  }
+}
+
 /* Empty State */
 .carrito-empty {
   display: flex;
@@ -63,6 +70,13 @@
   font-weight: 700;
   color: #2E2E2E;
   margin: 0;
+}
+
+/* Responsive título móvil */
+@media (max-width: 640px) {
+  .carrito-header h1 {
+    font-size: 1.75rem;
+  }
 }
 
 /* Información de Sucursal */
@@ -451,8 +465,23 @@
 
 @media (max-width: 768px) {
   .carrito-item {
-    grid-template-columns: 80px 1fr;
-    gap: 12px;
+    grid-template-columns: 90px 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .carrito-item-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .carrito-item-info h3 {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .carrito-item-desc {
+    font-size: 0.85rem;
   }
 
   .carrito-item-price,
@@ -469,5 +498,62 @@
 
   .carrito-header h1 {
     font-size: 2rem;
+  }
+}
+
+/* Responsive móvil pequeño */
+@media (max-width: 640px) {
+  .carrito-item {
+    grid-template-columns: 85px 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .carrito-item-image {
+    width: 85px;
+    height: 85px;
+    border-radius: 10px;
+  }
+
+  .carrito-item-info h3 {
+    font-size: 0.95rem;
+  }
+
+  .carrito-item-desc {
+    font-size: 0.8rem;
+  }
+
+  .carrito-item-category {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+
+  .carrito-item-price .price {
+    font-size: 1rem;
+  }
+
+  .carrito-item-quantity {
+    gap: 10px;
+    padding: 6px 10px;
+  }
+
+  .qty-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .qty-value {
+    min-width: 28px;
+    font-size: 0.95rem;
+  }
+
+  .carrito-sucursal-info {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .carrito-btn-change-sucursal {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }

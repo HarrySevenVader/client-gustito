@@ -112,7 +112,7 @@ export default function MenuPage() {
                             nombre: comida.nombre_comida,
                             descripcion: comida.descripcion,
                             categoria_id: comida.categoria_id,
-                            imagen_url: comida.imagen_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop',
+                            imagen_url: comida.imagen_url || '/imagenes/producto_sin_imagen.svg',
                             precio: comida.precio_final || comida.precio, // Usar precio_final si existe
                             activo: comida.activo,
                             sucursales: comida.sucursales || [], // Array de IDs de sucursales desde backend

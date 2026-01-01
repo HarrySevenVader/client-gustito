@@ -131,6 +131,7 @@
   
   .statsGrid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .dateInfo {
@@ -139,12 +140,52 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 0;
+  }
+
+  .header {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
   .title {
-    font-size: 22px;
+    font-size: 1.5rem;
   }
   
   .subtitle {
-    font-size: 13px;
+    font-size: 0.85rem;
+  }
+
+  .dateInfo {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .date {
+    font-size: 0.85rem;
+  }
+
+  .statsGrid {
+    gap: 12px;
+  }
+
+  .bottomGrid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.35rem;
+  }
+  
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .dateInfo {
+    padding: 6px 10px;
   }
 }

@@ -26,7 +26,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
                     <h1
-                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight"
+                        className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 leading-tight px-2"
                         style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                     >
                         Sabores que te dan un{' '}
@@ -35,7 +35,7 @@ export default function Hero() {
                 </motion.div>
 
                 <motion.p
-                    className="text-xl sm:text-2xl md:text-3xl text-white/90 mb-12 max-w-3xl text-center"
+                    className="text-base sm:text-xl md:text-2xl lg:text-3xl text-white/90 mb-12 sm:mb-16 max-w-3xl text-center px-4"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
@@ -45,20 +45,20 @@ export default function Hero() {
 
                 {/* CTA Buttons */}
                 <motion.div
-                    className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                    className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-center mt-4 w-full px-4 sm:px-0"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
                     <a
                         href="#menu"
-                        className="px-14 py-6 bg-gustito-orange text-white text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
+                        className="px-10 sm:px-14 md:px-16 py-4 sm:py-5 bg-gustito-orange text-white text-base sm:text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto min-w-[200px] max-w-[300px]"
                     >
                         Ver Carta
                     </a>
                     <a
                         href="#sucursales"
-                        className="px-14 py-6 bg-transparent border-2 border-white text-white text-xl font-semibold rounded-2xl hover:bg-white hover:text-gustito-orange transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto"
+                        className="px-10 sm:px-14 md:px-16 py-4 sm:py-5 bg-gustito-orange text-white text-base sm:text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto min-w-[200px] max-w-[300px]"
                     >
                         Sucursales
                     </a>

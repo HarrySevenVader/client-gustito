@@ -181,6 +181,45 @@
   }
 }
 
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .imageContainer {
+    height: 150px;
+  }
+
+  .content {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 0.95rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .date {
+    font-size: 0.7rem;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .button {
+    padding: 7px 12px;
+    font-size: 0.8rem;
+  }
+}
+
 /* Modo Oscuro */
 .card.dark {
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);

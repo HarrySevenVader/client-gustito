@@ -15,10 +15,24 @@
   flex: 1 0 auto;
 }
 
+/* Responsive para móvil */
+@media (max-width: 640px) {
+  .menu-container {
+    padding: 5rem 0.75rem 0;
+  }
+}
+
 /* Hero */
 .menu-hero { text-align: center; padding-top: 1.75rem; margin-bottom: 2.75rem; }
 .menu-hero h1 { font-family: 'Baloo 2','Poppins',sans-serif; font-weight: 700; line-height:1.1; letter-spacing:-0.5px; margin-bottom: 1rem; }
 .menu-hero p { max-width:780px; margin:0 auto; font-size:1.05rem; color:#555; line-height:1.5; }
+
+/* Responsive Hero móvil */
+@media (max-width: 640px) {
+  .menu-hero { padding-top: 1rem; margin-bottom: 1.5rem; }
+  .menu-hero h1 { font-size: 1.75rem; letter-spacing: -0.3px; }
+  .menu-hero p { font-size: 0.9rem; padding: 0 0.5rem; }
+}
 
 /* Filtros */
 .filters-panel {
@@ -29,10 +43,59 @@
   padding:1.75rem 2rem 2rem;
   position:relative;
 }
+
+/* Responsive filtros móvil */
+@media (max-width: 640px) {
+  .filters-panel {
+    border-radius: 16px;
+    padding: 1.25rem 1rem 1.5rem;
+  }
+  .filters-panel .filters-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .filters-panel .filters-header h2 {
+    font-size: 1.3rem;
+  }
+  .filters-panel .filters-header h2::after {
+    display: none;
+  }
+}
 .filters-panel h2 { font-family:'Baloo 2','Poppins',sans-serif; }
 .filters-panel .filters-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; gap:1rem; flex-wrap:wrap; }
 .filters-panel .filters-header h2 { margin:0; font-size:1.7rem; font-weight:700; color:#2E2E2E; display:flex; align-items:center; gap:.65rem; }
 .filters-panel .filters-header h2::after { content:''; flex:1 1 auto; height:3px; background:linear-gradient(90deg,var(--gustito-orange,#F57C00),rgba(245,124,0,0.15)); border-radius:2px; }
+.menu-grid { margin-top:2rem; display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+
+/* Responsive grid móvil */
+@media (max-width: 640px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Tarjeta */
+.menu-card {
+  background:#fff;
+  border:1px solid #e6e6e6;
+  border-radius:20px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  transition:box-shadow .35s, transform .35s;
+}
+.menu-card:hover { box-shadow:0 10px 26px -4px rgba(0,0,0,.18); transform:translateY(-6px); }
 
 .filters-panel label { font-size:.75rem; font-weight:600; letter-spacing:.4px; text-transform:uppercase; color:#444; }
 .filters-panel input,
