@@ -70,7 +70,7 @@ export default function DashboardPage() {
             const fechaProducto = p.updated_at || p.created_at;
             if (fechaProducto) {
               activityList.push({
-                id: `product-${p.id_comida}`,
+                id: p.id_comida,
                 type: 'product',
                 title: 'Producto actualizado',
                 description: p.nombre_comida,
@@ -104,7 +104,7 @@ export default function DashboardPage() {
         console.log(`✅ Consultas recientes encontradas: ${dataRecientes.data.length}`);
         dataRecientes.data.forEach((c: any) => {
           activityList.push({
-            id: `consulta-${c.id_consulta}`,
+            id: c.id_consulta,
             type: 'consulta',
             title: 'Nueva consulta recibida',
             description: `${c.nombre} ${c.apellido} - ${c.mensaje.substring(0, 45)}...`,
@@ -134,7 +134,7 @@ export default function DashboardPage() {
             const fechaNoticia = n.fecha_publicacion || n.fec_creacion;
             if (fechaNoticia) {
               activityList.push({
-                id: `noticia-${n.id_noticia}`,
+                id: n.id_noticia,
                 type: 'noticia',
                 title: 'Noticia publicada',
                 description: n.titulo,

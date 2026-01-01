@@ -5,12 +5,13 @@ import styles from './ActivityFeed.module.css';
 import { useTheme } from '../contexts/ThemeContext';
 
 export interface Activity {
-  id: number;
+  id: string | number;
   type: 'product' | 'consulta' | 'noticia';
   title: string;
   description: string;
   timestamp: string;
   icon: string;
+  rawDate?: Date;
 }
 
 interface ActivityFeedProps {

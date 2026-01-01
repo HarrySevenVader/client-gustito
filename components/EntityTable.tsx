@@ -4,7 +4,21 @@ import React from 'react'
 
 type Row = { id: string | number; title: string; date?: string }
 
-export default function EntityTable({ title, rows, onEdit, onDelete }: { title: string; rows: Row[]; onEdit?: (id: number | string)=>void; onDelete?: (id: number | string)=>void }) {
+export default function EntityTable({ 
+  title, 
+  rows, 
+  onEdit, 
+  onDelete,
+  editLabel = 'Editar',
+  deleteLabel = 'Borrar'
+}: { 
+  title: string; 
+  rows: Row[]; 
+  onEdit?: (id: number | string)=>void; 
+  onDelete?: (id: number | string)=>void;
+  editLabel?: string;
+  deleteLabel?: string;
+}) {
   return (
     <div className={styles.tableWrap}>
       <h3 style={{ marginTop: 0 }}>{title}</h3>
@@ -24,8 +38,8 @@ export default function EntityTable({ title, rows, onEdit, onDelete }: { title: 
               <td className={styles.td}>{r.title}</td>
               <td className={styles.td}>{r.date ?? '-'}</td>
               <td className={styles.td}>
-                <button className={styles.actionBtn} style={{ marginRight: 8 }} onClick={() => onEdit?.(r.id)}>Editar</button>
-                <button className={styles.actionBtn + ' ' + styles.danger} style={{ marginLeft: 4 }} onClick={() => onDelete?.(r.id)}>Borrar</button>
+                <button className={styles.actionBtn} style={{ marginRight: 8 }} onClick={() => onEdit?.(r.id)}>{editLabel}</button>
+                <button className={styles.actionBtn + ' ' + styles.danger} style={{ marginLeft: 4 }} onClick={() => onDelete?.(r.id)}>{deleteLabel}</button>
               </td>
             </tr>
           ))}
