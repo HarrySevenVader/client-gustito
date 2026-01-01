@@ -7,6 +7,7 @@ import { useActivity } from '../contexts/ActivityContext';
 import { useTheme } from '../contexts/ThemeContext';
 import styles from './LoginForm.module.css';
 import { supabase } from '@/lib/supabaseClient';
+import { API_URL } from '../lib/config';
 
 interface NewsFormModalProps {
   isOpen: boolean;

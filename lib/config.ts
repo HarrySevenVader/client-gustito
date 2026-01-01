@@ -1,6 +1,7 @@
 /**
  * Configuración centralizada de la API
- * En producción, asegúrate de configurar NEXT_PUBLIC_API_URL en Vercel
+ * En producción, usa la variable de entorno NEXT_PUBLIC_API_URL
+ * Backend en Google Cloud Run: https://back-gustito-926848134800.us-central1.run.app
  */
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 

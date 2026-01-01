@@ -10,6 +10,7 @@ import { useActivity } from '../../../../contexts/ActivityContext';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '../../../../lib/config';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -37,7 +38,7 @@ export default function ProductsPage() {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/comidas');
+      const response = await fetch(`${API_URL}/api/comidas`);
       const data = await response.json();
 
       console.log('Datos recibidos del backend:', data);
@@ -100,7 +101,7 @@ export default function ProductsPage() {
       const producto = productos.find(p => p.id === id);
       const nombreProducto = producto?.nombre || 'Producto';
       
-      const response = await fetch(`http://localhost:4000/api/comidas/${id}`, {
+      const response = await fetch(`${API_URL}/api/comidas/${id}`, {
         method: 'DELETE',
       });
 

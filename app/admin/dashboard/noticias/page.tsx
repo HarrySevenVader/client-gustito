@@ -10,6 +10,7 @@ import { useActivity } from '../../../../contexts/ActivityContext';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '../../../../lib/config';
 
 const ITEMS_POR_PAGINA = 6;
 
@@ -37,7 +38,7 @@ export default function NoticiasPage() {
   const fetchNoticias = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/noticias');
+      const response = await fetch(`${API_URL}/api/noticias`);
       const data = await response.json();
 
       console.log('📰 Respuesta API noticias:', data);
@@ -59,7 +60,7 @@ export default function NoticiasPage() {
 
   const fetchLimite = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/noticias/limite');
+      const response = await fetch(`${API_URL}/api/noticias/limite`);
       const data = await response.json();
       if (data.ok) {
         setLimiteInfo(data.data);
@@ -94,7 +95,7 @@ export default function NoticiasPage() {
       const noticia = noticias.find(n => n.id_noticia === id);
       const tituloNoticia = noticia?.titulo || 'Noticia';
       
-      const response = await fetch(`http://localhost:4000/api/noticias/${id}`, {
+      const response = await fetch(`${API_URL}/api/noticias/${id}`, {
         method: 'DELETE',
       });
 

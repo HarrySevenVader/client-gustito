@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import supabase from '../lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
+import { API_URL } from '../lib/config'
 
 interface SearchResult {
   id: number
@@ -93,7 +94,7 @@ export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: 
 
     try {
       // Buscar productos
-      const productosResponse = await fetch('http://localhost:4000/api/comidas')
+      const productosResponse = await fetch(`${API_URL}/api/comidas`)
       if (productosResponse.ok) {
         const productosData = await productosResponse.json()
         if (productosData.ok && productosData.data) {
@@ -116,7 +117,7 @@ export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: 
       }
 
       // Buscar consultas
-      const consultasResponse = await fetch('http://localhost:4000/api/consultas')
+      const consultasResponse = await fetch(`${API_URL}/api/consultas`)
       if (consultasResponse.ok) {
         const consultasData = await consultasResponse.json()
         if (consultasData.ok && consultasData.data) {

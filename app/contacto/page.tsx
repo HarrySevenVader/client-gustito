@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import { toastSuccess, toastError } from '@/components/swalHelper';
 import './contacto.css';
+import { API_URL } from '@/lib/config';
 
 export default function ContactoPage() {
     const [formData, setFormData] = useState({
@@ -130,7 +131,7 @@ export default function ContactoPage() {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:4000/api/consultas', {
+            const response = await fetch(`${API_URL}/api/consultas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -5,6 +5,7 @@ import styles from './adminStyles.module.css';
 import { toastSuccess, toastError } from './swalHelper';
 import { useActivity } from '../contexts/ActivityContext';
 import supabase from '../lib/supabaseClient';
+import { API_URL } from '../lib/config';
 
 interface ProductFormData {
   nombre_comida: string;
@@ -62,7 +63,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
       // Cargar producto completo desde el backend para obtener sucursales
       const cargarProducto = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/api/comidas/${productId}`);
+          const response = await fetch(`${API_URL}/api/comidas/${productId}`);
           const data = await response.json();
           
           if (data.ok && data.data) {
@@ -117,7 +118,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
     const fetchCategorias = async () => {
       try {
         setLoadingCategorias(true);
-        const response = await fetch('http://localhost:4000/api/categorias');
+        const response = await fetch(`${API_URL}/api/categorias`);
         const data = await response.json();
         
         if (data.ok && data.data && data.data.length > 0) {
@@ -143,7 +144,7 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
     const fetchSucursales = async () => {
       try {
         setLoadingSucursales(true);
-        const response = await fetch('http://localhost:4000/api/sucursales');
+        const response = await fetch(`${API_URL}/api/sucursales`);
         const data = await response.json();
         
         if (data.ok && data.data) {
@@ -283,8 +284,8 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
       }
 
       const url = editMode && productId 
-        ? `http://localhost:4000/api/comidas/${productId}` 
-        : 'http://localhost:4000/api/comidas';
+        ? `${API_URL}/api/comidas/${productId}` 
+        : `${API_URL}/api/comidas`;
       const method = editMode ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

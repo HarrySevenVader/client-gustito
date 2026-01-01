@@ -7,6 +7,7 @@ import { Calendar, ArrowLeft, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import { API_URL } from '@/lib/config';
 
 interface Noticia {
   id_noticia: number;
@@ -29,7 +30,7 @@ export default function NoticiaDetallePage() {
     const fetchNoticia = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:4000/api/noticias/${params.id}`);
+        const response = await fetch(`${API_URL}/api/noticias/${params.id}`);
         const data = await response.json();
 
         if (data.ok && data.data) {

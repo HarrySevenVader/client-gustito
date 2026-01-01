@@ -7,6 +7,7 @@ import ActivityFeed, { Activity } from '../../../components/ActivityFeed';
 import QuickStats from '../../../components/QuickStats';
 import { useActivity } from '../../../contexts/ActivityContext';
 import styles from './dashboard.module.css';
+import { API_URL } from '../../../lib/config';
 
 interface DashboardStats {
   totalProductos: number;
@@ -83,7 +84,7 @@ export default function DashboardPage() {
       }
 
       // Cargar consultas
-      const resEstadisticas = await fetch('http://localhost:4000/api/consultas/estadisticas');
+      const resEstadisticas = await fetch(`${API_URL}/api/consultas/estadisticas`);
       const dataEstadisticas = await resEstadisticas.json();
       
       console.log('💬 Respuesta consultas estadísticas:', dataEstadisticas);
@@ -95,7 +96,7 @@ export default function DashboardPage() {
       }
 
       // Cargar TODAS las consultas para ordenarlas por fecha real
-      const resRecientes = await fetch('http://localhost:4000/api/consultas/recientes');
+      const resRecientes = await fetch(`${API_URL}/api/consultas/recientes`);
       const dataRecientes = await resRecientes.json();
       
       console.log('💬 Respuesta consultas recientes:', dataRecientes);
@@ -118,7 +119,7 @@ export default function DashboardPage() {
       // Cargar noticias
       let totalNoticias = 0;
       try {
-        const resNoticias = await fetch('http://localhost:4000/api/noticias');
+        const resNoticias = await fetch(`${API_URL}/api/noticias`);
         const dataNoticias = await resNoticias.json();
         
         console.log('📰 Respuesta noticias:', dataNoticias);

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from './SucursalSelector.module.css';
+import { API_URL } from '../lib/config';
 
 interface Sucursal {
   id_sucursal: number;
@@ -34,7 +35,7 @@ export default function SucursalSelector({ isOpen, onClose, onSelect, currentSuc
   const fetchSucursales = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/sucursales');
+      const response = await fetch(`${API_URL}/api/sucursales`);
       const data = await response.json();
 
       if (data.ok && data.data) {

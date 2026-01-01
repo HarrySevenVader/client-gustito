@@ -6,6 +6,7 @@ import QueryList from '../../../../components/QueryList';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '../../../../lib/config';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -27,7 +28,7 @@ export default function QueriesPage() {
   const fetchConsultas = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/consultas');
+      const response = await fetch(`${API_URL}/api/consultas`);
       const data = await response.json();
 
       if (data.ok && data.data) {
@@ -49,7 +50,7 @@ export default function QueriesPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/consultas/${id}`, {
+      const response = await fetch(`${API_URL}/api/consultas/${id}`, {
         method: 'DELETE'
       });
 

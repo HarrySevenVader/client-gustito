@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:4000/api';
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_BASE = `${BACKEND_URL}/api`;
 
 // GET - Listar todas las comidas
 export async function GET() {
   try {
-    const response = await fetch(`${BACKEND_URL}/comidas`, {
+    const response = await fetch(`${API_BASE}/comidas`, {
       cache: 'no-store',
     });
 

@@ -10,6 +10,7 @@ import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTheme } from '../../../../../contexts/ThemeContext';
+import { API_URL } from '../../../../../lib/config';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -35,7 +36,7 @@ export default function PapeleraPage() {
   const fetchProductosEliminados = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/comidas/papelera');
+      const response = await fetch(`${API_URL}/api/comidas/papelera`);
       const data = await response.json();
 
       if (data.ok && data.data) {
@@ -72,7 +73,7 @@ export default function PapeleraPage() {
       const producto = productos.find(p => p.id === id);
       const nombreProducto = producto?.nombre || 'Producto';
       
-      const response = await fetch(`http://localhost:4000/api/comidas/${id}/restaurar`, {
+      const response = await fetch(`${API_URL}/api/comidas/${id}/restaurar`, {
         method: 'PATCH',
       });
 
@@ -102,7 +103,7 @@ export default function PapeleraPage() {
 
   const handleDeletePermanently = async (id: number | string) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/comidas/${id}/permanente`, {
+      const response = await fetch(`${API_URL}/api/comidas/${id}/permanente`, {
         method: 'DELETE',
       });
 

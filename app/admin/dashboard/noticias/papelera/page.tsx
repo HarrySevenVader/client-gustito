@@ -10,6 +10,7 @@ import styles from '../../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTheme } from '../../../../../contexts/ThemeContext';
+import { API_URL } from '../../../../../lib/config';
 
 const ITEMS_POR_PAGINA = 6;
 
@@ -34,7 +35,7 @@ export default function PapeleraNoticiasPage() {
   const fetchNoticiasEliminadas = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/api/noticias/papelera');
+      const response = await fetch(`${API_URL}/api/noticias/papelera`);
       const data = await response.json();
 
       console.log('🗑️ Respuesta papelera:', data);
@@ -64,7 +65,7 @@ export default function PapeleraNoticiasPage() {
       const noticia = noticias.find(n => n.id_noticia === id);
       const tituloNoticia = noticia?.titulo || 'Noticia';
       
-      const response = await fetch(`http://localhost:4000/api/noticias/${id}/restaurar`, {
+      const response = await fetch(`${API_URL}/api/noticias/${id}/restaurar`, {
         method: 'POST',
       });
 
@@ -94,7 +95,7 @@ export default function PapeleraNoticiasPage() {
 
   const handleDeletePermanently = async (id: number | string) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/noticias/${id}/permanente`, {
+      const response = await fetch(`${API_URL}/api/noticias/${id}/permanente`, {
         method: 'DELETE',
       });
 
