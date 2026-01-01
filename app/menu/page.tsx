@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ErrorState from '@/components/ErrorState';
+import { API_URL } from '@/lib/config';
 import './menu.css';
 import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
@@ -22,13 +24,19 @@ export default function MenuPage() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [sucursales, setSucursales] = useState<Sucursal[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
 
     // Cargar categorías desde el backend
     useEffect(() => {
         const fetchCategorias = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/categorias');
+                const response = await fetch(`${API_URL}/api/categorias`);
+                
+                if (!response.ok) {
+                    throw new Error('Error al cargar categorías');
+                }
+                
                 const data = await response.json();
 
                 if (data.ok && data.data) {
@@ -39,10 +47,11 @@ export default function MenuPage() {
                     }));
                     setCategorias(categoriasAPI);
                 } else {
-                    console.error('Error al cargar categorías:', data.mensaje);
+                    throw new Error('Datos inválidos');
                 }
             } catch (error) {
                 console.error('Error al cargar categorías:', error);
+                setError(true);
             }
         };
 
@@ -53,7 +62,12 @@ export default function MenuPage() {
     useEffect(() => {
         const fetchSucursales = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/sucursales');
+                const response = await fetch(`${API_URL}/api/sucursales`);
+                
+                if (!response.ok) {
+                    throw new Error('Error al cargar sucursales');
+                }
+                
                 const data = await response.json();
 
                 if (data.ok && data.data) {
@@ -67,10 +81,11 @@ export default function MenuPage() {
                     }));
                     setSucursales(sucursalesAPI);
                 } else {
-                    console.error('Error al cargar sucursales:', data.mensaje);
+                    throw new Error('Datos inválidos');
                 }
             } catch (error) {
                 console.error('Error al cargar sucursales:', error);
+                setError(true);
             }
         };
 
@@ -82,14 +97,17 @@ export default function MenuPage() {
         const fetchComidas = async () => {
             try {
                 setLoading(true);
+                setError(false);
                 
                 // 1. Obtener IDs de productos en papelera
                 let productosEnPapeleraIds: number[] = [];
                 try {
-                    const papeleraResponse = await fetch('http://localhost:4000/api/comidas/papelera');
-                    const papeleraData = await papeleraResponse.json();
-                    if (papeleraData.ok && papeleraData.data) {
-                        productosEnPapeleraIds = papeleraData.data.map((p: any) => p.id_comida);
+                    const papeleraResponse = await fetch(`${API_URL}/api/comidas/papelera`);
+                    if (papeleraResponse.ok) {
+                        const papeleraData = await papeleraResponse.json();
+                        if (papeleraData.ok && papeleraData.data) {
+                            productosEnPapeleraIds = papeleraData.data.map((p: any) => p.id_comida);
+                        }
                     }
                 } catch (error) {
                     console.error('Error al cargar papelera:', error);
@@ -97,10 +115,15 @@ export default function MenuPage() {
                 
                 // 2. Obtener todos los productos del menú
                 const url = filters.sucursal_id 
-                    ? `http://localhost:4000/api/menu?sucursal_id=${filters.sucursal_id}`
-                    : 'http://localhost:4000/api/menu';
+                    ? `${API_URL}/api/menu?sucursal_id=${filters.sucursal_id}`
+                    : `${API_URL}/api/menu`;
                 
                 const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('Error al cargar menú');
+                }
+                
                 const data = await response.json();
 
                 if (data.ok && data.data) {
@@ -119,10 +142,11 @@ export default function MenuPage() {
                         }));
                     setComidas(comidasAPI);
                 } else {
-                    console.error('Error al cargar comidas:', data.mensaje);
+                    throw new Error('Datos inválidos');
                 }
             } catch (error) {
                 console.error('Error al cargar comidas:', error);
+                setError(true);
             } finally {
                 setLoading(false);
             }
@@ -171,6 +195,12 @@ export default function MenuPage() {
     useEffect(() => {
         setPaginaActual(1);
     }, [filters.categoria_id, filters.sucursal_id, filters.search]);
+
+    // Función para reintentar la carga
+    const retryFetch = () => {
+        setError(false);
+        window.location.reload();
+    };
 
     // Calcular productos paginados
     const totalPaginas = Math.ceil(filteredComidas.length / PRODUCTOS_POR_PAGINA);
@@ -233,6 +263,12 @@ export default function MenuPage() {
                                     Cargando menú...
                                 </p>
                             </div>
+                        ) : error ? (
+                            <ErrorState 
+                                type="offline"
+                                message="No se puede conectar con el servidor para cargar el menú. Por favor, intenta más tarde."
+                                onRetry={retryFetch}
+                            />
                         ) : (
                             <>
                                 <MenuGrid comidas={comidasPaginadas} />

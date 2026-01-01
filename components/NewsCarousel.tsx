@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Newspaper, Calendar } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import ErrorState from './ErrorState';
+import { API_URL } from '../lib/config';
 
 interface Noticia {
     id_noticia: number;
@@ -20,25 +22,36 @@ export default function NewsCarousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const router = useRouter();
 
     // Cargar noticias activas desde el backend
-    useEffect(() => {
-        const fetchNoticias = async () => {
-            try {
-                const response = await fetch('http://localhost:4000/api/noticias/activas');
-                const data = await response.json();
-
-                if (data.ok && data.data) {
-                    setNoticias(data.data);
-                }
-            } catch (error) {
-                console.error('Error al cargar noticias:', error);
-            } finally {
-                setLoading(false);
+    const fetchNoticias = async () => {
+        setLoading(true);
+        setError(false);
+        try {
+            const response = await fetch(`${API_URL}/api/noticias/activas`);
+            
+            if (!response.ok) {
+                throw new Error('Error al cargar noticias');
             }
-        };
+            
+            const data = await response.json();
 
+            if (data.ok && data.data) {
+                setNoticias(data.data);
+            } else {
+                throw new Error('Datos inválidos');
+            }
+        } catch (error) {
+            console.error('Error al cargar noticias:', error);
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchNoticias();
     }, []);
 
@@ -96,8 +109,34 @@ export default function NewsCarousel() {
         router.push(`/noticias/${id}`);
     };
 
-    if (loading || noticias.length === 0) {
-        return null; // O mostrar un skeleton loader
+    if (loading) {
+        return (
+            <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
+                <div className="max-w-7xl mx-auto px-4">
+                    <ErrorState 
+                        type="offline"
+                        message="No se pueden cargar las noticias en este momento."
+                        onRetry={fetchNoticias}
+                    />
+                </div>
+            </section>
+        );
+    }
+
+    if (noticias.length === 0) {
+        return null;
     }
 
     return (

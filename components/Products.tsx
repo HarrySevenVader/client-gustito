@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Utensils } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import ErrorState from './ErrorState';
+import { API_URL } from '../lib/config';
 
 interface Categoria {
     id: number;
@@ -27,20 +29,26 @@ export default function Products() {
     const [productos, setProductos] = useState<Comida[]>([]);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Cargar productos y categorías en paralelo
-                const [menuRes, categoriasRes] = await Promise.all([
-                    fetch('http://localhost:4000/api/menu'),
-                    fetch('http://localhost:4000/api/categorias')
-                ]);
+    const fetchData = async () => {
+        setLoading(true);
+        setError(false);
+        try {
+            // Cargar productos y categorías en paralelo
+            const [menuRes, categoriasRes] = await Promise.all([
+                fetch(`${API_URL}/api/menu`),
+                fetch(`${API_URL}/api/categorias`)
+            ]);
 
-                const menuData = await menuRes.json();
-                const categoriasData = await categoriasRes.json();
+            if (!menuRes.ok || !categoriasRes.ok) {
+                throw new Error('Error al cargar datos');
+            }
+
+            const menuData = await menuRes.json();
+            const categoriasData = await categoriasRes.json();
 
                 if (menuData.ok && menuData.data) {
                     // Filtrar solo productos activos y seleccionar 6 aleatorios
@@ -62,6 +70,8 @@ export default function Products() {
                         .slice(0, MAX_PRODUCTS);
 
                     setProductos(productosAleatorios);
+                } else {
+                    throw new Error('Datos inválidos');
                 }
 
                 if (categoriasData.ok && categoriasData.data) {
@@ -70,14 +80,18 @@ export default function Products() {
                         nombre: cat.nombre_categoria,
                     }));
                     setCategorias(cats);
+                } else {
+                    throw new Error('Datos inválidos');
                 }
             } catch (error) {
                 console.error('Error al cargar productos:', error);
+                setError(true);
             } finally {
                 setLoading(false);
             }
         };
 
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -168,6 +182,12 @@ export default function Products() {
                         <div className="flex justify-center items-center py-20">
                             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
                         </div>
+                    ) : error ? (
+                        <ErrorState 
+                            type="offline"
+                            message="No se puede conectar con el servidor. Por favor, intenta más tarde."
+                            onRetry={fetchData}
+                        />
                     ) : productos.length === 0 ? (
                         <div className="text-center py-20">
                             <p className="text-xl text-gustito-dark/70">No hay productos disponibles</p>
