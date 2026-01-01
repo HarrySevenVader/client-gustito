@@ -18,7 +18,7 @@ interface NewsFormModalProps {
     titulo: string;
     contenido: string;
     imagen: string | null;
-    estado: 'activo' | 'inactivo';
+    estado: 'activo' | 'inactivo' | 'eliminado';
   };
 }
 
@@ -36,7 +36,7 @@ export default function NewsFormModal({
     titulo: '',
     contenido: '',
     imagen: '',
-    estado: 'activo' as 'activo' | 'inactivo',
+    estado: 'activo' as 'activo' | 'inactivo' | 'eliminado',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
