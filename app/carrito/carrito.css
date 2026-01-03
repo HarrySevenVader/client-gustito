@@ -6,13 +6,62 @@
   background: linear-gradient(to bottom, #f8f9fa, #ffffff);
 }
 
+/* Patrón de fondo decorativo diagonal con "Gustito" e iconos de comida */
+.carrito-page::before {
+  content:
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 ";
+  position: fixed;
+  top: -30%;
+  left: -50%;
+  width: 400%;
+  height: 400%;
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.045);
+  transform-origin: center center;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
 .carrito-container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 6rem 1.25rem 3rem;
   width: 100%;
   flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
 }
+
 
 /* Responsive móvil */
 @media (max-width: 640px) {
@@ -117,10 +166,10 @@
 
 .carrito-btn-change-sucursal {
   padding: 8px 16px;
-  background: white;
+  background: #ff6b35;
   border: 2px solid #ff6b35;
   border-radius: 8px;
-  color: #ff6b35;
+  color: white;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -128,10 +177,10 @@
 }
 
 .carrito-btn-change-sucursal:hover {
-  background: #ff6b35;
-  color: white;
+  background: #e85d2b;
+  border-color: #e85d2b;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
 }
 
 /* Content Layout */
@@ -406,21 +455,21 @@
   margin-top: 24px;
 }
 
-/* Override: WhatsApp order button to light navy */
+/* Override: WhatsApp order button (WhatsApp green) */
 .carrito-btn-pagar {
-  background: linear-gradient(90deg, #3B5B8A, #4C6EA8);
-  box-shadow: 0 8px 20px rgba(59, 91, 138, 0.35);
+  background: #25D366;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
 }
 
 .carrito-btn-pagar:hover {
-  background: linear-gradient(90deg, #4C6EA8, #3B5B8A);
-  box-shadow: 0 12px 28px rgba(59, 91, 138, 0.45);
+  background: #1ebe5d;
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.45);
 }
 
 .carrito-btn-continue {
   width: 100%;
-  background: white;
-  color: var(--gustito-orange, #F57C00);
+  background: var(--gustito-orange, #F57C00);
+  color: white;
   border: 2px solid var(--gustito-orange, #F57C00);
   border-radius: 12px;
   padding: 14px 24px;
@@ -432,12 +481,12 @@
 }
 
 .carrito-btn-continue:hover {
-  background: rgba(245, 124, 0, 0.05);
+  background: #e86f00;
 }
 
 .carrito-btn-clear {
-  background: transparent;
-  color: #ef4444;
+  background: #ef4444;
+  color: white;
   border: 2px solid #ef4444;
   border-radius: 12px;
   padding: 10px 20px;
@@ -448,8 +497,8 @@
 }
 
 .carrito-btn-clear:hover {
-  background: #ef4444;
-  color: white;
+  background: #dc2626;
+  border-color: #dc2626;
 }
 
 /* Responsive */

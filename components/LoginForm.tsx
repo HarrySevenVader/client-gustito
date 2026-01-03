@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './LoginForm.module.css'
 import { createClient } from '@supabase/supabase-js'
@@ -17,6 +17,34 @@ export default function LoginForm() {
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+
+  // Verificar si ya hay sesión activa
+  useEffect(() => {
+    const checkSession = () => {
+      const session = localStorage.getItem('supabase_session')
+      if (session) {
+        try {
+          const sessionData = JSON.parse(session)
+          const expiresAt = sessionData.expires_at
+          
+          // Si la sesión no ha expirado, redirigir al dashboard
+          if (expiresAt && Date.now() / 1000 < expiresAt) {
+            router.push('/admin/dashboard')
+          } else {
+            // Sesión expirada, limpiar
+            localStorage.removeItem('supabase_session')
+            document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+          }
+        } catch (error) {
+          // Error al parsear, limpiar sesión
+          localStorage.removeItem('supabase_session')
+          document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+        }
+      }
+    }
+    
+    checkSession()
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -74,8 +102,11 @@ export default function LoginForm() {
         return
       }
 
-      // Guardar sesión y redirigir después de un breve momento
+      // Guardar sesión en localStorage
       localStorage.setItem('supabase_session', JSON.stringify(data.session))
+      
+      // Guardar sesión en cookie para el middleware
+      document.cookie = `supabase_session=${data.session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`
       
       setTimeout(() => {
         router.push('/admin/dashboard')
@@ -139,7 +170,7 @@ export default function LoginForm() {
           className={`${styles.input} ${styles.inputLight}`}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Ingresa tu correo o nombre de usuario"
+          placeholder="Ingresa tu correo"
           autoComplete="username"
         />
 

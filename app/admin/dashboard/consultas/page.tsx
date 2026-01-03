@@ -7,6 +7,7 @@ import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_URL } from '../../../../lib/config';
+import styles from '../../../../components/adminStyles.module.css';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -98,65 +99,23 @@ export default function QueriesPage() {
           <>
             <QueryList rows={consultasPaginadas} onDelete={handleDelete} />
             {totalPaginas > 1 && (
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '1rem',
-                marginTop: '2rem'
-              }}>
+              <div className={styles.paginationContainer}>
                 <button
                   onClick={handlePaginaAnterior}
                   disabled={paginaActual === 1}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '45px',
-                    height: '45px',
-                    borderRadius: '8px',
-                    border: '2px solid #FF6B35',
-                    background: paginaActual === 1 ? '#f5f5f5' : 'white',
-                    color: paginaActual === 1 ? '#ccc' : '#FF6B35',
-                    cursor: paginaActual === 1 ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.3s ease',
-                  }}
+                  className={styles.paginationButton}
                 >
                   <ChevronLeft size={24} />
                 </button>
                 
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minWidth: '70px',
-                  height: '45px',
-                  borderRadius: '8px',
-                  background: '#FF6B35',
-                  color: 'white',
-                  fontSize: '1.1rem',
-                  fontWeight: 'bold',
-                  padding: '0 1rem',
-                }}>
+                <div className={styles.paginationIndicator}>
                   {paginaActual}
                 </div>
 
                 <button
                   onClick={handlePaginaSiguiente}
                   disabled={paginaActual === totalPaginas}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '45px',
-                    height: '45px',
-                    borderRadius: '8px',
-                    border: '2px solid #FF6B35',
-                    background: paginaActual === totalPaginas ? '#f5f5f5' : 'white',
-                    color: paginaActual === totalPaginas ? '#ccc' : '#FF6B35',
-                    cursor: paginaActual === totalPaginas ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.3s ease',
-                  }}
+                  className={styles.paginationButton}
                 >
                   <ChevronRight size={24} />
                 </button>

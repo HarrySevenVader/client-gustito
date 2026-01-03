@@ -11,6 +11,52 @@
   flex-direction: column;
 }
 
+/* Patrón de fondo decorativo diagonal con "Gustito" e iconos de comida */
+.contacto-page::before {
+  content:
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 "
+    "Gustito 🍔 Gustito 🥗 Gustito 🍹 Gustito 🌮 Gustito 🍕 Gustito 🥤 Gustito 🍟 Gustito 🌭 ";
+  position: fixed;
+  top: -30%;
+  left: -50%;
+  width: 400%;
+  height: 400%;
+  font-family: 'Baloo 2', 'Poppins', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.045);
+  transform-origin: center center;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
 .contacto-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -19,6 +65,8 @@
   /* Permite que el contenido crezca y empuje el footer; si el contenido es menor
      a la altura de la pantalla el footer se queda pegado al fondo. */
   flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .contacto-hero {

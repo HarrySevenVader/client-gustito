@@ -39,7 +39,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${dark
                 ? 'bg-gustito-dark shadow-lg'
                 : isScrolled
-                    ? 'bg-white shadow-lg'
+                    ? 'bg-[#7ed321] shadow-lg'
                     : 'bg-transparent'
                 }`}
         >
@@ -76,7 +76,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                 className={`text-xs font-semibold transition-colors duration-300 ${dark
                                     ? 'text-gray-300'
                                     : isScrolled
-                                        ? 'text-gustito-dark'
+                                        ? 'text-white'
                                         : 'text-white'
                                     }`}
                                 style={{ 
@@ -98,7 +98,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                     className={`text-lg font-medium transition-colors duration-300 hover:text-gustito-orange px-2 cursor-pointer ${dark
                                         ? 'text-white'
                                         : isScrolled
-                                            ? 'text-gustito-dark'
+                                            ? 'text-white'
                                             : 'text-white'
                                         }`}
                                     initial={{ opacity: 0, y: -20 }}
@@ -123,7 +123,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                     className={`transition-colors duration-300 hover:text-gustito-orange ${dark
                                         ? 'text-white'
                                         : isScrolled
-                                            ? 'text-gustito-dark'
+                                            ? 'text-white'
                                             : 'text-white'
                                         }`}
                                 />
@@ -141,7 +141,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                 className={`flex items-center gap-2 px-3 py-2 rounded-lg ${dark
                                     ? 'bg-white/10 text-white'
                                     : isScrolled
-                                        ? 'bg-gray-100 text-gustito-dark'
+                                        ? 'bg-white/20 text-white'
                                         : 'bg-white/10 text-white'
                                     }`}
                                 initial={{ opacity: 0, y: -20 }}
@@ -166,7 +166,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                                     className={`transition-colors duration-300 ${dark
                                         ? 'text-white'
                                         : isScrolled
-                                            ? 'text-gustito-dark'
+                                            ? 'text-white'
                                             : 'text-white'
                                         }`}
                                 />
@@ -183,7 +183,7 @@ export default function Navbar({ dark = false }: NavbarProps) {
                             className={`p-2 rounded-lg transition-colors duration-300 ${dark
                                 ? 'text-white hover:bg-white/10'
                                 : isScrolled
-                                    ? 'text-gustito-dark hover:bg-gray-100'
+                                    ? 'text-white hover:bg-white/10'
                                     : 'text-white hover:bg-white/10'
                                 }`}
                             onClick={() => setIsOpen(!isOpen)}

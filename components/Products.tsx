@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Utensils } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import ErrorState from './ErrorState';
 import { API_URL } from '../lib/config';
 
@@ -26,6 +27,7 @@ interface Comida {
 const MAX_PRODUCTS = 6; // Cantidad máxima de productos a mostrar
 
 export default function Products() {
+    const router = useRouter();
     const [productos, setProductos] = useState<Comida[]>([]);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [loading, setLoading] = useState(true);
@@ -237,6 +239,7 @@ export default function Products() {
                                                 exit={{ opacity: 0, x: -50 }}
                                                 transition={{ duration: 0.4, delay: index * 0.1 }}
                                                 whileHover={{ y: -8 }}
+                                                onClick={() => router.push('/menu')}
                                             >
                                                 {/* Product Image */}
                                                 <div className="relative h-56 overflow-hidden">

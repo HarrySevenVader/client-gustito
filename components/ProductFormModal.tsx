@@ -261,6 +261,10 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
       toastError('El precio debe ser mayor a 0');
       return;
     }
+    if (formData.precio > 25000) {
+      toastError('El precio no puede ser mayor a $25.000');
+      return;
+    }
     if (formData.sucursales.length === 0) {
       toastError('Selecciona al menos una sucursal');
       return;
@@ -407,8 +411,14 @@ export default function ProductFormModal({ isOpen, onClose, onSuccess, editMode 
                 id="precio"
                 type="number"
                 value={formData.precio || ''}
-                onChange={(e) => setFormData({ ...formData, precio: parseFloat(e.target.value) || 0 })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length <= 5) {
+                    setFormData({ ...formData, precio: parseFloat(value) || 0 });
+                  }
+                }}
                 min="0"
+                max="25000"
                 step="10"
                 placeholder="Ingrese el precio"
                 required

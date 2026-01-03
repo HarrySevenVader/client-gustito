@@ -262,7 +262,7 @@ export default function CarritoPage() {
             </div>
 
             <button onClick={handlePagar} className="carrito-btn-pagar">
-              💬 Enviar pedido por WhatsApp
+              Enviar pedido por WhatsApp
             </button>
 
             <Link href="/menu">

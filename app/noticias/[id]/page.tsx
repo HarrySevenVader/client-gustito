@@ -273,30 +273,26 @@ export default function NoticiaDetallePage() {
               alignItems: 'center',
               gap: '8px',
               padding: '12px 24px',
-              background: 'white',
-              border: '2px solid #e0e0e0',
+              background: '#FF6B35',
+              border: 'none',
               borderRadius: '12px',
-              color: '#2c3e50',
+              color: 'white',
               cursor: 'pointer',
               fontSize: '0.95rem',
               fontWeight: '600',
               marginBottom: '24px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              boxShadow: '0 2px 8px rgba(255, 107, 53, 0.3)',
               transition: 'all 0.3s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f5f5f5';
-              e.currentTarget.style.borderColor = '#FF6B35';
-              e.currentTarget.style.color = '#FF6B35';
+              e.currentTarget.style.background = '#E67000';
               e.currentTarget.style.transform = 'translateX(-5px)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.2)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'white';
-              e.currentTarget.style.borderColor = '#e0e0e0';
-              e.currentTarget.style.color = '#2c3e50';
+              e.currentTarget.style.background = '#FF6B35';
               e.currentTarget.style.transform = 'translateX(0)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 107, 53, 0.3)';
             }}
           >
             <ArrowLeft size={20} />

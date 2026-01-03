@@ -71,15 +71,9 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
 
   if (rows.length === 0) {
     return (
-      <div style={{
-        textAlign: 'center',
-        padding: '40px',
-        background: theme === 'dark' ? '#1f2937' : '#f9fafb',
-        borderRadius: '12px',
-        color: theme === 'dark' ? '#e5e7eb' : '#6b7280'
-      }}>
-        <p style={{ fontSize: '18px', fontWeight: '600' }}>📭 No hay consultas</p>
-        <p style={{ fontSize: '14px', marginTop: '8px' }}>No hay consultas pendientes</p>
+      <div className={styles.emptyTrash}>
+        <p>📭 No hay consultas</p>
+        <p>No hay consultas pendientes</p>
       </div>
     );
   }

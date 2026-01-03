@@ -14,8 +14,8 @@ export default function EntityTable({
 }: { 
   title: string; 
   rows: Row[]; 
-  onEdit?: (id: number | string)=>void; 
-  onDelete?: (id: number | string)=>void;
+  onEdit?: (id: number | string) => void; 
+  onDelete?: (id: number | string) => void;
   editLabel?: string;
   deleteLabel?: string;
 }) {
