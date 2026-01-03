@@ -76,17 +76,14 @@ export default function CarritoPage() {
   };
 
   const generarMensajeWhatsApp = () => {
-    let mensaje = '¡Hola!\n\n';
-    mensaje += 'Quiero hacer un pedido de los siguientes productos:\n\n';
-    mensaje += `Sucursal: ${sucursal?.nombre_sucursal}\n`;
-    mensaje += `Dirección: ${sucursal?.direccion_sucursal}\n\n`;
-    mensaje += '*Productos:*\n';
+    let mensaje = '¡Hola! Quiero hacer un pedido de los siguientes productos:\n';
     
     items.forEach((item, index) => {
       mensaje += `${index + 1}. ${item.nombre} - Cantidad: ${item.cantidad}\n`;
     });
     
-    mensaje += '\nEspero su respuesta. ¡Gracias!';
+    mensaje += `\nPara la sucursal ${sucursal?.nombre_sucursal}\n\n`;
+    mensaje += 'Espero su respuesta. ¡Gracias!';
     
     return mensaje;
   };
