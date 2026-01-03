@@ -76,7 +76,7 @@ export default function CarritoPage() {
   };
 
   const generarMensajeWhatsApp = () => {
-    let mensaje = '¡Hola! Quiero hacer un pedido de los siguientes productos:\n';
+    let mensaje = '¡Hola! Quiero hacer un pedido de los siguientes productos:\n\n';
     
     items.forEach((item, index) => {
       mensaje += `${index + 1}. ${item.nombre} - Cantidad: ${item.cantidad}\n`;
