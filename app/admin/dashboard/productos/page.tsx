@@ -29,7 +29,7 @@ interface Producto {
 export default function ProductsPage() {
   const { addActivity } = useActivity();
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Producto | null>(null);
   const [paginaActual, setPaginaActual] = useState(1);
@@ -37,7 +37,6 @@ export default function ProductsPage() {
 
   const fetchProductos = async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${API_URL}/api/comidas`);
       const data = await response.json();
 

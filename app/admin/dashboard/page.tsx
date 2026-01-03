@@ -37,7 +37,7 @@ export default function DashboardPage() {
     }
   });
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     cargarDatos();

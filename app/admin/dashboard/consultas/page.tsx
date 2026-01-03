@@ -23,12 +23,11 @@ interface Consulta {
 
 export default function QueriesPage() {
   const [consultas, setConsultas] = useState<Consulta[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [paginaActual, setPaginaActual] = useState(1);
 
   const fetchConsultas = async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${API_URL}/api/consultas`);
       const data = await response.json();
 

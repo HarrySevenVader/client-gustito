@@ -35,7 +35,6 @@ export default function PapeleraPage() {
 
   const fetchProductosEliminados = async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${API_URL}/api/comidas/papelera`);
       const data = await response.json();
 

@@ -34,7 +34,6 @@ export default function PapeleraNoticiasPage() {
 
   const fetchNoticiasEliminadas = async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${API_URL}/api/noticias/papelera`);
       const data = await response.json();
 
