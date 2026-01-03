@@ -18,8 +18,8 @@ export default function LoginPage() {
         position: 'relative',
         /* ocultar overflow causado por decoraciones absolutas para evitar scroll innecesario */
         overflow: 'hidden',
-        // Gradiente de verdes: oscuro -> principal -> lima brillante
-        background: `radial-gradient(1200px 600px at 10% 20%, rgba(127,227,58,0.12) 0%, rgba(127,227,58,0.06) 12%, transparent 30%), linear-gradient(120deg, #042018 0%, #063425 35%, #0b6b2f 60%, #a8ff4d 100%)`,
+        // Gradiente oficial de Gustito: verde oscuro -> verde lima oficial #7ed321
+        background: `radial-gradient(1200px 600px at 10% 20%, rgba(126,211,33,0.15) 0%, rgba(126,211,33,0.08) 12%, transparent 30%), linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 30%, #5a9a3f 60%, #7ed321 100%)`,
         color: '#fff',
           paddingTop: '0' /* centrar verticalmente sin padding superior extra */
       }}>

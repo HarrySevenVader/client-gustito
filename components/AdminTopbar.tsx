@@ -161,7 +161,16 @@ export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: 
     } catch (err) {
       console.warn('signOut error', err)
     }
-    try { localStorage.removeItem('supabase_token') } catch(_) {}
+    
+    // Limpiar localStorage
+    try { 
+      localStorage.removeItem('supabase_token')
+      localStorage.removeItem('supabase_session')
+    } catch(_) {}
+    
+    // Limpiar cookie
+    document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    
     router.push('/admin/login')
   }
 
@@ -310,8 +319,8 @@ export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: 
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontWeight: 800 }}>{displayName}</div>
-          <div style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>{user ? 'Administrador' : 'Invitado'}</div>
+          <div style={{ fontWeight: 800, color: theme === 'dark' ? '#ffffff' : '#000000' }}>{displayName}</div>
+          <div style={{ fontSize: 12, color: theme === 'dark' ? '#ffffff' : 'rgba(0,0,0,0.45)' }}>{user ? 'Administrador' : 'Invitado'}</div>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <div className={styles.avatar}>{displayName?.charAt?.(0) ?? 'A'}</div>

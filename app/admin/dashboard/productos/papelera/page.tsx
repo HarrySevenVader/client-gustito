@@ -172,15 +172,9 @@ export default function PapeleraPage() {
             />
             
             {productosPaginados.length === 0 && (
-              <div style={{
-                textAlign: 'center',
-                padding: '40px',
-                background: theme === 'dark' ? '#1f2937' : '#f9fafb',
-                borderRadius: '12px',
-                color: theme === 'dark' ? '#e5e7eb' : '#6b7280'
-              }}>
-                <p style={{ fontSize: '18px', fontWeight: '600' }}>🗑️ La papelera está vacía</p>
-                <p style={{ fontSize: '14px', marginTop: '8px' }}>Los productos eliminados aparecerán aquí</p>
+              <div className={styles.emptyTrash}>
+                <p>🗑️ La papelera está vacía</p>
+                <p>Los productos eliminados aparecerán aquí</p>
               </div>
             )}
             

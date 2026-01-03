@@ -17,16 +17,20 @@
   color: #111827;
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #111827 0%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+}
+
+:global([data-theme="dark"]) .title {
+  color: #ffffff;
 }
 
 .subtitle {
   font-size: 15px;
   color: #6b7280;
   margin-top: 4px;
+}
+
+:global([data-theme="dark"]) .subtitle {
+  color: #ffffff;
 }
 
 .dateInfo {
@@ -39,6 +43,11 @@
   border: 1px solid #bbf7d0;
 }
 
+:global([data-theme="dark"]) .dateInfo {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 .dateIcon {
   font-size: 18px;
 }
@@ -48,6 +57,10 @@
   font-weight: 600;
   color: #065f46;
   text-transform: capitalize;
+}
+
+:global([data-theme="dark"]) .date {
+  color: #ffffff;
 }
 
 .loading {

@@ -5,7 +5,7 @@ import styles from './ActivityFeed.module.css';
 import { useTheme } from '../contexts/ThemeContext';
 
 export interface Activity {
-  id: number;
+  id: number | string;
   type: 'product' | 'consulta' | 'noticia';
   title: string;
   description: string;

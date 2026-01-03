@@ -248,12 +248,8 @@ const isDark = theme === 'dark';
           <X size={24} />
         </button>
 
-        <h2 style={{ 
-          marginBottom: '20px', 
-          color: isDark ? '#f9fafb' : '#2c3e50',
-          transition: 'color 0.4s ease',
-        }}>
-          {editMode ? '✏️ Editar Noticia' : '➕ Crear Nueva Noticia'}
+        <h2>
+          {editMode ? 'Editar Noticia' : 'Crear Nueva Noticia'}
         </h2>
 
         <form onSubmit={handleSubmit}>

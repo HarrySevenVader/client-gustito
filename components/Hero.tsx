@@ -57,7 +57,7 @@ export default function Hero() {
                         Ver Carta
                     </a>
                     <a
-                        href="#sucursales"
+                        href="/sucursales"
                         className="px-10 sm:px-14 md:px-16 py-4 sm:py-5 bg-gustito-orange text-white text-base sm:text-xl font-semibold rounded-2xl shadow-lg hover:bg-[#E67000] transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto min-w-[200px] max-w-[300px]"
                     >
                         Sucursales

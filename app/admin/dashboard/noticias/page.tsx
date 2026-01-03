@@ -10,6 +10,7 @@ import { useActivity } from '../../../../contexts/ActivityContext';
 import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 const ITEMS_POR_PAGINA = 6;
 
@@ -33,6 +34,7 @@ export default function NoticiasPage() {
   const [paginaActual, setPaginaActual] = useState(1);
   const [limiteInfo, setLimiteInfo] = useState<any>(null);
   const router = useRouter();
+  const { theme } = useTheme();
 
   const fetchNoticias = async () => {
     try {
@@ -157,21 +159,15 @@ export default function NoticiasPage() {
         <p>Desde aquí podrás gestionar noticias: crear, editar y borrar.</p>
 
         {limiteInfo && (
-          <div style={{ 
-            padding: '12px', 
-            background: limiteInfo.puedeAgregar ? '#e8f5e9' : '#fff3e0',
-            borderRadius: '8px',
-            marginTop: '12px',
-            marginBottom: '12px'
-          }}>
+          <div className={`${styles.limiteBox} ${limiteInfo.puedeAgregar ? styles.success : styles.warning}`}>
             <strong>Límite:</strong> {limiteInfo.total} / {limiteInfo.limite} noticias
             {limiteInfo.disponibles > 0 && (
-              <span style={{ marginLeft: '10px', color: '#4caf50' }}>
+              <span className={styles.limiteSuccess}>
                 (Puedes agregar {limiteInfo.disponibles} más)
               </span>
             )}
             {limiteInfo.disponibles === 0 && (
-              <span style={{ marginLeft: '10px', color: '#ff9800' }}>
+              <span className={styles.limiteWarning}>
                 (Límite alcanzado)
               </span>
             )}
@@ -308,7 +304,7 @@ export default function NoticiasPage() {
           titulo: editingNoticia.titulo,
           contenido: editingNoticia.contenido,
           imagen: editingNoticia.imagen,
-          estado: editingNoticia.estado,
+          estado: editingNoticia.estado === 'eliminado' ? 'inactivo' : editingNoticia.estado as 'activo' | 'inactivo',
         } : undefined}
       />
     </DashboardLayout>
