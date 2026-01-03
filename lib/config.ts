@@ -27,8 +27,10 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000
 // ❌ MODO PRODUCCIÓN (Google Cloud Run) - Usar .env.local
 // export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://back-gustito-926848134800.us-central1.run.app'
 
-// Información de la API actual
-console.log('🌐 API URL configurada:', API_URL)
+// Información de la API actual (solo en desarrollo)
+if (process.env.NODE_ENV === 'development') {
+  console.log('🌐 API URL configurada:', API_URL)
+}
 
 /**
  * Endpoints de la API
