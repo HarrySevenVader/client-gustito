@@ -79,7 +79,7 @@ export default function CarritoPage() {
     let mensaje = '¡Hola! Quiero hacer un pedido de los siguientes productos:\n\n';
     
     items.forEach((item, index) => {
-      mensaje += `${index + 1}. ${item.nombre} - Cantidad: ${item.cantidad}\n`;
+      mensaje += `\n${index + 1}. ${item.nombre} - Cantidad: ${item.cantidad}\n`;
     });
     
     mensaje += `\nPara la sucursal ${sucursal?.nombre_sucursal}\n\n`;
