@@ -21,7 +21,7 @@ const sucursales: Sucursal[] = [
         name: 'Gustito Maipú',
         address: 'Av. El Rosal 4304, 9300925 Maipú, Región Metropolitana',
         phone: '+56 2 2345 6789',
-        hours: 'Lun - Dom: 10:00 - 22:00',
+        hours: 'Lun-Vie: 12:00-21:00 | Sáb: 12:30-21:00 | Dom: 12:30-17:00',
         mapUrl: 'https://maps.google.com/?q=Av.+El+Rosal+4304+Maipu+Region+Metropolitana+Chile',
         embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.7!2d-70.7689!3d-33.5207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c37dddddddd%3A0x0!2zQXYuIEVsIFJvc2FsIDQzMDQsIE1haXDDuiwgUmVnacOzbiBNZXRyb3BvbGl0YW5h!5e0!3m2!1ses!2scl!4v1600000000000!5m2!1ses!2scl',
         imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop'
@@ -30,7 +30,7 @@ const sucursales: Sucursal[] = [
         name: 'Gustito Talagante',
         address: 'Octavio Leiva Opazo 42, 9671017 Talagante, Región Metropolitana',
         phone: '+56 2 2345 6790',
-        hours: 'Lun - Dom: 10:00 - 22:00',
+        hours: 'Lun-Vie: 12:00-21:00 | Sáb: 12:30-21:00 | Dom: 12:30-17:00',
         mapUrl: 'https://maps.google.com/?q=Octavio+Leiva+Opazo+42+Talagante+Region+Metropolitana+Chile',
         embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.8!2d-70.9256!3d-33.6641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663089dddddddd%3A0x0!2zT2N0YXZpbyBMZWl2YSBPcGF6byA0MiwgVGFsYWdhbnRlLCBSZWdpw7NuIE1ldHJvcG9saXRhbmE!5e0!3m2!1ses!2scl!4v1600000000000!5m2!1ses!2scl',
         imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop'
@@ -39,7 +39,7 @@ const sucursales: Sucursal[] = [
         name: 'Gustito Huechuraba',
         address: 'Berta Correa 1686, 8600772 Huechuraba, Región Metropolitana',
         phone: '+56 2 2345 6791',
-        hours: 'Lun - Dom: 10:00 - 22:00',
+        hours: 'Lun-Vie: 12:00-21:00 | Sáb: 12:30-21:00 | Dom: 12:30-17:00',
         mapUrl: 'https://maps.google.com/?q=Berta+Correa+1686+Huechuraba+Region+Metropolitana+Chile',
         embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3336.9!2d-70.6545!3d-33.3689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c5ddddddddd%3A0x0!2zQmVydGEgQ29ycmVhIDE2ODYsIEh1ZWNodXJhYmEsIFJlZ2nDs24gTWV0cm9wb2xpdGFuYQ!5e0!3m2!1ses!2scl!4v1600000000000!5m2!1ses!2scl',
         imageUrl: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&h=600&fit=crop'
