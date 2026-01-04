@@ -29,7 +29,7 @@ interface Noticia {
 export default function NoticiasPage() {
   const { addActivity } = useActivity();
   const [noticias, setNoticias] = useState<Noticia[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNoticia, setEditingNoticia] = useState<Noticia | null>(null);
   const [paginaActual, setPaginaActual] = useState(1);

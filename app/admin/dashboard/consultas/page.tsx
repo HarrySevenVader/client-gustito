@@ -23,7 +23,7 @@ interface Consulta {
 
 export default function QueriesPage() {
   const [consultas, setConsultas] = useState<Consulta[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [paginaActual, setPaginaActual] = useState(1);
 
   const fetchConsultas = async () => {
