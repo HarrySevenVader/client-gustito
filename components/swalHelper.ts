@@ -74,10 +74,7 @@ export async function alertSuccess(title = 'Hecho', text = '') {
       icon: 'success', 
       confirmButtonText: 'OK',
       confirmButtonColor: '#FF6B35',
-      iconColor: '#10b981',,
-      customClass: {
-        container: 'swal-z-index-top'
-      }
+      iconColor: '#10b981',
       width: '400px',
       padding: '2rem',
       showCloseButton: true
