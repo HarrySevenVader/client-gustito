@@ -105,7 +105,7 @@ export default function ContactoPage() {
         // Validar formato de email con dominios permitidos
         const emailRegex = /^[a-zA-Z0-9._-]+@(gmail\.com|utem\.cl)$/;
         if (!emailRegex.test(formData.correo)) {
-            toastError('Solo se permiten correos @gmail.com o @utem.cl');
+            toastError('Ingrese correctamente su correo electrónico');
             return;
         }
 
@@ -276,7 +276,7 @@ export default function ContactoPage() {
                                             onChange={handleChange} 
                                             required 
                                             maxLength={70}
-                                            placeholder="ejemplo@gmail.com" 
+                                            placeholder="Ingresa tu correo electrónico" 
                                         />
                                     </div>
                                     <div className="form-group">
@@ -288,7 +288,7 @@ export default function ContactoPage() {
                                             value={formData.celular} 
                                             onChange={handleChange} 
                                             required 
-                                            placeholder="+56 912345678" 
+                                            placeholder="+56 9 1234 5678" 
                                         />
                                     </div>
                                     <div className="form-group">
