@@ -11,12 +11,10 @@ import MenuFilters from '@/components/MenuFilters';
 import MenuGrid from '@/components/MenuGrid';
 import { MenuFilters as MenuFiltersType, ComidaConPrecio, Comida, Categoria, Sucursal } from '@/types/menu';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
 
 const PRODUCTOS_POR_PAGINA = 8;
 
 export default function MenuPage() {
-    const { sucursal: sucursalCarrito } = useCart();
     const [filters, setFilters] = useState<MenuFiltersType>({
         categoria_id: null,
         sucursal_id: null,
@@ -28,21 +26,6 @@ export default function MenuPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
-
-    // Sincronizar filtro de sucursal con el carrito
-    useEffect(() => {
-        if (sucursalCarrito) {
-            setFilters(prev => ({
-                ...prev,
-                sucursal_id: sucursalCarrito.id_sucursal
-            }));
-        } else {
-            setFilters(prev => ({
-                ...prev,
-                sucursal_id: null
-            }));
-        }
-    }, [sucursalCarrito]);
 
     // Cargar categorías desde el backend
     useEffect(() => {

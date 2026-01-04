@@ -275,21 +275,9 @@ export default function CarritoPage() {
       <SucursalSelector
         isOpen={showSucursalSelector}
         onClose={() => setShowSucursalSelector(false)}
-        onSelect={async (newSucursal) => {
-          // Si hay productos en el carrito y se cambia de sucursal, confirmar vaciado
-          if (items.length > 0 && sucursal && newSucursal.id_sucursal !== sucursal.id_sucursal) {
-            const confirmed = await confirm(
-              '¿Cambiar de sucursal?',
-              `Al cambiar a ${newSucursal.nombre_sucursal}, se vaciará tu carrito actual. ¿Deseas continuar?`
-            );
-            if (!confirmed) {
-              setShowSucursalSelector(false);
-              return;
-            }
-          }
+        onSelect={(newSucursal) => {
           setSucursal(newSucursal);
           setShowSucursalSelector(false);
-          toastSuccess(`Sucursal cambiada a ${newSucursal.nombre_sucursal}`);
         }}
         currentSucursal={sucursal}
       />
