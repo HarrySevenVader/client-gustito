@@ -41,10 +41,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     cargarDatos();
-  }, [recentActivities]); // Recargar cuando hay nuevas actividades en el log
+  }, []); // Solo cargar una vez al montar el componente
 
   const cargarDatos = async () => {
-    setLoading(true);
     try {
       // Inicializar array de actividades con metadata de fecha
       const activityList: Array<Activity & { rawDate: Date }> = [];
