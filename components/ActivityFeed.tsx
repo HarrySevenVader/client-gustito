@@ -16,9 +16,10 @@ export interface Activity {
 
 interface ActivityFeedProps {
   activities: Activity[];
+  loading?: boolean;
 }
 
-export default function ActivityFeed({ activities }: ActivityFeedProps) {
+export default function ActivityFeed({ activities, loading = false }: ActivityFeedProps) {
   const { theme } = useTheme();
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -28,6 +29,20 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
       default: return '';
     }
   };
+
+  if (loading) {
+    return (
+      <div className={`${styles.feedContainer} ${theme === 'dark' ? styles.dark : ''}`}>
+        <h3 className={styles.title}>Actividad Reciente</h3>
+        <div className={styles.feed}>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <span className={styles.loadingText}>Cargando actividades...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.feedContainer} ${theme === 'dark' ? styles.dark : ''}`}>

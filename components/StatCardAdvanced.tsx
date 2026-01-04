@@ -2,6 +2,7 @@
 
 import styles from './StatCardAdvanced.module.css';
 import { useTheme } from '../contexts/ThemeContext';
+import LoadingSpinner from './LoadingSpinner';
 
 interface StatCardAdvancedProps {
   title: string;
@@ -13,6 +14,7 @@ interface StatCardAdvancedProps {
   icon?: string;
   color?: 'green' | 'blue' | 'purple' | 'orange' | 'red';
   subtitle?: string;
+  loading?: boolean;
 }
 
 export default function StatCardAdvanced({ 
@@ -21,7 +23,8 @@ export default function StatCardAdvanced({
   trend, 
   icon = '📊', 
   color = 'blue',
-  subtitle 
+  subtitle,
+  loading = false
 }: StatCardAdvancedProps) {
   const { theme } = useTheme();
   
@@ -32,6 +35,17 @@ export default function StatCardAdvanced({
     orange: styles.orange,
     red: styles.red,
   };
+
+  if (loading) {
+    return (
+      <div className={`${styles.card} ${colorClasses[color]} ${theme === 'dark' ? styles.dark : ''} ${styles.loading}`}>
+        <div className={styles.loadingContent}>
+          <div className={styles.spinner}></div>
+          <span className={styles.loadingText}>Cargando {title.toLowerCase()}...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.card} ${colorClasses[color]} ${theme === 'dark' ? styles.dark : ''}`}>

@@ -37,13 +37,14 @@ export default function DashboardPage() {
     }
   });
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     cargarDatos();
   }, [recentActivities]); // Recargar cuando hay nuevas actividades en el log
 
   const cargarDatos = async () => {
+    setLoading(true);
     try {
       // Inicializar array de actividades con metadata de fecha
       const activityList: Array<Activity & { rawDate: Date }> = [];
@@ -250,101 +251,97 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {loading ? (
-          <div className={styles.loading}>
-            <div className={styles.spinner}></div>
-            <p>Cargando estadísticas...</p>
-          </div>
-        ) : (
-          <>
-            <div className={styles.statsGrid}>
-              <StatCardAdvanced
-                title="Total Productos"
-                value={stats.totalProductos}
-                icon="🍽️"
-                color="green"
-                subtitle={`${stats.productosActivos} activos`}
-                trend={{
-                  value: stats.tendencias.productos,
-                  isPositive: stats.tendencias.productos > 0
-                }}
-              />
-              
-              <StatCardAdvanced
-                title="Consultas"
-                value={stats.totalConsultas}
-                icon="💬"
-                color="blue"
-                subtitle={`${stats.consultasPendientes} pendientes`}
-                trend={{
-                  value: stats.tendencias.consultas,
-                  isPositive: stats.tendencias.consultas > 0
-                }}
-              />
-              
-              <StatCardAdvanced
-                title="Noticias"
-                value={stats.totalNoticias}
-                icon="📰"
-                color="purple"
-                subtitle="Publicadas"
-                trend={{
-                  value: stats.tendencias.noticias,
-                  isPositive: stats.tendencias.noticias > 0
-                }}
-              />
-              
-              <StatCardAdvanced
-                title="Total Items"
-                value={stats.productosActivos + stats.totalNoticias}
-                icon="📦"
-                color="orange"
-                subtitle="En el sistema"
-                trend={{
-                  value: Math.abs(stats.tendencias.productos + stats.tendencias.noticias) / 2,
-                  isPositive: (stats.tendencias.productos + stats.tendencias.noticias) > 0
-                }}
-              />
-            </div>
+        <div className={styles.statsGrid}>
+          <StatCardAdvanced
+            title="Total Productos"
+            value={stats.totalProductos}
+            icon="🍽️"
+            color="green"
+            subtitle={`${stats.productosActivos} activos`}
+            trend={{
+              value: stats.tendencias.productos,
+              isPositive: stats.tendencias.productos > 0
+            }}
+            loading={loading}
+          />
+          
+          <StatCardAdvanced
+            title="Consultas"
+            value={stats.totalConsultas}
+            icon="💬"
+            color="blue"
+            subtitle={`${stats.consultasPendientes} pendientes`}
+            trend={{
+              value: stats.tendencias.consultas,
+              isPositive: stats.tendencias.consultas > 0
+            }}
+            loading={loading}
+          />
+          
+          <StatCardAdvanced
+            title="Noticias"
+            value={stats.totalNoticias}
+            icon="📰"
+            color="purple"
+            subtitle="Publicadas"
+            trend={{
+              value: stats.tendencias.noticias,
+              isPositive: stats.tendencias.noticias > 0
+            }}
+            loading={loading}
+          />
+          
+          <StatCardAdvanced
+            title="Total Items"
+            value={stats.productosActivos + stats.totalNoticias}
+            icon="📦"
+            color="orange"
+            subtitle="En el sistema"
+            trend={{
+              value: Math.abs(stats.tendencias.productos + stats.tendencias.noticias) / 2,
+              isPositive: (stats.tendencias.productos + stats.tendencias.noticias) > 0
+            }}
+            loading={loading}
+          />
+        </div>
 
-            <div className={styles.bottomGrid}>
-              <div className={styles.activitySection}>
-                <ActivityFeed activities={activities} />
-              </div>
-              
-              <div className={styles.quickStatsSection}>
-                <QuickStats 
-                  stats={[
-                    {
-                      label: 'Productos Activos',
-                      value: stats.productosActivos,
-                      icon: '✅',
-                      color: '#10b981'
-                    },
-                    {
-                      label: 'Consultas/Día',
-                      value: stats.totalConsultas > 0 ? `~${Math.ceil(stats.totalConsultas / 30)}` : '0',
-                      icon: '📊',
-                      color: '#3b82f6'
-                    },
-                    {
-                      label: 'Noticias Activas',
-                      value: stats.totalNoticias,
-                      icon: '📰',
-                      color: '#f59e0b'
-                    },
-                    {
-                      label: 'Total Consultas',
-                      value: stats.totalConsultas,
-                      icon: '📬',
-                      color: '#8b5cf6'
-                    }
-                  ]}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        <div className={styles.bottomGrid}>
+          <div className={styles.activitySection}>
+            <ActivityFeed activities={activities} loading={loading} />
+          </div>
+          
+          <div className={styles.quickStatsSection}>
+            <QuickStats 
+              stats={[
+                {
+                  label: 'Productos Activos',
+                  value: stats.productosActivos,
+                  icon: '✅',
+                  color: '#10b981'
+                },
+                {
+                  label: 'Consultas/Día',
+                  value: stats.totalConsultas > 0 ? `~${Math.ceil(stats.totalConsultas / 30)}` : '0',
+                  icon: '📊',
+                  color: '#3b82f6'
+                },
+                {
+                  label: 'Noticias Activas',
+                  value: stats.totalNoticias,
+                  icon: '📰',
+                  color: '#f59e0b'
+                },
+                {
+                  label: 'Total Consultas',
+                  value: stats.totalConsultas,
+                  icon: '📬',
+                  color: '#8b5cf6'
+                }
+              ]}
+              loading={loading}
+            />
+          </div>
+        </div>
       </section>
     </DashboardLayout>
   );
