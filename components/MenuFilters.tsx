@@ -3,6 +3,7 @@
 import { Search, Filter, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Categoria, Sucursal, MenuFilters as MenuFiltersType } from '@/types/menu';
+import { useCart } from '@/contexts/CartContext';
 
 interface MenuFiltersProps {
     filters: MenuFiltersType;
@@ -17,6 +18,7 @@ export default function MenuFilters({
     categorias,
     sucursales,
 }: MenuFiltersProps) {
+    const { sucursal: sucursalCarrito } = useCart();
     const hasActiveFilters = filters.categoria_id !== null || filters.sucursal_id !== null || filters.search !== '';
 
     const clearFilters = () => {
@@ -99,6 +101,13 @@ export default function MenuFilters({
                             })
                         }
                         className="cursor-pointer"
+                        disabled={!!sucursalCarrito}
+                        style={{
+                            opacity: sucursalCarrito ? 0.7 : 1,
+                            cursor: sucursalCarrito ? 'not-allowed' : 'pointer',
+                            backgroundColor: sucursalCarrito ? '#f3f4f6' : 'white'
+                        }}
+                        title={sucursalCarrito ? `Tienes productos en el carrito de ${sucursalCarrito.nombre_sucursal}. Para cambiar de sucursal, ve al carrito.` : ''}
                     >
                         <option value="">Todas las sucursales</option>
                         {sucursales.map((sucursal) => (
@@ -107,6 +116,11 @@ export default function MenuFilters({
                             </option>
                         ))}
                     </select>
+                    {sucursalCarrito && (
+                        <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                            🔒 Filtrado por tu carrito
+                        </p>
+                    )}
                 </div>
             </div>
 

@@ -260,29 +260,6 @@ export default function MenuPage() {
                     >
                         Descubre nuestros deliciosos completos, ensaladas y bebidas
                     </motion.p>
-                    {sucursalCarrito && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: 0.3 }}
-                            style={{
-                                marginTop: '1rem',
-                                padding: '0.75rem 1.5rem',
-                                background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
-                                borderRadius: '12px',
-                                color: 'white',
-                                fontSize: '0.95rem',
-                                fontWeight: '500',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                boxShadow: '0 4px 15px rgba(255, 107, 53, 0.25)'
-                            }}
-                        >
-                            <span style={{ fontSize: '1.2rem' }}>📍</span>
-                            Mostrando productos disponibles en {sucursalCarrito.nombre_sucursal}
-                        </motion.div>
-                    )}
                 </section>
                 <section className="menu-section">
                     <motion.div

@@ -69,21 +69,22 @@ export default function ProductoDetalle({ comida, isOpen, onClose }: ProductoDet
             return;
         }
         
-        // Si no hay sucursal seleccionada, mostrar selector
-        if (!sucursal) {
-            setShowSucursalSelector(true);
+        // Si YA hay una sucursal seleccionada en el carrito
+        if (sucursal) {
+            // Validar que el producto esté disponible en la sucursal del carrito
+            if (comida.sucursales && !comida.sucursales.includes(sucursal.id_sucursal)) {
+                toastError(`Este producto no está disponible en ${sucursal.nombre_sucursal}. Tu carrito está configurado para esta sucursal.`);
+                return;
+            }
+            // Si pasa la validación, agregar al carrito directamente
+            addToCart(comida);
+            toastSuccess(`${comida.nombre} agregado al carrito`);
+            onClose();
             return;
         }
         
-        // Validar que el producto esté disponible en la sucursal seleccionada
-        if (comida.sucursales && !comida.sucursales.includes(sucursal.id_sucursal)) {
-            toastError(`Este producto no está disponible en ${sucursal.nombre_sucursal}`);
-            return;
-        }
-        
-        addToCart(comida);
-        toastSuccess(`${comida.nombre} agregado al carrito`);
-        onClose();
+        // Si NO hay sucursal seleccionada, mostrar selector
+        setShowSucursalSelector(true);
     };
 
     const handleSucursalSelected = (selectedSucursal: Sucursal) => {
