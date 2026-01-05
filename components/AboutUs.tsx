@@ -4,8 +4,34 @@ import { motion } from 'framer-motion';
 import { Heart, Award, Users, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 export default function AboutUs() {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    
+    // Array de imágenes para el carrusel
+    const carouselImages = [
+        '/imagenes/Gustito-Maipu.png',
+        '/imagenes/Gustito-Huechu.png',
+        '/imagenes/local-gustito.jpeg',
+        '/imagenes/imagen1.jpeg',
+        '/imagenes/imagen3.jpeg',
+        '/imagenes/imagen4.jpeg',
+        '/imagenes/imagen5.jpeg',
+        '/imagenes/imagen6.jpeg',
+    ];
+
+    // Auto-play del carrusel
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => 
+                (prevIndex + 1) % carouselImages.length
+            );
+        }, 3000); // Cambia cada 3 segundos
+        
+        return () => clearInterval(interval);
+    }, [carouselImages.length]);
+
     const features = [
         {
             icon: Heart,
@@ -30,7 +56,7 @@ export default function AboutUs() {
     ];
 
     return (
-        <section className="py-20 bg-white" id="nosotros">
+        <section className="py-24 md:py-32 bg-white" id="nosotros">
             <div className="w-full flex">
                 {/* Espaciador izquierdo */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
@@ -38,7 +64,7 @@ export default function AboutUs() {
                 <div className="flex-1 px-4 sm:px-8 lg:px-0">
                     {/* Section Header */}
                     <motion.div
-                        className="flex flex-col items-center text-center mb-16"
+                        className="flex flex-col items-center text-center mb-20"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -57,8 +83,8 @@ export default function AboutUs() {
                     </motion.div>
 
                     {/* Features Grid */}
-                    <div className="mb-24">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                    <div className="mb-32 md:mb-40">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
                             {features.map((feature, index) => (
                                 <motion.div
                                     key={feature.title}
@@ -92,15 +118,24 @@ export default function AboutUs() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        {/* Image */}
+                        {/* Carrusel de Imágenes */}
                         <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                            <Image
-                                src="/imagenes/local-gustito.jpeg"
-                                alt="Local Gustito"
-                                fill
-                                className="object-cover"
-                                priority
-                            />
+                            {carouselImages.map((image, index) => (
+                                <div
+                                    key={image}
+                                    className={`absolute inset-0 transition-opacity duration-1000 ${
+                                        index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                                    }`}
+                                >
+                                    <Image
+                                        src={image}
+                                        alt={`Local Gustito ${index + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        priority={index === 0}
+                                    />
+                                </div>
+                            ))}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                         </div>
 

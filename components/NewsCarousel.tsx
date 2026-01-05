@@ -109,36 +109,6 @@ export default function NewsCarousel() {
         router.push(`/noticias/${id}`);
     };
 
-    if (loading) {
-        return (
-            <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
-                <div className="max-w-7xl mx-auto px-4">
-                    <ErrorState 
-                        type="offline"
-                        message="No se pueden cargar las noticias en este momento."
-                        onRetry={fetchNoticias}
-                    />
-                </div>
-            </section>
-        );
-    }
-
-    if (noticias.length === 0) {
-        return null;
-    }
-
     return (
         <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white" id="noticias">
             <div className="w-full flex">
@@ -168,12 +138,28 @@ export default function NewsCarousel() {
                         </p>
                     </motion.div>
 
-                    {/* Carousel Container */}
-                    <div
-                        className="relative"
-                        onMouseEnter={() => setIsAutoPlaying(false)}
-                        onMouseLeave={() => setIsAutoPlaying(true)}
-                    >
+                    {/* Loading State */}
+                    {loading ? (
+                        <div className="flex justify-center items-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gustito-orange"></div>
+                        </div>
+                    ) : error ? (
+                        <ErrorState 
+                            type="offline"
+                            message="No se pueden cargar las noticias en este momento."
+                            onRetry={fetchNoticias}
+                        />
+                    ) : noticias.length === 0 ? (
+                        <div className="text-center py-20">
+                            <p className="text-xl text-gustito-dark/70">No hay noticias disponibles</p>
+                        </div>
+                    ) : (
+                        /* Carousel Container */
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setIsAutoPlaying(false)}
+                            onMouseLeave={() => setIsAutoPlaying(true)}
+                        >
                         {/* Navigation Buttons */}
                         <button
                             onClick={prevSlide}
@@ -263,6 +249,7 @@ export default function NewsCarousel() {
                             ))}
                         </div>
                     </div>
+                    )}
                 </div>
 
                 {/* Espaciador derecho */}
