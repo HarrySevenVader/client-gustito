@@ -241,7 +241,7 @@ export default function MenuPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        Descubre nuestros deliciosos completos, ensaladas y bebidas
+                        Descubre nuestros deliciosos almuerzos, ensaladas, bebidas y mucho mas!
                     </motion.p>
                 </section>
                 <section className="menu-section">

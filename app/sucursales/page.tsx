@@ -89,7 +89,7 @@ export default function SucursalesPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                         >
-                            Visítanos en cualquiera de nuestras ubicaciones y disfruta de los mejores completos de Santiago
+                            Visítanos en cualquiera de nuestras ubicaciones y disfruta de las mejores comidas de Santiago!
                         </motion.p>
                     </div>
                 </section>
