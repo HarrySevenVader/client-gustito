@@ -51,13 +51,14 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  position: fixed; /* keep sidebar static on the left */
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   z-index: 40;
-  overflow: auto; /* allow scrolling inside sidebar if content exceeds viewport */
-  transition: background 0.5s ease, box-shadow 0.5s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
 }
 
 .sidebar.dark {
@@ -321,11 +322,11 @@
 
   .sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    z-index: 1001;
   }
 
   .sidebarOpen {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
 
   .sidebarOverlay {
@@ -335,7 +336,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 39;
+    z-index: 1000;
   }
 
   .topbar {
@@ -354,7 +355,7 @@
   }
 
   .content {
-    padding: 16px 12px;
+    padding: 16px;
   }
 
   .cards {
@@ -368,20 +369,38 @@
   .tableWrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 12px;
   }
 
   .table {
-    min-width: 600px;
+    min-width: 800px;
+    font-size: 0.85rem;
   }
 
   .th {
-    font-size: 0.85rem;
-    padding: 8px;
+    font-size: 0.8rem;
+    padding: 10px 8px;
+    white-space: nowrap;
   }
 
   .td {
-    font-size: 0.85rem;
-    padding: 8px;
+    font-size: 0.8rem;
+    padding: 10px 8px;
+  }
+
+  .tdActions {
+    padding: 10px 8px;
+    white-space: nowrap;
+  }
+
+  .viewBtn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .actionBtn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
   }
 
   .productItem {
@@ -414,10 +433,14 @@
 
 @media (max-width: 640px) {
   .brand {
-    flex-direction: column;
-    text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .sidebar {
+    width: 280px;
+    padding: 16px;
   }
 
   .topbar h2 {
@@ -430,7 +453,7 @@
   }
 
   .content {
-    padding: 12px 8px;
+    padding: 14px;
   }
 
   .cardTitle {
@@ -441,9 +464,23 @@
     font-size: 1.3rem;
   }
 
+  .tableWrap {
+    padding: 10px;
+  }
+
+  .tableWrap h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
   .actionBtn {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
+  .viewBtn {
+    padding: 5px 10px;
+    font-size: 0.75rem;
   }
 
   .productTitle {
@@ -632,20 +669,70 @@
 @media (max-width: 900px) {
   .sidebar { 
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
   }
   
   .sidebarOpen {
     transform: translateX(0) !important;
-    z-index: 1000 !important;
   }
   
-  .layout { padding-left: 0 }
-  .searchInput { width: 160px }
-  .search { display: none }
+  .layout { 
+    padding-left: 0;
+  }
+  
+  .searchInput { 
+    width: 160px;
+  }
+  
+  .search { 
+    display: none;
+  }
   
   .menuButton {
     display: flex !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 85vw;
+    max-width: 300px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .topbar {
+    padding: 10px 12px;
+  }
+
+  .topbar h2 {
+    font-size: 1rem;
+  }
+
+  .table {
+    min-width: 700px;
+    font-size: 0.75rem;
+  }
+
+  .th {
+    font-size: 0.7rem;
+    padding: 8px 6px;
+  }
+
+  .td {
+    font-size: 0.7rem;
+    padding: 8px 6px;
+  }
+
+  .tdActions {
+    padding: 8px 4px;
+  }
+
+  .viewBtn,
+  .actionBtn {
+    padding: 4px 8px;
+    font-size: 0.7rem;
   }
 }
 
@@ -1114,6 +1201,145 @@
 
 :global([data-theme="dark"]) .newsImage {
   background: #2a2a2a;
+}
+
+/* ========== RESPONSIVE UTILITIES ========== */
+.desktopOnly {
+  display: block;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktopOnly {
+    display: none;
+  }
+
+  .mobileOnly {
+    display: block;
+  }
+}
+
+/* ========== QUERY CARDS FOR MOBILE ========== */
+.queryCardList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.queryCard {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+:global([data-theme="dark"]) .queryCard {
+  background: var(--card-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.queryCard:active {
+  transform: scale(0.98);
+}
+
+.queryCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+:global([data-theme="dark"]) .queryCardHeader {
+  border-bottom-color: var(--border-color);
+}
+
+.queryCardId {
+  font-weight: 800;
+  color: #FF6B35;
+  font-size: 0.9rem;
+}
+
+.queryCardDate {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+}
+
+:global([data-theme="dark"]) .queryCardDate {
+  color: var(--text-secondary);
+}
+
+.queryCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.queryCardRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.85rem;
+}
+
+.queryCardRow strong {
+  font-size: 1rem;
+  flex-shrink: 0;
+  width: 24px;
+}
+
+.queryCardRow span {
+  flex: 1;
+  color: rgba(0, 0, 0, 0.8);
+  word-break: break-word;
+}
+
+:global([data-theme="dark"]) .queryCardRow span {
+  color: var(--text-primary);
+}
+
+.queryCardEmail {
+  color: #0b5a30;
+  font-weight: 600;
+}
+
+:global([data-theme="dark"]) .queryCardEmail {
+  color: #2ecc71;
+}
+
+.queryCardMessage {
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.4;
+}
+
+:global([data-theme="dark"]) .queryCardMessage {
+  color: var(--text-secondary);
+}
+
+.queryCardActions {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:global([data-theme="dark"]) .queryCardActions {
+  border-top-color: var(--border-color);
+}
+
+.queryCardActions button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
 }
 
 :global([data-theme="dark"]) .newsTitle {

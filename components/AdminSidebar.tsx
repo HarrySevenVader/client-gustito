@@ -48,77 +48,96 @@ export default function AdminSidebar({ active, onNavigate, isOpen = false, onClo
         <div 
           className={styles.sidebarOverlay}
           onClick={onClose}
+          aria-label="Cerrar menú"
         />
       )}
       
-      <aside className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''} ${isOpen ? styles.sidebarOpen : ''}`}>
-      <div className={styles.brand}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-          <div 
-            className={styles.brandText}
-            style={{
-              fontSize: '2rem',
-              fontWeight: 900,
-              color: '#FF6B35',
-              textShadow: '2px 2px 0px rgba(0,0,0,0.2), -1px -1px 0px rgba(0,0,0,0.2), 1px -1px 0px rgba(0,0,0,0.2), -1px 1px 0px rgba(0,0,0,0.2)',
-              letterSpacing: '0.02em',
-              fontFamily: "'Baloo 2', 'Poppins', sans-serif",
-              marginBottom: 0,
-              lineHeight: 1
-            }}
-          >
-            Gustito
-          </div>
-          <div 
-            style={{ 
-              fontSize: '0.65rem', 
-              opacity: 0.9,
-              fontWeight: 600,
-              letterSpacing: '0.05em',
-              fontFamily: "'Poppins', sans-serif",
-              marginTop: '-2px',
-              textAlign: 'center',
-              color: theme === 'dark' ? '#e0e0e0' : '#2d2d2d'
-            }}
-          >
-            Maipú - Talagante - Huechuraba
+      <aside 
+        className={`${styles.sidebar} ${theme === 'dark' ? styles.dark : ''} ${isOpen ? styles.sidebarOpen : ''}`}
+        role="navigation"
+        aria-label="Menú de navegación principal"
+      >
+        <div className={styles.brand}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, width: '100%' }}>
+            <div 
+              className={styles.brandText}
+              style={{
+                fontSize: '2rem',
+                fontWeight: 900,
+                color: '#FF6B35',
+                textShadow: '2px 2px 0px rgba(0,0,0,0.2), -1px -1px 0px rgba(0,0,0,0.2), 1px -1px 0px rgba(0,0,0,0.2), -1px 1px 0px rgba(0,0,0,0.2)',
+                letterSpacing: '0.02em',
+                fontFamily: "'Baloo 2', 'Poppins', sans-serif",
+                marginBottom: 0,
+                lineHeight: 1
+              }}
+            >
+              Gustito
+            </div>
+            <div 
+              style={{ 
+                fontSize: '0.65rem', 
+                opacity: 0.9,
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+                fontFamily: "'Poppins', sans-serif",
+                marginTop: '-2px',
+                textAlign: 'center',
+                color: theme === 'dark' ? '#e0e0e0' : '#2d2d2d'
+              }}
+            >
+              Maipú - Talagante - Huechuraba
+            </div>
           </div>
         </div>
-      </div>
 
-      <nav className={styles.nav} aria-label="Navegación administrativa">
-        {items.map(it => (
-          <div
-            key={it.id}
-            className={styles.navItem + (it.id === activeSection ? ` ${styles.active}` : '')}
-            onClick={() => {
-              if (onNavigate) return onNavigate(it.id)
-              const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`
-              router.push(path)
-              if (onClose) onClose() // Cerrar sidebar en móvil
-            }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter') { const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`; router.push(path) } }}
+        <nav className={styles.nav} aria-label="Navegación administrativa">
+          {items.map(it => (
+            <div
+              key={it.id}
+              className={styles.navItem + (it.id === activeSection ? ` ${styles.active}` : '')}
+              onClick={() => {
+                if (onNavigate) return onNavigate(it.id)
+                const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`
+                router.push(path)
+                if (onClose) onClose() // Cerrar sidebar en móvil
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { 
+                if (e.key === 'Enter' || e.key === ' ') { 
+                  e.preventDefault()
+                  const path = it.id === 'inicio' ? '/admin/dashboard' : `/admin/dashboard/${it.id}`
+                  router.push(path)
+                  if (onClose) onClose()
+                } 
+              }}
+              aria-label={`Ir a ${it.label}`}
+            >
+              {it.label}
+            </div>
+          ))}
+        </nav>
+
+        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '20px' }}>
+          <button 
+            onClick={toggleTheme} 
+            className={styles.themeToggle}
+            title={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
+            aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
           >
-            {it.label}
-          </div>
-        ))}
-      </nav>
-
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <button 
-          onClick={toggleTheme} 
-          className={styles.themeToggle}
-          title={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
-        >
-          {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
-        </button>
-        <button onClick={handleSignOut} className={styles.actionBtn} style={{ width: '100%' }}>
-          Cerrar sesión
-        </button>
-      </div>
-    </aside>
+            {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
+          </button>
+          <button 
+            onClick={handleSignOut} 
+            className={styles.actionBtn} 
+            style={{ width: '100%' }}
+            aria-label="Cerrar sesión"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+      </aside>
     </>
   )
 }

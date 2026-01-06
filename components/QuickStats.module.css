@@ -211,3 +211,83 @@
 .container.dark .value {
   color: #f9fafb;
 }
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .statItem {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .iconWrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  .label {
+    font-size: 0.65rem;
+  }
+
+  .value {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 14px;
+  }
+
+  .title {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .statItem {
+    padding: 10px 12px;
+    gap: 8px;
+    border-left-width: 2px;
+  }
+
+  .iconWrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .icon {
+    font-size: 14px;
+  }
+
+  .label {
+    font-size: 0.6rem;
+    margin-bottom: 2px;
+  }
+
+  .value {
+    font-size: 1rem;
+  }
+}

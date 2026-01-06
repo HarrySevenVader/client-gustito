@@ -79,72 +79,137 @@ export default function QueryList({ rows, onDelete }: QueryListProps) {
   }
 
   return (
-    <div className={styles.tableWrap}>
-      <h3 style={{ marginTop: 0 }}>Consultas Recibidas ({rows.length})</h3>
-      <table className={styles.table}>
-        <colgroup>
-          <col style={{ width: '50px' }} />
-          <col style={{ width: '150px' }} />
-          <col style={{ width: '180px' }} />
-          <col style={{ width: '120px' }} />
-          <col style={{ width: 'auto' }} />
-          <col style={{ width: '130px' }} />
-          <col style={{ width: '180px' }} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th className={styles.th}>ID</th>
-            <th className={styles.th}>Nombre</th>
-            <th className={styles.th}>Correo</th>
-            <th className={styles.th}>Teléfono</th>
-            <th className={styles.th}>Mensaje</th>
-            <th className={styles.th}>Fecha</th>
-            <th className={styles.th}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+    <>
+      {/* Vista de tabla para desktop */}
+      <div className={`${styles.tableWrap} ${styles.desktopOnly}`}>
+        <h3 style={{ marginTop: 0 }}>Consultas Recibidas ({rows.length})</h3>
+        <table className={styles.table}>
+          <colgroup>
+            <col style={{ width: '50px' }} />
+            <col style={{ width: '150px' }} />
+            <col style={{ width: '180px' }} />
+            <col style={{ width: '120px' }} />
+            <col style={{ width: 'auto' }} />
+            <col style={{ width: '130px' }} />
+            <col style={{ width: '180px' }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className={styles.th}>ID</th>
+              <th className={styles.th}>Nombre</th>
+              <th className={styles.th}>Correo</th>
+              <th className={styles.th}>Teléfono</th>
+              <th className={styles.th}>Mensaje</th>
+              <th className={styles.th}>Fecha</th>
+              <th className={styles.th}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(consulta => (
+              <tr key={consulta.id_consulta}>
+                <td className={styles.td} style={{ textAlign: 'center' }}>{consulta.id_consulta}</td>
+                <td className={styles.td} title={`${consulta.nombre} ${consulta.apellido}`}>
+                  {consulta.nombre} {consulta.apellido}
+                </td>
+                <td className={styles.td} title={consulta.correo}>
+                  {consulta.correo}
+                </td>
+                <td className={styles.td}>{consulta.celular}</td>
+                <td className={styles.td} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }} title={consulta.mensaje}>
+                  {consulta.mensaje.length > 60 
+                    ? `${consulta.mensaje.substring(0, 60)}...` 
+                    : consulta.mensaje}
+                </td>
+                <td className={styles.td} style={{ whiteSpace: 'nowrap' }}>
+                  {new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    timeZone: 'America/Santiago'
+                  })}
+                </td>
+                <td className={styles.tdActions}>
+                  <button 
+                    className={styles.viewBtn} 
+                    style={{ marginRight: 8 }} 
+                    onClick={() => handleView(consulta)}
+                  >
+                    Ver
+                  </button>
+                  <button 
+                    className={styles.actionBtn + ' ' + styles.danger} 
+                    onClick={() => handleDelete(consulta)}
+                  >
+                    Borrar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista de tarjetas para móvil */}
+      <div className={styles.mobileOnly}>
+        <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.1rem' }}>
+          Consultas Recibidas ({rows.length})
+        </h3>
+        <div className={styles.queryCardList}>
           {rows.map(consulta => (
-            <tr key={consulta.id_consulta}>
-              <td className={styles.td} style={{ textAlign: 'center' }}>{consulta.id_consulta}</td>
-              <td className={styles.td} title={`${consulta.nombre} ${consulta.apellido}`}>
-                {consulta.nombre} {consulta.apellido}
-              </td>
-              <td className={styles.td} title={consulta.correo}>
-                {consulta.correo}
-              </td>
-              <td className={styles.td}>{consulta.celular}</td>
-              <td className={styles.td} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }} title={consulta.mensaje}>
-                {consulta.mensaje.length > 60 
-                  ? `${consulta.mensaje.substring(0, 60)}...` 
-                  : consulta.mensaje}
-              </td>
-              <td className={styles.td} style={{ whiteSpace: 'nowrap' }}>
-                {new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'America/Santiago'
-                })}
-              </td>
-              <td className={styles.tdActions}>
+            <div key={consulta.id_consulta} className={styles.queryCard}>
+              <div className={styles.queryCardHeader}>
+                <span className={styles.queryCardId}>#{consulta.id_consulta}</span>
+                <span className={styles.queryCardDate}>
+                  {new Date(consulta.fecha_envio).toLocaleDateString('es-CL', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    timeZone: 'America/Santiago'
+                  })}
+                </span>
+              </div>
+              
+              <div className={styles.queryCardBody}>
+                <div className={styles.queryCardRow}>
+                  <strong>👤</strong>
+                  <span>{consulta.nombre} {consulta.apellido}</span>
+                </div>
+                <div className={styles.queryCardRow}>
+                  <strong>📧</strong>
+                  <span className={styles.queryCardEmail}>{consulta.correo}</span>
+                </div>
+                <div className={styles.queryCardRow}>
+                  <strong>📱</strong>
+                  <span>{consulta.celular}</span>
+                </div>
+                <div className={styles.queryCardRow}>
+                  <strong>💬</strong>
+                  <span className={styles.queryCardMessage}>
+                    {consulta.mensaje.length > 80 
+                      ? `${consulta.mensaje.substring(0, 80)}...` 
+                      : consulta.mensaje}
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.queryCardActions}>
                 <button 
                   className={styles.viewBtn} 
-                  style={{ marginRight: 8 }} 
                   onClick={() => handleView(consulta)}
                 >
-                  Ver
+                  Ver Detalles
                 </button>
                 <button 
-                  className={styles.actionBtn + ' ' + styles.danger} 
+                  className={`${styles.actionBtn} ${styles.danger}`} 
                   onClick={() => handleDelete(consulta)}
                 >
-                  Borrar
+                  Eliminar
                 </button>
-              </td>
-            </tr>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

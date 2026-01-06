@@ -133,23 +133,41 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard {
+    max-width: 100%;
+  }
+
   .header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
   
   .title {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  
+  .subtitle {
+    font-size: 13px;
   }
   
   .statsGrid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
   
   .dateInfo {
     width: 100%;
     justify-content: center;
+    padding: 8px 14px;
+  }
+
+  .date {
+    font-size: 13px;
+  }
+
+  .bottomGrid {
+    gap: 16px;
   }
 }
 
@@ -159,25 +177,28 @@
   }
 
   .header {
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 14px;
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 20px;
   }
   
   .subtitle {
-    font-size: 0.85rem;
+    font-size: 12px;
   }
 
   .dateInfo {
-    padding: 8px 12px;
-    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+
+  .dateIcon {
+    font-size: 16px;
   }
 
   .date {
-    font-size: 0.85rem;
+    font-size: 12px;
   }
 
   .statsGrid {
@@ -185,20 +206,35 @@
   }
 
   .bottomGrid {
-    gap: 16px;
+    gap: 14px;
+    margin-top: 6px;
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.35rem;
+    font-size: 18px;
   }
   
   .subtitle {
-    font-size: 0.8rem;
+    font-size: 11px;
+    margin-top: 2px;
   }
 
   .dateInfo {
-    padding: 6px 10px;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .dateIcon {
+    font-size: 14px;
+  }
+
+  .date {
+    font-size: 11px;
+  }
+
+  .statsGrid {
+    gap: 10px;
   }
 }
