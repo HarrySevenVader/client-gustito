@@ -27,14 +27,21 @@
   --orange-600: #ff5200;
   --muted-white: rgba(255,255,255,0.95);
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .layout {
   display: flex;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   background: linear-gradient(180deg, rgba(12,60,30,0.05) 0%, rgba(10,70,30,0.03) 100%);
   /* leave space for the fixed sidebar */
   padding-left: 260px;
+  box-sizing: border-box;
   transition: background 0.3s ease;
 }
 
@@ -52,12 +59,12 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  position: fixed;
+  position: fixed !important;
   top: 0;
   left: 0;
   height: 100vh;
   max-height: 100vh;
-  z-index: 40;
+  z-index: 1001;
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -330,6 +337,8 @@
 @media (max-width: 768px) {
   .layout {
     padding-left: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   .sidebar {

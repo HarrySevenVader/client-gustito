@@ -6,6 +6,9 @@
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease, background 0.4s ease, border-color 0.4s ease;
   max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .feedContainer:hover {
