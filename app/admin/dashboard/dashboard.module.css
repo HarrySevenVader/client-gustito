@@ -172,20 +172,20 @@
   }
   
   .title {
-    font-size: 22px;
+    font-size: 1.5rem;
     word-break: break-word;
     max-width: 100%;
   }
   
   .subtitle {
-    font-size: 13px;
+    font-size: 0.85rem;
     word-break: break-word;
     max-width: 100%;
   }
   
   .statsGrid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 16px;
     padding: 0;
     width: 100%;
     max-width: 100%;
@@ -195,12 +195,12 @@
     width: 100%;
     max-width: 100%;
     justify-content: center;
-    padding: 8px 14px;
+    padding: 10px 14px;
     box-sizing: border-box;
   }
 
   .date {
-    font-size: 13px;
+    font-size: 0.85rem;
     word-break: break-word;
     text-align: center;
   }

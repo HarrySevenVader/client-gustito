@@ -380,7 +380,10 @@
   }
 
   .content {
-    padding: 20px 16px !important;
+    padding: 20px 16px;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
 
   .cards {

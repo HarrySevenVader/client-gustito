@@ -276,35 +276,38 @@
 @media (max-width: 768px) {
   .feedContainer {
     padding: 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .title {
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin-bottom: 12px;
   }
 
   .feed {
-    max-height: 280px;
+    max-height: 300px;
     gap: 8px;
   }
 
   .activityItem {
-    padding: 10px;
+    padding: 12px;
     gap: 10px;
   }
 
   .iconCircle {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     font-size: 16px;
   }
 
   .activityTitle {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .description {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .timestamp {

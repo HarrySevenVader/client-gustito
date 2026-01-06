@@ -130,8 +130,7 @@ export default function AdminSidebar({ active, onNavigate, isOpen = false, onClo
           </button>
           <button 
             onClick={handleSignOut} 
-            className={styles.actionBtn} 
-            style={{ width: '100%' }}
+            className={styles.themeToggle}
             aria-label="Cerrar sesión"
           >
             Cerrar sesión
