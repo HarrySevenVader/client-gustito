@@ -227,7 +227,7 @@
   font-size: 32px;
   font-weight: 700;
   color: #111827;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   line-height: 1;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #111827 0%, #374151 100%);
@@ -341,20 +341,22 @@
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 768px) {
   .card {
-    padding: 16px;
+    padding: 18px 16px;
+    min-height: 140px;
   }
 
   .header {
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 12px;
   }
 
   .iconContainer {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
 
   .icon {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .title {
@@ -366,8 +368,8 @@
   }
 
   .value {
-    font-size: 28px;
-    margin-bottom: 8px;
+    font-size: 30px;
+    margin-bottom: 10px;
   }
 
   .trendContainer {
@@ -375,7 +377,7 @@
   }
 
   .trend {
-    padding: 3px 8px;
+    padding: 4px 10px;
     font-size: 11px;
   }
 
