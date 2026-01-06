@@ -10,6 +10,7 @@ type Product = {
   description?: string
   price?: number | string
   image?: string
+  sucursales?: number[] // IDs de sucursales: 1=Talcahuano, 2=Huachuraba, 3=Maipú
 }
 
 interface ProductListProps {
@@ -47,6 +48,25 @@ export default function ProductList({ rows, onEdit, onDelete }: ProductListProps
     return text.substring(0, maxLength) + '...';
   }
 
+  // Función para obtener iniciales de sucursales
+  const getSucursalesText = (sucursales?: number[]): string => {
+    if (!sucursales || sucursales.length === 0) return '-';
+    
+    const sucursalMap: { [key: number]: string } = {
+      1: 'T', // Talcahuano
+      2: 'H', // Huachuraba
+      3: 'M'  // Maipú
+    };
+    
+    const iniciales = sucursales
+      .map(id => sucursalMap[id])
+      .filter(Boolean) // Filtrar undefined
+      .sort() // Ordenar alfabéticamente
+      .join(', ');
+    
+    return iniciales || '-';
+  }
+
   return (
     <div className={styles.productList}>
       {rows.length === 0 ? (
@@ -66,7 +86,7 @@ export default function ProductList({ rows, onEdit, onDelete }: ProductListProps
             <div className={styles.productInfo}>
               <div className={styles.productTitle}>{truncateText(p.title, 50)}</div>
               <div className={styles.productDesc}>{truncateText(p.description, 100)}</div>
-              <div className={styles.productMeta}>Creado: {p.date ?? '-'}</div>
+              <div className={styles.productMeta}>Gustito: {getSucursalesText(p.sucursales)}</div>
             </div>
 
             <div className={styles.productRight}>

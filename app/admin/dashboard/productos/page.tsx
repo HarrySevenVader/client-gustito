@@ -141,6 +141,7 @@ export default function ProductsPage() {
     description: p.descripcion,
     price: p.precio,
     image: p.imagen_url || '/imagenes/producto_sin_imagen.svg',
+    sucursales: p.sucursales, // Pasar array de IDs de sucursales
   }));
 
   // Cálculo de paginación
