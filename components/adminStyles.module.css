@@ -220,8 +220,21 @@
   color: var(--text-primary);
 }
 
-.tableWrap { background: white; border-radius:12px; padding:16px; box-shadow: 0 10px 30px rgba(4,20,10,0.04); overflow-x: auto; transition: all 0.3s ease; }
-.table { width:100%; border-collapse:collapse; table-layout: fixed; }
+.tableWrap { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 16px; 
+  box-shadow: 0 10px 30px rgba(4,20,10,0.04); 
+  overflow-x: auto; 
+  width: 100%;
+  transition: all 0.3s ease; 
+}
+.table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  table-layout: fixed; 
+  min-width: 900px;
+}
 .th { text-align:left; padding:10px 12px; color:#0b5a30; font-weight:700; transition: color 0.3s ease; }
 .td { padding:10px 12px; border-top:1px solid rgba(0,0,0,0.04); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 0; transition: all 0.3s ease; }
 
@@ -1240,6 +1253,7 @@
 /* ========== RESPONSIVE UTILITIES ========== */
 .desktopOnly {
   display: block;
+  width: 100%;
 }
 
 .mobileOnly {
