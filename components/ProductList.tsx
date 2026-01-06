@@ -53,9 +53,9 @@ export default function ProductList({ rows, onEdit, onDelete }: ProductListProps
     if (!sucursales || sucursales.length === 0) return '-';
     
     const sucursalMap: { [key: number]: string } = {
-      1: 'T', // Talcahuano
-      2: 'H', // Huachuraba
-      3: 'M'  // Maipú
+      1: 'H', // Huachuraba
+      2: 'M', // Maipú
+      3: 'T'  // Talagante
     };
     
     const iniciales = sucursales
