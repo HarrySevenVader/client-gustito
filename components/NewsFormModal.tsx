@@ -157,8 +157,8 @@ export default function NewsFormModal({
       };
 
       const url = editMode
-        ? `http://localhost:4000/api/noticias/${noticiaId}`
-        : 'http://localhost:4000/api/noticias';
+        ? `${API_URL}/api/noticias/${noticiaId}`
+        : `${API_URL}/api/noticias`;
 
       const method = editMode ? 'PUT' : 'POST';
 
