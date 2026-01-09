@@ -11,6 +11,7 @@ import styles from '../../../../components/adminStyles.module.css';
 import { toastSuccess, toastError } from '../../../../components/swalHelper';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_URL } from '../../../../lib/config';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 const ITEMS_POR_PAGINA = 8;
 
@@ -33,7 +34,29 @@ export default function ProductsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Producto | null>(null);
   const [paginaActual, setPaginaActual] = useState(1);
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
   const router = useRouter();
+
+  // Leer el tema directamente del documento y observar cambios
+  useEffect(() => {
+    const updateTheme = () => {
+      const theme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark' || 'light';
+      console.log('🎨 Tema detectado:', theme);
+      setCurrentTheme(theme);
+    };
+    
+    // Leer tema inicial
+    updateTheme();
+    
+    // Observar cambios en el atributo data-theme
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   const fetchProductos = async () => {
     try {
@@ -166,16 +189,99 @@ export default function ProductsPage() {
 
         <div style={{ height: 12 }} />
 
-        <div style={{ marginBottom: 12, display: 'flex', gap: 12 }}>
-          <button className={styles.addBtn} onClick={() => setIsModalOpen(true)}>
-            + Agregar producto
-          </button>
-          <button 
-            className={styles.trashBtn} 
-            onClick={() => router.push('/admin/dashboard/productos/papelera')}
-          >
+        <div style={{ marginBottom: 12, display: 'flex', gap: 12, justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button className={styles.addBtn} onClick={() => setIsModalOpen(true)}>
+              + Agregar producto
+            </button>
+            <button 
+              className={styles.trashBtn} 
+              onClick={() => router.push('/admin/dashboard/productos/papelera')}
+            >
             🗑️ Papelera
           </button>
+        </div>
+
+          {/* Contador de productos */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            padding: '0.75rem 1.25rem',
+            background: currentTheme === 'dark' ? '#2a2a2a' : '#ffffff',
+            borderRadius: '12px',
+            boxShadow: currentTheme === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.3)' : '0 4px 6px rgba(0, 0, 0, 0.1)',
+            border: currentTheme === 'dark' ? '1px solid #3a3a3a' : '1px solid #e0e0e0',
+            transition: 'all 0.3s ease',
+            opacity: loading ? 0.6 : 1,
+            pointerEvents: loading ? 'none' : 'auto',
+          }}>
+            <div style={{
+              fontSize: '2rem',
+              animation: loading ? 'pulse 1.5s ease-in-out infinite' : 'none',
+            }}>
+              🍽️
+            </div>
+            <div>
+              <div style={{ 
+                fontSize: '0.75rem', 
+                color: currentTheme === 'dark' ? '#a0a0a0' : '#666',
+                fontWeight: '500',
+                marginBottom: '0.15rem',
+              }}>
+                Total
+              </div>
+              <div style={{ 
+                fontSize: '1.5rem', 
+                fontWeight: 'bold', 
+                color: currentTheme === 'dark' ? '#fff' : '#333',
+                lineHeight: '1',
+                minWidth: '40px',
+              }}>
+                {loading ? (
+                  <div style={{
+                    width: '40px',
+                    height: '24px',
+                    background: currentTheme === 'dark' ? '#3a3a3a' : '#e0e0e0',
+                    borderRadius: '4px',
+                    animation: 'pulse 1.5s ease-in-out infinite',
+                  }} />
+                ) : productos.length}
+              </div>
+            </div>
+            <div style={{
+              padding: '0.5rem 0.75rem',
+              background: currentTheme === 'dark' ? 'rgba(76, 175, 80, 0.2)' : 'rgba(76, 175, 80, 0.1)',
+              borderRadius: '8px',
+              marginLeft: '0.5rem',
+              border: currentTheme === 'dark' ? '1px solid rgba(76, 175, 80, 0.3)' : '1px solid rgba(76, 175, 80, 0.2)',
+            }}>
+              <div style={{ 
+                fontSize: '0.7rem', 
+                color: currentTheme === 'dark' ? '#a0a0a0' : '#666',
+                marginBottom: '0.15rem',
+              }}>
+                Activos
+              </div>
+              <div style={{ 
+                fontSize: '1.25rem', 
+                fontWeight: 'bold', 
+                color: currentTheme === 'dark' ? '#4CAF50' : '#2e7d32',
+                lineHeight: '1',
+                minWidth: '30px',
+              }}>
+                {loading ? (
+                  <div style={{
+                    width: '30px',
+                    height: '20px',
+                    background: currentTheme === 'dark' ? 'rgba(76, 175, 80, 0.3)' : 'rgba(76, 175, 80, 0.2)',
+                    borderRadius: '4px',
+                    animation: 'pulse 1.5s ease-in-out infinite',
+                  }} />
+                ) : productos.filter(p => p.activo).length}
+              </div>
+            </div>
+          </div>
         </div>
 
         {loading ? (

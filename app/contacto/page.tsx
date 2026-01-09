@@ -157,7 +157,7 @@ export default function ContactoPage() {
             }
         } catch (error) {
             console.error('Error al enviar consulta:', error);
-            toastError('Error al conectar con el servidor. Por favor, intenta nuevamente.');
+            toastError('Error al conectar con el servidor, por favor intenta más tarde.');
         } finally {
             setIsSubmitting(false);
         }
