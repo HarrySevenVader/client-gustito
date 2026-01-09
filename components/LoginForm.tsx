@@ -20,26 +20,33 @@ export default function LoginForm() {
 
   // Verificar si ya hay sesión activa
   useEffect(() => {
-    const checkSession = () => {
-      const session = localStorage.getItem('supabase_session')
-      if (session) {
-        try {
-          const sessionData = JSON.parse(session)
-          const expiresAt = sessionData.expires_at
-          
-          // Si la sesión no ha expirado, redirigir al dashboard
-          if (expiresAt && Date.now() / 1000 < expiresAt) {
-            router.push('/admin/dashboard')
-          } else {
-            // Sesión expirada, limpiar
-            localStorage.removeItem('supabase_session')
-            document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
-          }
-        } catch (error) {
-          // Error al parsear, limpiar sesión
+    const checkSession = async () => {
+      // Solo verificar si supabase está configurado
+      if (!supabase) return
+      
+      try {
+        // Verificar sesión con Supabase directamente
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          // Si hay error, limpiar cualquier sesión residual
           localStorage.removeItem('supabase_session')
-          document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+          document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
+          return
         }
+        
+        // Si hay sesión válida, redirigir al dashboard
+        if (session && session.access_token) {
+          router.replace('/admin/dashboard')
+        } else {
+          // No hay sesión, limpiar residuos
+          localStorage.removeItem('supabase_session')
+          document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
+        }
+      } catch (error) {
+        // Error al verificar, limpiar sesión
+        localStorage.removeItem('supabase_session')
+        document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
       }
     }
     

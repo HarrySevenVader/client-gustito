@@ -169,10 +169,11 @@ export default function AdminTopbar({ title = 'Panel', onMenuClick }: { title?: 
       localStorage.removeItem('supabase_session')
     } catch(_) {}
     
-    // Limpiar cookie
-    document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    // Limpiar cookie del middleware
+    document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
     
-    router.push('/admin/login')
+    // Usar replace para evitar loops de redirección
+    router.replace('/admin/login')
   }
 
   const displayName = user?.user_metadata?.full_name || user?.email || 'Admin'

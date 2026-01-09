@@ -37,8 +37,18 @@ export default function AdminSidebar({ active, onNavigate, isOpen = false, onClo
     try {
       if (supabase) await supabase.auth.signOut()
     } catch (err) { console.warn('signOut error', err) }
-    try { localStorage.removeItem('supabase_token') } catch(_) {}
-    router.push('/admin/login')
+    
+    // Limpiar completamente localStorage y cookies
+    try { 
+      localStorage.removeItem('supabase_token')
+      localStorage.removeItem('supabase_session')
+    } catch(_) {}
+    
+    // Limpiar cookie del middleware
+    document.cookie = 'supabase_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
+    
+    // Redirigir con replace para evitar que el usuario vuelva atrás
+    router.replace('/admin/login')
   }
 
   return (
