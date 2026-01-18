@@ -23,15 +23,15 @@ export default function Footer() {
             width: '100%',
             marginTop: 'auto'
         }}>
-            <div className="w-full flex py-16" style={{ 
+            <div className="w-full flex py-20 md:py-24" style={{ 
                 background: '#1a1a1a',
                 minHeight: 'fit-content'
             }}>
                 {/* Espaciador izquierdo */}
                 <div className="hidden lg:block w-16 xl:w-24 2xl:w-32 flex-shrink-0" />
                 
-                <div className="flex-1 px-4 sm:px-8 lg:px-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div className="flex-1 px-6 sm:px-10 md:px-12 lg:px-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-y-20 md:gap-x-12">
                     {/* Brand Section */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -40,12 +40,12 @@ export default function Footer() {
                         transition={{ duration: 0.5 }}
                     >
                         <h3
-                            className="text-4xl font-bold text-gustito-orange mb-4"
+                            className="text-4xl font-bold text-gustito-orange mb-6"
                             style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                         >
                             Gustito
                         </h3>
-                        <p className="text-white/80 mb-6">
+                        <p className="text-white/80 mb-8 leading-relaxed">
                             Sabores auténticos de Chile, preparados con amor y dedicación para tu disfrute.
                         </p>
                         <div className="flex space-x-4">
@@ -75,13 +75,13 @@ export default function Footer() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
                     >
-                        <h4 className="text-xl font-bold mb-6 text-gustito-green">Enlaces Rápidos</h4>
-                        <ul className="space-y-3">
+                        <h4 className="text-xl font-bold mb-8 text-gustito-green leading-relaxed">Enlaces Rápidos</h4>
+                        <ul className="space-y-5">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <a
                                         href={link.href}
-                                        className="text-white/80 hover:text-gustito-orange transition-colors duration-300 flex items-center group"
+                                        className="text-white/80 hover:text-gustito-orange transition-colors duration-300 flex items-center group leading-loose text-base"
                                     >
                                         <span className="w-0 group-hover:w-2 h-0.5 bg-gustito-orange transition-all duration-300 mr-0 group-hover:mr-2" />
                                         {link.name}
@@ -98,15 +98,15 @@ export default function Footer() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                        <h4 className="text-xl font-bold mb-6 text-gustito-green">Nuestras Sucursales</h4>
-                        <ul className="space-y-6">
+                        <h4 className="text-xl font-bold mb-8 text-gustito-green leading-relaxed">Nuestras Sucursales</h4>
+                        <ul className="space-y-10">
                             {/* Gustito Maipú */}
                             <li className="flex items-start">
                                 <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
                                 <div>
-                                    <p className="text-white font-semibold mb-1">Gustito Maipú</p>
-                                    <p className="text-white/80 text-sm">Av. El Rosal 4304, Maipú</p>
-                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                    <p className="text-white font-semibold mb-2 text-base leading-relaxed">Gustito Maipú</p>
+                                    <p className="text-white/80 text-sm leading-loose mb-2">Av. El Rosal 4304, Maipú</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-2 leading-relaxed">
                                         <Phone size={14} />
                                         +56 2 2345 6789
                                     </p>
@@ -117,9 +117,9 @@ export default function Footer() {
                             <li className="flex items-start">
                                 <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
                                 <div>
-                                    <p className="text-white font-semibold mb-1">Gustito Talagante</p>
-                                    <p className="text-white/80 text-sm">Octavio Leiva Opazo 42, Talagante</p>
-                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                    <p className="text-white font-semibold mb-2 text-base leading-relaxed">Gustito Talagante</p>
+                                    <p className="text-white/80 text-sm leading-loose mb-2">Octavio Leiva Opazo 42, Talagante</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-2 leading-relaxed">
                                         <Phone size={14} />
                                         +56 2 2345 6790
                                     </p>
@@ -130,9 +130,9 @@ export default function Footer() {
                             <li className="flex items-start">
                                 <MapPin size={20} className="text-gustito-orange mr-3 mt-1 flex-shrink-0" />
                                 <div>
-                                    <p className="text-white font-semibold mb-1">Gustito Huechuraba</p>
-                                    <p className="text-white/80 text-sm">Berta Correa 1686, Huechuraba</p>
-                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-1">
+                                    <p className="text-white font-semibold mb-2 text-base leading-relaxed">Gustito Huechuraba</p>
+                                    <p className="text-white/80 text-sm leading-loose mb-2">Berta Correa 1686, Huechuraba</p>
+                                    <p className="text-white/60 text-sm flex items-center gap-1 mt-2 leading-relaxed">
                                         <Phone size={14} />
                                         +56 2 2345 6791
                                     </p>
@@ -148,31 +148,31 @@ export default function Footer() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                        <h4 className="text-xl font-bold mb-6 text-gustito-green">Horarios</h4>
-                        <div className="space-y-3">
+                        <h4 className="text-xl font-bold mb-8 text-gustito-green leading-relaxed">Horarios</h4>
+                        <div className="space-y-6">
                             <div className="flex items-center">
                                 <Clock size={20} className="text-gustito-orange mr-3" />
                                 <div>
-                                    <p className="font-semibold text-white">Lunes - Viernes</p>
-                                    <p className="text-white/80 text-sm">12:00 - 21:00</p>
+                                    <p className="font-semibold text-white text-base leading-relaxed">Lunes - Viernes</p>
+                                    <p className="text-white/80 text-sm mt-1 leading-relaxed">12:00 - 21:00</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
                                 <Clock size={20} className="text-gustito-orange mr-3" />
                                 <div>
-                                    <p className="font-semibold text-white">Sábado</p>
-                                    <p className="text-white/80 text-sm">12:30 - 21:00</p>
+                                    <p className="font-semibold text-white text-base leading-relaxed">Sábado</p>
+                                    <p className="text-white/80 text-sm mt-1 leading-relaxed">12:30 - 21:00</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
                                 <Clock size={20} className="text-gustito-orange mr-3" />
                                 <div>
-                                    <p className="font-semibold text-white">Domingo</p>
-                                    <p className="text-white/80 text-sm">12:30 - 17:00</p>
+                                    <p className="font-semibold text-white text-base leading-relaxed">Domingo</p>
+                                    <p className="text-white/80 text-sm mt-1 leading-relaxed">12:30 - 17:00</p>
                                 </div>
                             </div>
-                            <div className="mt-6 p-4 bg-gustito-orange/20 rounded-xl border border-gustito-orange/30">
-                                <p className="text-sm text-white/90">
+                            <div className="mt-8 p-5 bg-gustito-orange/20 rounded-xl border border-gustito-orange/30">
+                                <p className="text-sm text-white/90 leading-relaxed">
                                     🎉 <strong>Happy Hour:</strong> Lun-Vie 17:00-19:00
                                     <br />
                                     <span className="text-gustito-green font-semibold">20% OFF</span> en productos seleccionados

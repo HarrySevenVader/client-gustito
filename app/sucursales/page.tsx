@@ -108,28 +108,28 @@ export default function SucursalesPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: index * 0.2 }}
                                 >
-                                    <div className="grid md:grid-cols-[350px_1fr_1fr] gap-0">
+                                    <div className="grid md:grid-cols-[500px_1fr_1fr] gap-0">
                                         {/* Info Section */}
-                                        <div className="p-8 md:p-10 flex flex-col justify-center">
-                                            <h2 className="text-3xl md:text-4xl font-bold text-gustito-orange mb-6"
+                                        <div className="p-8 md:p-10 lg:p-14 flex flex-col justify-center">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-gustito-orange mb-8"
                                                 style={{ fontFamily: "'Baloo 2', 'Poppins', sans-serif" }}
                                             >
                                                 {sucursal.name}
                                             </h2>
 
-                                            <div className="space-y-4">
+                                            <div className="space-y-6">
                                                 <div className="flex items-start gap-4">
                                                     <MapPin className="w-6 h-6 text-gustito-green flex-shrink-0 mt-1" />
-                                                    <div>
-                                                        <h3 className="font-semibold text-gustito-dark mb-1">Dirección</h3>
-                                                        <p className="text-gray-600">{sucursal.address}</p>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-semibold text-gustito-dark mb-2">Dirección</h3>
+                                                        <p className="text-gray-600 leading-relaxed">{sucursal.address}</p>
                                                     </div>
                                                 </div>
 
                                                 <div className="flex items-start gap-4">
                                                     <Phone className="w-6 h-6 text-gustito-green flex-shrink-0 mt-1" />
-                                                    <div>
-                                                        <h3 className="font-semibold text-gustito-dark mb-1">Teléfono</h3>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-semibold text-gustito-dark mb-2">Teléfono</h3>
                                                         <a href={`tel:${sucursal.phone.replace(/\s/g, '')}`}
                                                             className="text-gray-600 hover:text-gustito-orange transition-colors">
                                                             {sucursal.phone}
@@ -139,9 +139,9 @@ export default function SucursalesPage() {
 
                                                 <div className="flex items-start gap-4">
                                                     <Clock className="w-6 h-6 text-gustito-green flex-shrink-0 mt-1" />
-                                                    <div>
-                                                        <h3 className="font-semibold text-gustito-dark mb-1">Horario</h3>
-                                                        <p className="text-gray-600">{sucursal.hours}</p>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-semibold text-gustito-dark mb-2">Horario</h3>
+                                                        <p className="text-gray-600 leading-relaxed">{sucursal.hours}</p>
                                                     </div>
                                                 </div>
                                             </div>
